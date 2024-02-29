@@ -1,7 +1,7 @@
-# FormularioPerfilAluno
+# Formulario Perfil Aluno Do Enem
 
 ## Proposta
-Formulário direcionado a alunos do ensino médio para avaliar as competências do ENEM
+Formulário direcionado a alunos do ensino médio para avaliar as competências do ENEM.
 
 
 Este projeto foi gerado com [Angular CLI](https://github.com/angular/angular-cli) na versão 17.2.1.
