@@ -6,12 +6,12 @@
         <ng-template matStepLabel>>{{'Q'}}{{ i+1 }}</ng-template>
         <h3>{{competence.descricao}}</h3>
         <ng-container formArrayName="habilidades">
-          <div [ngStyle]="{'flex-direction': 'column'}" *ngFor="let habilidade of competence.habilidades; let j = index">
+          <div [ngStyle]="{ 'display':'flex', 'flex-direction': 'column'}" *ngFor="let habilidade of competence.habilidades; let j = index">
             <span>{{makeSkill(habilidade).question}}</span>
-            <mat-form-field>
+            <mat-form-field [ngClass]="'mat-form-selector'">
               <mat-label>Escolha</mat-label>
               <mat-select  [formControlName]="j" >
-                  <mat-option *ngFor="let skill of skillLevelsOptions" [value]="skill">
+                  <mat-option *ngFor="let skill of skillLevelsOptions" [value]="skill" (onSelectionChange)="test()">
                       {{getSkillLevelsAswer[skill]}}
                   </mat-option>
               </mat-select>

@@ -63,7 +63,7 @@ export class MainFormComponent{
   public getCompetenceFormBuilderForCompetences = (competences: any) => {
     return this._formBuilder.group({
       descricao:[competences.descricao, Validators.required],
-      habilidades: this._formBuilder.array(competences.habilidades)
+      habilidades: this._formBuilder.array([...Array(competences.habilidades.length)].map(() => ''))
     })
   }
 
@@ -77,9 +77,8 @@ export class MainFormComponent{
 
 
 
-  public test(event: any) {
-    console.log(event)
-    console.log(event.stepControl)
+  public test() {
+    console.log(this.questionarioFormGroup)
   }
 
 
