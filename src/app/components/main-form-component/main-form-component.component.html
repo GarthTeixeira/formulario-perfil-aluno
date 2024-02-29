@@ -1,0 +1,27 @@
+<div class="mainForm">
+  <form [formGroup]="questionarioFormGroup" >
+    <mat-stepper #linearVerticalStepper="matVerticalStepper" [linear]="isLinear" formArrayName="competences" #stepper>
+     
+      <mat-step *ngFor="let competence of iterableCompetences; let i = index" [formGroupName]="i" [stepControl]="competences?.get([i])">
+        <ng-template matStepLabel>>{{competence.descricao}}</ng-template>
+        <ng-container formArrayName="habilidades">
+          <div [ngStyle]="{'flex-direction': 'column'}" *ngFor="let habilidade of competence.habilidades; let j = index">
+            <mat-form-field>
+              <input matInput placeholder="Last name, First name" [formControlName]="j" required>
+            </mat-form-field>
+          </div>
+        </ng-container>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        You are now done.
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
+      </mat-step>
+    </mat-stepper>
+    
+  </form>
+    
+</div>

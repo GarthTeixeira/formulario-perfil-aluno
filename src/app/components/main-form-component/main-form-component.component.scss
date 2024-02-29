@@ -1,0 +1,17 @@
+.main-form-component {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 3rem;
+}
+
+.mat-stepper-horizontal {
+    margin-top: 8px;
+  }
+  
+  .mat-mdc-form-field {
+    margin-top: 16px;
+  }
