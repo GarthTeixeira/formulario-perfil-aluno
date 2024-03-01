@@ -10,8 +10,8 @@
             <span>{{makeSkill(habilidade).question}}</span>
             <mat-form-field [ngClass]="'mat-form-selector'">
               <mat-label>Escolha</mat-label>
-              <mat-select  [formControlName]="j" >
-                  <mat-option *ngFor="let skill of skillLevelsOptions" [value]="skill" (onSelectionChange)="test()">
+              <mat-select  [formControlName]="j" required >
+                  <mat-option *ngFor="let skill of skillLevelsOptions" [value]="getSkillLevelsAswerNumberValue(skill)" (onSelectionChange)="test()">
                       {{getSkillLevelsAswer[skill]}}
                   </mat-option>
               </mat-select>
@@ -24,7 +24,7 @@
         Gostaria de enviar o questionário?
         <div>
           <button mat-button matStepperPrevious>Voltar</button>
-          <button mat-button (click)="stepper.reset()">Enviar</button>
+          <button mat-button (click)="onSubmit(stepper)">Enviar</button>
         </div>
       </mat-step>
     </mat-stepper>

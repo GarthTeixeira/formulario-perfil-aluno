@@ -39,9 +39,28 @@ export class MainFormComponent{
   
   public questionarioFormGroup: FormGroup = this._formBuilder.group([]);
 
-  public isLinear = false;
+  public isLinear = true;
 
   public getSkillLevelsAswer:IDictionarySkill<string> = {'high':'Alto', 'basic':'Medio', 'low':'Baixo'}
+
+  public aplicarRegraDeTres(valorAtual: number, minAtual: number, maxAtual: number, novoMinimo: number, novoMaximo: number): number {
+    // Garantir que o valor atual esteja dentro do intervalo
+    const valorNormalizado = Math.min(Math.max(valorAtual, minAtual), maxAtual);
+
+    // Aplicar a regra de três
+    const valorProporcional = ((valorNormalizado - minAtual) / (maxAtual - minAtual)) * (novoMaximo - novoMinimo) + novoMinimo;
+
+    return valorProporcional;
+  }
+
+  public getSkillLevelsAswerNumberValue = (skill:string) => {
+    const atualMax:number = this.skillLevelsOptions.length;
+    const atualMin:number = 1;
+
+    const atualValue:number = this.skillLevelsOptions.indexOf(skill) + 1;
+
+    return this.aplicarRegraDeTres(atualValue, atualMin, atualMax, 1, 10)
+  }
 
   get competences():any { return this.questionarioFormGroup?.get('competences'); }
 
@@ -52,9 +71,9 @@ export class MainFormComponent{
   public getCompetencesFromArray = () => {
     const habilities = ['habilidade1', 'habilidade2', 'habilidade3']
     const competences = []
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 2; i++) {
       const habilidades = habilities.map(hability => `${hability}.${i}`)
-      const competence = {descricao:`Competência ${i}`, habilidades: habilidades}
+      const competence = {id:i, descricao:`Competência ${i}`, habilidades: habilidades}
       competences.push(competence)
     }
     return competences
@@ -62,8 +81,9 @@ export class MainFormComponent{
 
   public getCompetenceFormBuilderForCompetences = (competences: any) => {
     return this._formBuilder.group({
+      id: [competences.id],
       descricao:[competences.descricao, Validators.required],
-      habilidades: this._formBuilder.array([...Array(competences.habilidades.length)].map(() => ''))
+      habilidades: this._formBuilder.array([...Array(competences.habilidades.length)].map(() => ''), Validators.required)
     })
   }
 
@@ -78,7 +98,7 @@ export class MainFormComponent{
 
 
   public test() {
-    console.log(this.questionarioFormGroup)
+    // console.log(this.questionarioFormGroup)
   }
 
 
@@ -92,9 +112,11 @@ export class MainFormComponent{
         this.getCompetenceFormBuilderForCompetences(competence)
       )
     )});
+  }
 
-    console.log(this.questionarioFormGroup)
-    console.log(this.competences.get([0]).get('habilidades').get([0]))
+  onSubmit(stepper: any) {
+    console.log ((this.questionarioFormGroup.getRawValue()));
+    stepper.reset();
   }
 
  
