@@ -12,10 +12,18 @@
   width: 200px;
 }
 
+:host .no-competences {
+  display: flex;
+  justify-content: center;
+  font-style: normal;
+  color: rgba(128, 0, 128, 0.466);
+  margin-top:30px ;
+}
+
 .mat-stepper-horizontal {
     margin-top: 8px;
   }
   
-  .mat-mdc-form-field {
-    margin-top: 16px;
-  }
+.mat-mdc-form-field {
+  margin-top: 16px;
+}

@@ -106,7 +106,7 @@ export class MainFormComponent{
   constructor(private _formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    this.iterableCompetences = this.getCompetencesFromArray()
+    this.iterableCompetences = []
     this.questionarioFormGroup = this._formBuilder.group({
       competences: this._formBuilder.array(this.iterableCompetences.map(competence =>
         this.getCompetenceFormBuilderForCompetences(competence)
