@@ -6,6 +6,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
+import { RouterModule } from '@angular/router';
 
 interface Skill {
   habiliteValue: string;
@@ -29,6 +30,7 @@ interface IDictionarySkill<TValue> {
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    RouterModule,
     CommonModule
   ],
   templateUrl: './main-form-component.component.html',

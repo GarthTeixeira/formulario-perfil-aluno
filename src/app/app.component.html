@@ -51,10 +51,14 @@
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
-      <app-main-form-component/>
-      <app-form-area-selector-component/>
+    
+      <div [@routeAnimations]="getRouteAnimationData()">
+        
+        <router-outlet />
+      </div>
     </div>
   </div>
+  
 </main>
 
-<router-outlet />
+
