@@ -8,5 +8,6 @@ export const routes: Routes = [
     {
         path: 'form/:tag',
         component: MainFormComponent,
+        data: { animation: 'form' }
     }
 ];

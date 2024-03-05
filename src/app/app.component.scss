@@ -135,8 +135,13 @@
     --pill-accent: var(--hot-red);
   }
 
-  
+  .right-side {
+    text-align: center;
+    position: relative;
+    margin-top: 1.5rem;
+  }
 
+  
   @media screen and (max-width: 650px) {
     .content {
       flex-direction: column;

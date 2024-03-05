@@ -21,5 +21,9 @@ export class AppComponent {
     return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
   }
 
+  prepareRoute(outlet: RouterOutlet) {
+    return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
+  }
+
   constructor(private contexts: ChildrenOutletContexts) {}
 }

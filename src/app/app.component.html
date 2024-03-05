@@ -22,14 +22,10 @@
          avalie suas compoetências que você teve para suas disciplinas! ✏️📖🤓📚🚀</p>
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
-    <div class="right-side">
-    
-      <div [@routeAnimations]="getRouteAnimationData()">
-        <router-outlet />
-      </div>
+    <div [@routeAnimations]="prepareRoute(outlet)" class="right-side">
+      <router-outlet #outlet="outlet" />
     </div>
   </div>
-  
 </main>
 
 
