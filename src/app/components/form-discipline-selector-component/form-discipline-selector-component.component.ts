@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SelectorComponent } from '../selector-component/selector-component.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-form-discipline-selector-component',
   standalone: true,
-  imports: [SelectorComponent],
+  imports: [SelectorComponent, RouterLink],
   templateUrl: './form-discipline-selector-component.component.html',
   styleUrl: './form-discipline-selector-component.component.scss'
 })
-export class FormDisciplineSelectorComponent {
+export class FormDisciplineSelectorComponent  {
   diciplinasPorArea:any = { 
     LINGUAGENS: [ {nome: 'Português', id: 1}, {nome: 'Inglês', id: 2}, {nome: 'Espanhol', id: 3} ],
     EXATAS: [ {nome: 'Algebra', id: 4}, {nome: 'Geometria', id: 5}], 
@@ -18,7 +19,17 @@ export class FormDisciplineSelectorComponent {
 
   disciplinas:Array<any> = [];
 
+  areaSelecionada:string = '';
+
   constructor() {
     
   }
+
+  ngOnInit() {
+    this.areaSelecionada= history.state.itemData.tag;
+    this.disciplinas = this.diciplinasPorArea[this.areaSelecionada]
+    .map((disciplina:any) => {return {title: disciplina.nome, id: disciplina.id, tag: this.areaSelecionada}})
+    
+  }
+
 }

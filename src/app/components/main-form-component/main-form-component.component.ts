@@ -38,7 +38,10 @@ interface IDictionarySkill<TValue> {
 })
 export class MainFormComponent{
 
-  
+  public areaSelecionada: {tag:string, title:string} | undefined = {tag:'', title:''};
+
+  public disiplnaSelecionada:string = '';
+
   public questionarioFormGroup: FormGroup = this._formBuilder.group([]);
 
   public isLinear = true;
@@ -108,7 +111,11 @@ export class MainFormComponent{
   constructor(private _formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
+    const {tag , title} = history.state.itemData.tag;
+    this.areaSelecionada = {tag, title}
+
     this.iterableCompetences = []
+    
     this.questionarioFormGroup = this._formBuilder.group({
       competences: this._formBuilder.array(this.iterableCompetences.map(competence =>
         this.getCompetenceFormBuilderForCompetences(competence)

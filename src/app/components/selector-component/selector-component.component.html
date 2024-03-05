@@ -1,7 +1,8 @@
-@for (item of items; track item.tag) {
+@for (item of items; track item.title) {
     <a
       class="pill"
-      [routerLink]="[destinyRoute, item.tag]"
+      [routerLink]="[destinyRoute]"
+      [state]="{ itemData: item}"
     >
       <span>{{ item.title }}</span>
     </a>
