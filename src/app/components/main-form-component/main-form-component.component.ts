@@ -98,7 +98,7 @@ export class MainFormComponent{
 
 
   public test() {
-    // console.log(this.questionarioFormGroup)
+     console.log(this.questionarioFormGroup)
   }
 
 

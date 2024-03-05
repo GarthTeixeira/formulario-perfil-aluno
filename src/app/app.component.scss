@@ -114,20 +114,23 @@
     line-height: 1.4rem;
     letter-spacing: -0.00075rem;
     text-decoration: none;
+    cursor: pointer;
   }
 
   ::ng-deep.pill:hover {
     background: color-mix(in srgb, var(--pill-accent) 15%, transparent);
   }
 
-  .pill-group .pill:nth-child(6n + 1) {
+  ::ng-deep.pill-group .pill:nth-child(6n + 1) {
     --pill-accent: var(--bright-blue);
   }
-  .pill-group .pill:nth-child(6n + 2) {
+  ::ng-deep.pill-group .pill:nth-child(6n + 2) {
     --pill-accent: var(--french-violet);
   }
-  .pill-group .pill:nth-child(6n + 3),
-  .pill-group .pill:nth-child(6n + 4),
+  ::ng-deep.pill-group .pill:nth-child(6n + 3){
+    --pill-accent: var(--vivid-pink);
+  }
+  ::ng-deep.pill-group .pill:nth-child(6n + 4),
   .pill-group .pill:nth-child(6n + 5) {
     --pill-accent: var(--hot-red);
   }

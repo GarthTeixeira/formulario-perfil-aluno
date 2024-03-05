@@ -56,26 +56,12 @@
   }
   </form>
   <div class="pill-group">
-    <a
+    <button
         class="pill"
-        [href]="'https://angular.dev/tools/cli'"
-        target="_blank"
-        rel="noopener"
+        (click)="test()"
           >
             <span>Voltar ao menu</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="14"
-              viewBox="0 -960 960 960"
-              width="14"
-              fill="currentColor"
-            >
-              <path
-                d="M 480 0 C 214.617188 0 0 214.617188 0 480 C 0 745.382812 214.617188 960 480 960 C 745.382812 960 960 745.382812 960 480 C 960 214.617188 745.382812 0 480 0 Z M 480 896 C 229.78125 896 64 730.21875 64 480 C 64 229.78125 229.78125 64 480 64 C 730.21875 64 896 229.78125 896 480 C 896 730.21875 730.21875 896 480 896 Z M 480 896"
-              ></path>
-            </svg>
-          </a>
-    <button mat-button >Voltar ao menu</button>
+    </button>
   </div>
 
 </div>
