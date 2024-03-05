@@ -1,0 +1,8 @@
+@for (item of items; track item.tag) {
+    <a
+      class="pill"
+      [routerLink]="[destinyRoute, item.tag]"
+    >
+      <span>{{ item.title }}</span>
+    </a>
+  }
