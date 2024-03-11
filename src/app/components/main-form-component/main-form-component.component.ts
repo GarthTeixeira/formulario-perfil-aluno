@@ -111,7 +111,7 @@ export class MainFormComponent{
   constructor(private _formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    const {tag , title} = history.state.itemData.tag;
+    const {tag , title} = history.state.itemData;
     this.areaSelecionada = {tag, title}
 
     this.iterableCompetences = []

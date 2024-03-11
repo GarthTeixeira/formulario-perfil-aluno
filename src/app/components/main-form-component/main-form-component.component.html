@@ -57,9 +57,10 @@
   </form>
   <div class="pill-group">
     <a
-        class="pill"
-        routerLink="/home"
-          >
+      class="pill"
+      routerLink="/disciplinas"
+      [state]="{ itemData: areaSelecionada}"
+    >
             <span>Voltar ao menu</span>
     </a>
   </div>
