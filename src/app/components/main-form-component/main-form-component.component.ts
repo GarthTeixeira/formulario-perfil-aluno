@@ -1,5 +1,5 @@
-import { Component, EnvironmentInjector } from '@angular/core';
-import {FormBuilder, FormGroup , FormArray, Validators, FormsModule, ReactiveFormsModule, AbstractControl, FormControl} from '@angular/forms';
+import { Component  } from '@angular/core';
+import {FormBuilder, FormGroup ,  Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -7,6 +7,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
+import getCompetencesFromArray from '../../mocks/generateCompetencias';
 
 interface Skill {
   habiliteValue: string;
@@ -73,17 +74,6 @@ export class MainFormComponent{
 
   public iterableCompetences:any[] = []
   
-  public getCompetencesFromArray = () => {
-    const habilities = ['habilidade1', 'habilidade2', 'habilidade3']
-    const competences = []
-    for (let i = 0; i < 2; i++) {
-      const habilidades = habilities.map(hability => `${hability}.${i}`)
-      const competence = {id:i, descricao:`Competência ${i}`, habilidades: habilidades}
-      competences.push(competence)
-    }
-    return competences
-  }
-
   public getCompetenceFormBuilderForCompetences = (competences: any) => {
     return this._formBuilder.group({
       id: [competences.id],
@@ -114,7 +104,8 @@ export class MainFormComponent{
     const {tag , title, color} = history.state.itemData;
     this.itemSelecionado = {tag, title, color}
 
-    this.iterableCompetences = []
+    this.iterableCompetences = getCompetencesFromArray(5);
+    console.log(this.iterableCompetences)
     
     this.questionarioFormGroup = this._formBuilder.group({
       competences: this._formBuilder.array(this.iterableCompetences.map(competence =>

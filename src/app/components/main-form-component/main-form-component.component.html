@@ -1,6 +1,6 @@
 <div class="mainForm">
   <form [formGroup]="questionarioFormGroup">
-    @if(competences.legth > 0){ 
+    @if(competences.length > 0){ 
       <mat-stepper #linearVerticalStepper="matVerticalStepper" [linear]="isLinear" formArrayName="competences" #stepper>
 
         @for (competence of iterableCompetences; track competence; let i = $index) {
@@ -8,9 +8,9 @@
           <ng-template matStepLabel>>{{'Q'}}{{ i+1 }}</ng-template>
           <h3>{{competence.descricao}}</h3>
           <ng-container formArrayName="habilidades">
-            <div [ngStyle]="{ 'display':'flex', 'flex-direction': 'column'}"
+            <div [ngStyle]="{ 'display':'flex', 'flex-direction': 'column', 'max-width': '500px'}"
               *ngFor="let habilidade of competence.habilidades; let j = index">
-              <span>{{makeSkill(habilidade).question}}</span>
+              <span [ngStyle]="{'text-align':'start'}">{{makeSkill(habilidade).question}}</span>
               <mat-form-field [ngClass]="'mat-form-selector'">
                 <mat-label>Escolha</mat-label>
                 <mat-select [formControlName]="j" required>
