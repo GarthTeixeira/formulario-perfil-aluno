@@ -1,0 +1,16 @@
+:host .primary{
+    --pill-accent: var(--bright-blue);
+}
+
+:host .secondary{
+    --pill-accent: var(--electric-violet);
+}
+
+:host .tertiary{
+    --pill-accent: var(--vivid-pink);
+}
+
+:host .quaternary{
+    --pill-accent: var(--hot-red);
+}
+

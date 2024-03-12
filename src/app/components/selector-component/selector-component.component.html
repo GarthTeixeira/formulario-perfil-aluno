@@ -1,6 +1,6 @@
 @for (item of items; track item.title) {
     <a
-      class="pill"
+      [ngClass]="'pill ' + item.color"
       [routerLink]="[destinyRoute]"
       [state]="{ itemData: item}"
     >

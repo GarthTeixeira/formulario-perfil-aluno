@@ -27,8 +27,10 @@ export class FormDisciplineSelectorComponent  {
 
   ngOnInit() {
     this.areaSelecionada= history.state.itemData.tag;
+    const color = history.state.itemData.color;
+
     this.disciplinas = this.diciplinasPorArea[this.areaSelecionada]
-    .map((disciplina:any) => {return {title: disciplina.nome, id: disciplina.id, tag: this.areaSelecionada}})
+    .map((disciplina:any) => {return {title: disciplina.nome, id: disciplina.id, tag: this.areaSelecionada, color: color}})
     
   }
 

@@ -1,10 +1,11 @@
+import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-selector-component',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, NgClass],
   templateUrl: './selector-component.component.html',
   styleUrl: './selector-component.component.scss'
 })

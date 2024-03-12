@@ -38,7 +38,7 @@ interface IDictionarySkill<TValue> {
 })
 export class MainFormComponent{
 
-  public areaSelecionada: {tag:string, title:string} | undefined = {tag:'', title:''};
+  public itemSelecionado: {tag:string, title:string, color:string} | undefined = {tag:'', title:'', color:''};
 
   public disiplnaSelecionada:string = '';
 
@@ -111,8 +111,8 @@ export class MainFormComponent{
   constructor(private _formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    const {tag , title} = history.state.itemData;
-    this.areaSelecionada = {tag, title}
+    const {tag , title, color} = history.state.itemData;
+    this.itemSelecionado = {tag, title, color}
 
     this.iterableCompetences = []
     

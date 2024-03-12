@@ -10,6 +10,8 @@
     --gray-700: oklch(36.98% 0.014 302.71);
     --gray-400: oklch(70.9% 0.015 304.04);
 
+    --strong-purple: rgba(133, 14, 117, 0.753);
+
     --red-to-pink-to-purple-vertical-gradient: linear-gradient(
       180deg,
       var(--orange-red) 0%,
@@ -114,7 +116,6 @@
     line-height: 1.4rem;
     letter-spacing: -0.00075rem;
     text-decoration: none;
-    // cursor: pointer;
   }
 
   ::ng-deep.pill:hover {
@@ -133,6 +134,10 @@
   ::ng-deep.pill-group .pill:nth-child(6n + 4),
   .pill-group .pill:nth-child(6n + 5) {
     --pill-accent: var(--hot-red);
+  }
+
+  ::ng-deep .back-button{
+    --pill-accent: var(--strong-purple);
   }
 
   .right-side {

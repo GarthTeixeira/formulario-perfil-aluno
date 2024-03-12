@@ -11,7 +11,12 @@ import { SelectorComponent } from '../selector-component/selector-component.comp
 })
 export class FormAreaSelectorComponent {
   areas:Array<any> = [];
+  cores:Array<string> = ['primary', 'secondary', 'tertiary', 'quaternary'];
  constructor() {
-  this.areas = areas;
+
+  for (let i = 0; i < areas.length; i++) {
+    this.areas[i] =  {...areas[i], color: this.cores[i]};
+  }
+  console.log(this.areas);
  }
 }
