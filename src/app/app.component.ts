@@ -15,7 +15,9 @@ import { slideInAnimation } from './animations';
   ]
 })
 export class AppComponent {
-  title = 'Olá bem vindo ao nosso formulário';
+  title = 'Olá, seja muito bem vindo ao nosso formulário';
+
+  descitpion =  'Seja muito bem vindo ao nosso formulário, essa pesquisa consiste em avaliarmos as competências e habilidades do enem que você conseguiu desenvolver durante o ensino médio.'
 
   getRouteAnimationData() {
     return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
