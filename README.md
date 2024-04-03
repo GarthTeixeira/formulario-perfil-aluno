@@ -6,6 +6,20 @@ Formulário direcionado a alunos do ensino médio para avaliar as competências 
 
 Este projeto foi gerado com [Angular CLI](https://github.com/angular/angular-cli) na versão 17.2.1.
 
+## Requisitos
+- nvm
+
+## Node
+Use a versão do node especificada no projeto
+```
+nvm use
+```
+
+Rode caso não tenha a versão instalada
+
+```
+nvm install
+```
 ## Servidor de Desenvolvimento
 
 Execute `ng serve` para iniciar um servidor de desenvolvimento. Acesse [http://localhost:4200/](http://localhost:4200/) no navegador. A aplicação será recarregada automaticamente se você modificar algum dos arquivos de origem.
