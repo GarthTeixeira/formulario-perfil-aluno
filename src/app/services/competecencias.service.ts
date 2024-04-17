@@ -7,11 +7,11 @@ import { Observable } from 'rxjs';
 })
 export class CompetecenciasService {
 
-  apiUrl = 'http://localhost:5000/competencias_enem_collection';
+  apiUrl = 'http://localhost:5000/competences';
 
   constructor(private http: HttpClient) { }
 
   getByArea(area: string | undefined) : Observable<any> { 
-    return this.http.get<any>(`${this.apiUrl}/get-area/${area}`);
+    return this.http.get<any>(`${this.apiUrl}/get-area/${area}?withHabilities=true`);
   }
 }
