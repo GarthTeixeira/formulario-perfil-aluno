@@ -52,60 +52,24 @@ export class MainFormComponent{
 
   public getSkillLevelsAswer:IDictionarySkill<string> = {'high':'Alto', 'basic':'Medio', 'low':'Baixo'}
 
-  public aplicarRegraDeTres(valorAtual: number, minAtual: number, maxAtual: number, novoMinimo: number, novoMaximo: number): number {
-    // Garantir que o valor atual esteja dentro do intervalo
-    const valorNormalizado = Math.min(Math.max(valorAtual, minAtual), maxAtual);
-
-    // Aplicar a regra de três
-    const valorProporcional = ((valorNormalizado - minAtual) / (maxAtual - minAtual)) * (novoMaximo - novoMinimo) + novoMinimo;
-
-    return valorProporcional;
-  }
-
   public getSkillLevelsAswerNumberValue(skill:string) {
     return MainFormUtils.getSkillLevelsAswerNumberValue(skill)
   }
 
   get competences():AbstractControl<any, any> | any { return this.questionarioFormGroup?.get('competences') || []; }
 
-  get skillLevelsOptions():string[] { return ['high', 'basic', 'low']} 
+  get skillLevelsOptions():string[] { return MainFormUtils.skillLevels } 
 
   public iterableCompetences:any[] = []
   
-
-  private makeQuestion = (habilitie: string) => {
-    return `Como você avalia a habilidade de ${habilitie} ?`
-  }
-
-  public makeSkill = (habilitie: string): Skill => {
-    return {habiliteValue: habilitie, answerLevelValue:'', question: this.makeQuestion(habilitie)}
-  }
-
   public formTitle (competenceDescription: any) {
     return `${this.itemSelecionado?.title} - ${competenceDescription}`
   }
-
-  public test =  () => { console.log('teste') }
-
   constructor(private _formBuilder: FormBuilder, private competenciasService:CompetecenciasService) {}
 
   ngOnInit(): void {
     const {tag , title, color, id} = history.state.itemData;
     this.itemSelecionado = {tag, title, color, id}
-
-    // this.questionarioFormGroup = this._formBuilder.group({
-    //   competences: this._formBuilder.array(this.iterableCompetences.map(competence =>
-    //     MainFormUtils.getCompetenceFormBuilderForCompetences(competence,this._formBuilder)
-    //   )
-    // )});
-
-    // console.log("questionario",this.questionarioFormGroup)
-
-    // MainFormUtils.competencesEmitterObservable(this.competenciasService,tag)
-    // .pipe(
-    //   map((competence: any) => MainFormUtils.processCompetence(competence))
-    // )
-    //   .subscribe(console.log)
 
     MainFormUtils.getCompetences(this._formBuilder,this.competenciasService, tag)
       .subscribe((competencesFromArray: any) => {
@@ -115,10 +79,7 @@ export class MainFormComponent{
         console.log(this.questionarioFormGroup)
       })
     
-    
   }
-
-  
 
   onSubmit(stepper: any) {
     console.log ((this.questionarioFormGroup.getRawValue()));

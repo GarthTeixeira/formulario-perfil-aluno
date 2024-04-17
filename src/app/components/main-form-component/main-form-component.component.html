@@ -15,7 +15,7 @@
                 <mat-label>Escolha</mat-label>
                 <mat-select [formControlName]="j" required>
                   @for (skill of skillLevelsOptions; track $index) {
-                  <mat-option [value]="getSkillLevelsAswerNumberValue(skill)" (onSelectionChange)="test">
+                  <mat-option [value]="getSkillLevelsAswerNumberValue(skill)">
                     {{getSkillLevelsAswer[skill]}}
                   </mat-option>
                   }
