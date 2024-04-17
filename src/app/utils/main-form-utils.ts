@@ -1,7 +1,7 @@
 import { CompetecenciasService } from "../services/competecencias.service";
 import {map, mergeMap, toArray} from 'rxjs/operators';
 import { Observable, from, merge } from 'rxjs';
-import { FormArray, FormBuilder, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 interface Skill {
     habiliteValue: string;
@@ -13,6 +13,9 @@ interface IDictionarySkill<TValue> {
     [id: string]: TValue;
   }
 
+
+interface competenceModel {id: string, descricao_area: string, competencias_habilidades: string[]}
+
 interface competenceFormModel {id: string, descricao: string, habilidades: Skill[]}
 
 interface competenceFormGroup{
@@ -21,7 +24,7 @@ interface competenceFormGroup{
     habilidades:FormArray<any> 
 }
 
-export class MainFormUtils {
+export  class MainFormUtils {
 
     static skillLevels: string[] = ['high', 'basic', 'low'];
 
@@ -45,11 +48,16 @@ export class MainFormUtils {
         return {habiliteValue: habilitie, answerLevelValue:'', question: this.makeQuestion(habilitie)}
     }
 
-    public static processCompetence = ({id, descricao, habilidades}: {id: string, descricao: string, habilidades: string[]}): competenceFormModel => {
+    public static transformHabilitiesObjctToArray = (habilidades: any):string[] => {
+        return Object.keys(habilidades).map((key: string) => habilidades[key])
+    }
+
+    public static processCompetence = ({id, descricao_area, competencias_habilidades}: competenceModel): competenceFormModel => {
         return {
             id: id,
-            descricao: descricao,
-            habilidades: habilidades.map((habilitie: string) => this.makeSkill(habilitie))
+            descricao: descricao_area,
+            habilidades: this.transformHabilitiesObjctToArray(competencias_habilidades)
+                .map((habilitie: string) => this.makeSkill(habilitie))
         }
     }
 
@@ -72,7 +80,7 @@ export class MainFormUtils {
 
     get skillLevelsOptions():string[] { return ['high', 'basic', 'low']} 
 
-    public static getCompetenceFormBuilderForCompetences = (competence:competenceFormModel, _formBuilder:FormBuilder) => {
+    public static getCompetenceFormBuilderForCompetences = (competence:competenceFormModel, _formBuilder:FormBuilder): FormGroup => {
         return _formBuilder.group(this.makeCompetenceFormGroup(competence,_formBuilder))
       }
     
@@ -83,15 +91,22 @@ export class MainFormUtils {
         );
     }
 
-    public static processEachCompetenceEmitted = (_formBuilder:FormBuilder,service:CompetecenciasService,tag:any):Observable<any> => {
+    public static processEachCompetenceEmitted = (service:CompetecenciasService,tag:any):Observable<any> => {
         return this.competencesEmitterObservable(service, tag).pipe(
             map((competence: any) => this.processCompetence(competence)),
-            map((competence:competenceFormModel) => this.getCompetenceFormBuilderForCompetences(competence,_formBuilder))
         )
     }
 
     public static getCompetences = (_formBuilder:FormBuilder,service:CompetecenciasService,tag:any):Observable<any> => {
-        return this.processEachCompetenceEmitted(_formBuilder,service,tag).pipe(toArray())
+        return this.processEachCompetenceEmitted(service,tag).pipe(toArray())
+    }
+
+    public static getQuestionarioFormGroup = (competencesArray:any[],_formBuilder:FormBuilder):FormGroup => {
+        return _formBuilder.group({
+            competences: _formBuilder.array(competencesArray.map(competence =>
+              this.getCompetenceFormBuilderForCompetences(competence,_formBuilder)
+            )
+        )});
     }
 
 }

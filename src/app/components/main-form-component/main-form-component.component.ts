@@ -1,5 +1,5 @@
 import { Component  } from '@angular/core';
-import {FormBuilder, FormGroup ,  Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup ,  Validators, FormsModule, ReactiveFormsModule, AbstractControl} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -8,6 +8,9 @@ import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import getCompetencesFromArray from '../../mocks/generateCompetencias';
+import { MainFormUtils } from '../../utils/main-form-utils';
+import { CompetecenciasService } from '../../services/competecencias.service';
+import { map } from 'rxjs';
 
 interface Skill {
   habiliteValue: string;
@@ -59,28 +62,16 @@ export class MainFormComponent{
     return valorProporcional;
   }
 
-  public getSkillLevelsAswerNumberValue = (skill:string) => {
-    const atualMax:number = this.skillLevelsOptions.length;
-    const atualMin:number = 1;
-
-    const atualValue:number = this.skillLevelsOptions.indexOf(skill) + 1;
-
-    return this.aplicarRegraDeTres(atualValue, atualMin, atualMax, 1, 10)
+  public getSkillLevelsAswerNumberValue(skill:string) {
+    return MainFormUtils.getSkillLevelsAswerNumberValue(skill)
   }
 
-  get competences():any { return this.questionarioFormGroup?.get('competences'); }
+  get competences():AbstractControl<any, any> | any { return this.questionarioFormGroup?.get('competences') || []; }
 
   get skillLevelsOptions():string[] { return ['high', 'basic', 'low']} 
 
   public iterableCompetences:any[] = []
   
-  public getCompetenceFormBuilderForCompetences = (competences: any) => {
-    return this._formBuilder.group({
-      id: [competences.id],
-      descricao:[competences.descricao, Validators.required],
-      habilidades: this._formBuilder.array([...Array(competences.habilidades.length)].map(() => ''), Validators.required)
-    })
-  }
 
   private makeQuestion = (habilitie: string) => {
     return `Como você avalia a habilidade de ${habilitie} ?`
@@ -96,20 +87,35 @@ export class MainFormComponent{
 
   public test =  () => { console.log('teste') }
 
-  constructor(private _formBuilder: FormBuilder) {}
+  constructor(private _formBuilder: FormBuilder, private competenciasService:CompetecenciasService) {}
 
   ngOnInit(): void {
     const {tag , title, color, id} = history.state.itemData;
     this.itemSelecionado = {tag, title, color, id}
 
-    this.iterableCompetences = getCompetencesFromArray(5);
-    console.log(this.iterableCompetences)
+    // this.questionarioFormGroup = this._formBuilder.group({
+    //   competences: this._formBuilder.array(this.iterableCompetences.map(competence =>
+    //     MainFormUtils.getCompetenceFormBuilderForCompetences(competence,this._formBuilder)
+    //   )
+    // )});
+
+    // console.log("questionario",this.questionarioFormGroup)
+
+    // MainFormUtils.competencesEmitterObservable(this.competenciasService,tag)
+    // .pipe(
+    //   map((competence: any) => MainFormUtils.processCompetence(competence))
+    // )
+    //   .subscribe(console.log)
+
+    MainFormUtils.getCompetences(this._formBuilder,this.competenciasService, tag)
+      .subscribe((competencesFromArray: any) => {
+        console.log(competencesFromArray)
+        this.iterableCompetences = competencesFromArray
+        this.questionarioFormGroup = MainFormUtils.getQuestionarioFormGroup(this.iterableCompetences,this._formBuilder);
+        console.log(this.questionarioFormGroup)
+      })
     
-    this.questionarioFormGroup = this._formBuilder.group({
-      competences: this._formBuilder.array(this.iterableCompetences.map(competence =>
-        this.getCompetenceFormBuilderForCompetences(competence)
-      )
-    )});
+    
   }
 
   

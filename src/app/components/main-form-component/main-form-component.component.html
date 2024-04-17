@@ -10,7 +10,7 @@
           <ng-container formArrayName="habilidades">
             <div [ngStyle]="{ 'display':'flex', 'flex-direction': 'column', 'max-width': '500px'}"
               *ngFor="let habilidade of competence.habilidades; let j = index">
-              <span [ngStyle]="{'text-align':'start'}">{{makeSkill(habilidade).question}}</span>
+              <span [ngStyle]="{'text-align':'start'}">{{habilidade.question}}</span>
               <mat-form-field [ngClass]="'mat-form-selector'">
                 <mat-label>Escolha</mat-label>
                 <mat-select [formControlName]="j" required>
