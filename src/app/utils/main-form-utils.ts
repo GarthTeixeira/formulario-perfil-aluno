@@ -41,7 +41,7 @@ export  class MainFormUtils {
     }
 
     public static makeQuestion = (habilitie: string) => {
-        return `Como você avalia a habilidade de ${habilitie} ?`
+        return `Como você avalia a habilidade de ${habilitie.replace(".","").trim()} ?`
     }
 
     public static makeSkill = (habilitie: string): Skill => {
