@@ -6,7 +6,7 @@
         @for (competence of iterableCompetences; track competence; let i = $index) {
         <mat-step #mat_step [formGroupName]="i" [stepControl]="competences?.get([i])">
           <ng-template matStepLabel>>{{'Q'}}{{ i+1 }}</ng-template>
-          <h3>{{competence.descricao}}</h3>
+          <h3>{{formTitle(competence.descricao)}}</h3>
           <ng-container formArrayName="habilidades">
             <div [ngStyle]="{ 'display':'flex', 'flex-direction': 'column', 'max-width': '500px'}"
               *ngFor="let habilidade of competence.habilidades; let j = index">
@@ -15,7 +15,7 @@
                 <mat-label>Escolha</mat-label>
                 <mat-select [formControlName]="j" required>
                   @for (skill of skillLevelsOptions; track $index) {
-                  <mat-option [value]="getSkillLevelsAswerNumberValue(skill)" (onSelectionChange)="test()">
+                  <mat-option [value]="getSkillLevelsAswerNumberValue(skill)" (onSelectionChange)="test">
                     {{getSkillLevelsAswer[skill]}}
                   </mat-option>
                   }

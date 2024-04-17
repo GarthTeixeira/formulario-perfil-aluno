@@ -39,7 +39,7 @@ interface IDictionarySkill<TValue> {
 })
 export class MainFormComponent{
 
-  public itemSelecionado: {tag:string, title:string, color:string} | undefined = {tag:'', title:'', color:''};
+  public itemSelecionado: {tag:string, title:string, color:string, id: string} | undefined = {tag:'', title:'', color:'', id:''};
 
   public disiplnaSelecionada:string = '';
 
@@ -90,19 +90,17 @@ export class MainFormComponent{
     return {habiliteValue: habilitie, answerLevelValue:'', question: this.makeQuestion(habilitie)}
   }
 
-
-
-  public test() {
-     console.log(this.questionarioFormGroup)
+  public formTitle (competenceDescription: any) {
+    return `${this.itemSelecionado?.title} - ${competenceDescription}`
   }
 
-
+  public test =  () => { console.log('teste') }
 
   constructor(private _formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    const {tag , title, color} = history.state.itemData;
-    this.itemSelecionado = {tag, title, color}
+    const {tag , title, color, id} = history.state.itemData;
+    this.itemSelecionado = {tag, title, color, id}
 
     this.iterableCompetences = getCompetencesFromArray(5);
     console.log(this.iterableCompetences)
@@ -113,6 +111,8 @@ export class MainFormComponent{
       )
     )});
   }
+
+  
 
   onSubmit(stepper: any) {
     console.log ((this.questionarioFormGroup.getRawValue()));
