@@ -23,11 +23,11 @@ interface competenceFormGroup{
 
 export class MainFormUtils {
 
-    private skillLevels: string[] = ['high', 'basic', 'low'];
+    static skillLevels: string[] = ['high', 'basic', 'low'];
 
-    private getSkillLevelsAswer:IDictionarySkill<string> = {'high':'Alto', 'basic':'Medio', 'low':'Baixo'}
+    public static getSkillLevelsAswer:IDictionarySkill<string> = {'high':'Alto', 'basic':'Medio', 'low':'Baixo'}
 
-    public aplicarRegraDeTres(valorAtual: number, minAtual: number, maxAtual: number, novoMinimo: number, novoMaximo: number): number {
+    public static aplicarRegraDeTres(valorAtual: number, minAtual: number, maxAtual: number, novoMinimo: number, novoMaximo: number): number {
         // Garantir que o valor atual esteja dentro do intervalo
         const valorNormalizado = Math.min(Math.max(valorAtual, minAtual), maxAtual);
     
@@ -37,15 +37,15 @@ export class MainFormUtils {
         return valorProporcional;
     }
 
-    public makeQuestion = (habilitie: string) => {
+    public static makeQuestion = (habilitie: string) => {
         return `Como você avalia a habilidade de ${habilitie} ?`
     }
 
-    public makeSkill = (habilitie: string): Skill => {
+    public static makeSkill = (habilitie: string): Skill => {
         return {habiliteValue: habilitie, answerLevelValue:'', question: this.makeQuestion(habilitie)}
     }
 
-    public processCompetence = ({id, descricao, habilidades}: {id: string, descricao: string, habilidades: string[]}): competenceFormModel => {
+    public static processCompetence = ({id, descricao, habilidades}: {id: string, descricao: string, habilidades: string[]}): competenceFormModel => {
         return {
             id: id,
             descricao: descricao,
@@ -53,7 +53,7 @@ export class MainFormUtils {
         }
     }
 
-    public makeCompetenceFormGroup = (competence: competenceFormModel,_formBuilder:FormBuilder): competenceFormGroup => {
+    public static makeCompetenceFormGroup = (competence: competenceFormModel,_formBuilder:FormBuilder): competenceFormGroup => {
         return {
             id: [competence.id],
             descricao: [competence.descricao, Validators.required],
@@ -61,36 +61,36 @@ export class MainFormUtils {
         }
     }
     
-    public getSkillLevelsAswerNumberValue = (skill:string) => {
-        const atualMax:number = this.skillLevelsOptions.length;
+    public static getSkillLevelsAswerNumberValue = (skill:string) => {
+        const atualMax:number = this.skillLevels.length;
         const atualMin:number = 1;
 
-        const atualValue:number = this.skillLevelsOptions.indexOf(skill) + 1;
+        const atualValue:number = this.skillLevels.indexOf(skill) + 1;
 
         return this.aplicarRegraDeTres(atualValue, atualMin, atualMax, 1, 10)
     }
 
     get skillLevelsOptions():string[] { return ['high', 'basic', 'low']} 
 
-    public getCompetenceFormBuilderForCompetences = (competence:competenceFormModel, _formBuilder:FormBuilder) => {
+    public static getCompetenceFormBuilderForCompetences = (competence:competenceFormModel, _formBuilder:FormBuilder) => {
         return _formBuilder.group(this.makeCompetenceFormGroup(competence,_formBuilder))
       }
     
-    private competencesEmitterObservable(service:CompetecenciasService,tag:any): Observable<any> {  
+    public static competencesEmitterObservable(service:CompetecenciasService,tag:any): Observable<any> {  
         return service.getByArea(tag)
         .pipe(
             mergeMap((array: any[]) => from(array)),
         );
     }
 
-    private processEachCompetenceEmitted = (_formBuilder:FormBuilder,service:CompetecenciasService,tag:any):Observable<any> => {
+    public static processEachCompetenceEmitted = (_formBuilder:FormBuilder,service:CompetecenciasService,tag:any):Observable<any> => {
         return this.competencesEmitterObservable(service, tag).pipe(
             map((competence: any) => this.processCompetence(competence)),
             map((competence:competenceFormModel) => this.getCompetenceFormBuilderForCompetences(competence,_formBuilder))
         )
     }
 
-    public getCompetences = (_formBuilder:FormBuilder,service:CompetecenciasService,tag:any):Observable<any> => {
+    public static getCompetences = (_formBuilder:FormBuilder,service:CompetecenciasService,tag:any):Observable<any> => {
         return this.processEachCompetenceEmitted(_formBuilder,service,tag).pipe(toArray())
     }
 
