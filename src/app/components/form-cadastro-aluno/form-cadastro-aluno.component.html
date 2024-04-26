@@ -1,0 +1,42 @@
+<div class="aluno-form">
+    <h3>Preencha seus dados</h3>
+    <div>
+        <mat-form-field [ngStyle]="{'width':'600px'}" appearance="fill" >
+          <mat-label>Nome</mat-label>
+          <input matInput placeholder="Digite o nome completo" required>
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Nome completo</mat-hint>
+        </mat-form-field>
+    </div>
+    <div [ngStyle] = " { 'display':'flex','flex-direction':'row' , 'align-items':'stretch', 'gap':'12px', 'width':'600px'}">
+        <mat-form-field [ngStyle]="{'flex-grow':'2'}" appearance="fill" >
+            <mat-select  required="true" >
+                @for (serie of serieOptions; track $index) {
+                    <mat-option [value]="getSerieValue(serie)">{{serie}}</mat-option>
+                }
+            
+            </mat-select>
+            <mat-label>Ano</mat-label>
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        </mat-form-field>
+        <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill">
+            <mat-label>N.matrícula</mat-label>
+            <input matInput placeholder="Digite seu número de matricula">
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        </mat-form-field>
+    </div>
+    <div [ngStyle] = " { 'display':'flex','flex-direction':'row' , 'align-items':'flex-start', 'width':'600px'}">
+        <mat-form-field appearance="fill" [ngStyle]="{'width':'352px'}" >
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Digite seu email">
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+    </div>
+    <div class="pill-group send-div">
+        <a ngClass="pill send-button">
+            <span>Enviar</span>
+        </a>
+    </div>
+</div>
+
