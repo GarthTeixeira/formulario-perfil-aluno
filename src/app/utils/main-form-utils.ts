@@ -2,22 +2,15 @@ import { CompetecenciasService } from "../services/competecencias.service";
 import {map, mergeMap, toArray} from 'rxjs/operators';
 import { Observable, from, merge } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Skill } from "../interfaces/skill-interface";
+import { competenceFormGroup } from "../interfaces/competence-form-group-interface";
 
-interface Skill {
-    habiliteValue: string;
-    answerLevelValue: string;
-    question: string;
-  }
 
 interface competenceModel {id: string, descricao_area: string, competencias_habilidades: string[]}
 
 interface competenceFormModel {id: string, descricao: string, habilidades: Skill[]}
 
-interface competenceFormGroup{
-    id:any,
-    descricao:any,
-    habilidades:FormArray<any> 
-}
+
 
 export  class MainFormUtils {
 
