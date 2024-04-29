@@ -4,6 +4,7 @@ import { Observable, from, merge } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Skill } from "../interfaces/skill-interface";
 import { competenceFormGroup } from "../interfaces/competence-form-group-interface";
+import { FormRespostaInterface } from "../interfaces/form-resposta-interface";
 
 
 interface competenceModel {id: string, descricao_area: string, competencias_habilidades: string[]}
@@ -91,6 +92,18 @@ export  class MainFormUtils {
               this.getCompetenceFormBuilderForCompetences(competence,_formBuilder)
             )
         )});
+    }
+
+    public static makeRespostaForm = (formValues: any): FormRespostaInterface => {
+        const competencias:any = {}
+        formValues.competencias.forEach((competencia: any) => {
+            competencias[competencia.id] = competencia.value
+        })
+        return {
+            disciplina: formValues.disciplina,
+            competencias: competencias,
+            aluno: formValues.aluno
+        }
     }
 
 }

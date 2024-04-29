@@ -11,13 +11,8 @@ import getCompetencesFromArray from '../../mocks/generateCompetencias';
 import { MainFormUtils } from '../../utils/main-form-utils';
 import { CompetecenciasService } from '../../services/competecencias.service';
 import { map } from 'rxjs';
-
-interface Skill {
-  habiliteValue: string;
-  answerLevelValue: string;
-  question: string;
-}
-
+import { FormAlunosService } from '../../services/form-alunos.service';
+import { DataSharedService } from '../../shared/data-shared.service';
 
 interface IDictionarySkill<TValue> {
   [id: string]: TValue;
@@ -65,7 +60,12 @@ export class MainFormComponent{
   public formTitle (competenceDescription: any) {
     return `${this.itemSelecionado?.title} - ${competenceDescription}`
   }
-  constructor(private _formBuilder: FormBuilder, private competenciasService:CompetecenciasService) {}
+  constructor(
+    private formAlunosService: FormAlunosService , 
+    private _formBuilder: FormBuilder, 
+    private competenciasService:CompetecenciasService,
+    private dataShared: DataSharedService
+  ) {}
 
   ngOnInit(): void {
     const {tag , title, color, id} = history.state.itemData;
@@ -82,7 +82,24 @@ export class MainFormComponent{
   }
 
   onSubmit(stepper: any) {
-    console.log ((this.questionarioFormGroup.getRawValue()));
+    const formValue = this.questionarioFormGroup.getRawValue();
+    if (formValue) {
+      const sendData = {
+        'disciplina': this.itemSelecionado?.id, 
+        'competencias': formValue.competences, 
+        'aluno': this.dataShared.getData()
+      }
+      const resposta = MainFormUtils.makeRespostaForm(sendData);
+      this.formAlunosService.insertResposta(resposta).subscribe({
+        next: (response) => {
+          console.log(response)
+        },
+        error: (error) => {
+          console.error(error)
+        }
+      })
+      
+    }
     stepper.reset();
   }
 
