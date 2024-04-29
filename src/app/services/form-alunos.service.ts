@@ -12,8 +12,12 @@ export class FormAlunosService {
   constructor(private http:HttpClient) {}
 
   insertAluno(aluno: AlunoInterface) {
-    const data = {aluno, respostas: {}}
-    return this.http.post(this.apiUrl+'/insert-form', data)
+   
+    return this.http.post(this.apiUrl+'/insert-aluno', aluno)
+  }
+
+  insertResposta(resposta: any) {
+    return this.http.post(this.apiUrl+'/insert-resposta', resposta)
   }
 
 }
