@@ -6,7 +6,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import getCompetencesFromArray from '../../mocks/generateCompetencias';
 import { MainFormUtils } from '../../utils/main-form-utils';
 import { CompetecenciasService } from '../../services/competecencias.service';
@@ -64,7 +64,8 @@ export class MainFormComponent{
     private formAlunosService: FormAlunosService , 
     private _formBuilder: FormBuilder, 
     private competenciasService:CompetecenciasService,
-    private dataShared: DataSharedService
+    private dataShared: DataSharedService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -83,6 +84,7 @@ export class MainFormComponent{
 
   onSubmit(stepper: any) {
     const formValue = this.questionarioFormGroup.getRawValue();
+    
     if (formValue) {
       const sendData = {
         'disciplina': this.itemSelecionado?.id, 
@@ -92,15 +94,19 @@ export class MainFormComponent{
       const resposta = MainFormUtils.makeRespostaForm(sendData);
       this.formAlunosService.insertResposta(resposta).subscribe({
         next: (response) => {
+
           console.log(response)
+          stepper.reset();
+          // go to previous route
+          this.router.navigate(['/disciplinas'])
         },
         error: (error) => {
           console.error(error)
+          stepper.reset();
         }
       })
       
     }
-    stepper.reset();
   }
 
  
