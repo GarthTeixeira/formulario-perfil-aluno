@@ -17,7 +17,7 @@ export class FormAlunosService {
   }
 
   insertResposta(resposta: any) {
-    return this.http.post(this.apiUrl+'/insert-resposta', resposta)
+    return this.http.put(this.apiUrl+'/insert-resposta', resposta)
   }
 
 }
