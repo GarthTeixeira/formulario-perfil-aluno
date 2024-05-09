@@ -20,3 +20,11 @@
   width: 500px;
   align-items: center;
 }
+
+.form-row { 
+  display: flex ;
+  flex-direction: row;
+  align-items : flex-start ;
+  gap: 12px ;
+  width: 600px ;
+}

@@ -35,6 +35,8 @@ export class FormCadastroAlunoComponent {
 
   public serieOptions: string[] = ['1º ano do ensino médio', '2º ano do ensino médio', '3º ano do ensino médio']
 
+  public escolasOptions: {nome: string, id: any}[] = [{nome: 'escola 1', id: 1}, {nome: 'escola 2', id: 2}, {nome: 'escola 3', id: 3}]
+
   public applyForm: FormGroup = new FormGroup({})
 
   public isSending: boolean = false

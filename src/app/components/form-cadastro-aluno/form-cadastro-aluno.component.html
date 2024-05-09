@@ -8,8 +8,8 @@
           <mat-hint>Nome completo</mat-hint>
         </mat-form-field>
     </div>
-    <div [ngStyle] = " { 'display':'flex','flex-direction':'row' , 'align-items':'stretch', 'gap':'12px', 'width':'600px'}">
-        <mat-form-field [ngStyle]="{'flex-grow':'2'}" appearance="fill" >
+    <div [ngClass] = "'form-row'">
+        <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill" >
             <mat-select formControlName="serie" required="true" >
                 @for (serie of serieOptions; track $index) {
                     <mat-option [value]="getSerieValue(serie)">{{serie}}</mat-option>
@@ -19,18 +19,27 @@
             <mat-label>Ano</mat-label>
             <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
         </mat-form-field>
-        <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill">
+        <mat-form-field [ngStyle]="{'flex-grow':'2'}" appearance="fill">
             <mat-label>N.matrícula</mat-label>
             <input formControlName="matricula" matInput placeholder="Digite seu número de matricula">
             <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
         </mat-form-field>
     </div>
-    <div [ngStyle] = " { 'display':'flex','flex-direction':'row' , 'align-items':'flex-start', 'width':'600px'}">
-        <mat-form-field appearance="fill" [ngStyle]="{'width':'352px'}" >
+    <div [ngClass] = "'form-row'">
+        <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'2'}" >
             <mat-label>Email</mat-label>
             <input required formControlName="email" matInput placeholder="Digite seu email">
             <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
             <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}" >
+            <mat-select formControlName="serie" required="true" >
+                @for (escola of escolasOptions; track $index) {
+                    <mat-option [value]="escola.id">{{escola.nome}}</mat-option>
+                }
+            </mat-select>
+            <mat-label>Escola</mat-label>
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
         </mat-form-field>
     </div>
     <div class="send-div">
