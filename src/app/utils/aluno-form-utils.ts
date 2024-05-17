@@ -16,7 +16,8 @@ export class AlunoFormUtils {
             serie: formGroup.serie,
             email: formGroup.email,
             matricula: formGroup.matricula,
-            anos_letivos: this.getAnosLetivos(formGroup.serie)
+            anos_letivos: this.getAnosLetivos(formGroup.serie),
+            escola: formGroup.escola
         }
     }
 

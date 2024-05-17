@@ -33,9 +33,9 @@
             <mat-hint>Hint</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}" >
-            <mat-select formControlName="serie" required="true" >
+            <mat-select formControlName="escola" required="true" >
                 @for (escola of escolasOptions; track $index) {
-                    <mat-option [value]="escola.id">{{escola.nome}}</mat-option>
+                    <mat-option [value]="escola.id">{{escola.name}}</mat-option>
                 }
             </mat-select>
             <mat-label>Escola</mat-label>

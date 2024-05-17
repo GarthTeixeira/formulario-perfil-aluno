@@ -4,4 +4,5 @@ export interface AlunoInterface {
     email: string;
     matricula: string;
     anos_letivos: number[];
+    escola: string;
 }

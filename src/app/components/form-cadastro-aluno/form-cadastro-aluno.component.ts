@@ -14,6 +14,7 @@ import { Observable, delay, of } from 'rxjs';
 import { AlunoInterface } from '../../interfaces/aluno-interface';
 import { AlunoFormUtils } from '../../utils/aluno-form-utils';
 import { FormAlunosService } from '../../services/form-alunos.service';
+import { EscolasService } from '../../services/escolas.service';
 @Component({
   selector: 'app-form-cadastro-aluno',
   standalone: true,
@@ -35,7 +36,7 @@ export class FormCadastroAlunoComponent {
 
   public serieOptions: string[] = ['1º ano do ensino médio', '2º ano do ensino médio', '3º ano do ensino médio']
 
-  public escolasOptions: {nome: string, id: any}[] = [{nome: 'escola 1', id: 1}, {nome: 'escola 2', id: 2}, {nome: 'escola 3', id: 3}]
+  public escolasOptions: {name: string, id: any}[] = []
 
   public applyForm: FormGroup = new FormGroup({})
 
@@ -48,7 +49,8 @@ export class FormCadastroAlunoComponent {
     private router:Router, 
     private _formBuilder: FormBuilder,
     public dialog: MatDialog,
-    private _alunoService: FormAlunosService
+    private _alunoService: FormAlunosService,
+    private _escolasService: EscolasService
   ) {}
 
   ngOnInit() {
@@ -57,6 +59,16 @@ export class FormCadastroAlunoComponent {
       serie: ['', Validators.required],
       email: ['', Validators.email],
       matricula: ['', Validators.required],
+      escola: ['', Validators.required]
+    })
+
+    this._escolasService.getEscolasOptions().subscribe({
+      next: (response) => {
+        this.escolasOptions = response
+      },
+      error: (error) => {
+        console.error(error)
+      }
     })
   }
 
@@ -67,6 +79,7 @@ export class FormCadastroAlunoComponent {
   protected submitAlunoForm() {
     this.isSending = true
     const aluno:AlunoInterface = AlunoFormUtils.makeAlunoFromFormGroup(this.applyForm.value)
+    console.log(aluno)
     this._alunoService.insertAluno(aluno).subscribe({
       next: (response) => {
         this.dataService.setData(response)
