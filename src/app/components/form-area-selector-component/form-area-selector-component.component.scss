@@ -11,3 +11,12 @@
         Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol";
 }
+
+.pill-group-selector{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    gap: 1.25rem;
+}
