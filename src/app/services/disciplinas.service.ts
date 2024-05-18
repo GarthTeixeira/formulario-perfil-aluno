@@ -1,27 +1,31 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { DataSharedService } from '../shared/data-shared.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DisciplinasService {
 
-  apiUrl = 'http://localhost:5000/disciplines';
-
   private corsHeaders: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*'
   });
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dataShared: DataSharedService) { }
 
     getAllDisciplinas(): Observable<any> {
-      return this.http.get<any>(this.apiUrl+'/get-all');
+      const baseUrl = this.dataShared.getHost();
+      return this.http.get<any>(baseUrl+'/get-all');
     }
 
     getByArea(area: string) {
-    
-      return this.http.get<any>(`${this.apiUrl}/get-area/${area}`,{headers: this.corsHeaders});
+      const baseUrl = this.dataShared.getHost();
+      const school_id = this.dataShared.getData().escola;
+      return this.http.get<any>(
+        `${baseUrl}/schools/get-by-area?school=${school_id}&area=${area}`,
+        {headers: this.corsHeaders}
+      );
     }
 }

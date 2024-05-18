@@ -82,7 +82,8 @@ export class FormCadastroAlunoComponent {
     console.log(aluno)
     this._alunoService.insertAluno(aluno).subscribe({
       next: (response) => {
-        this.dataService.setData(response)
+        const userData = {...response, ...aluno}
+        this.dataService.setData(userData)
         this.router.navigate(['/areas'])
       },
       error: (error) => {

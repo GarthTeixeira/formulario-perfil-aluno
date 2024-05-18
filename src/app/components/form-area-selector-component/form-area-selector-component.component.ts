@@ -21,9 +21,6 @@ export class FormAreaSelectorComponent {
   for (let i = 0; i < areas.length; i++) {
     this.areas[i] =  {...areas[i], color: this.cores[i]};
   }
-  console.log(this.areas);
-
-  console.log(this.dataService.getData());
-
+  
 }
 }

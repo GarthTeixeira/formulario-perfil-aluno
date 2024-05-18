@@ -31,6 +31,7 @@ export class FormDisciplineSelectorComponent  {
   getDisciplinas() {
     this.disciplinasService.getByArea(this.areaSelecionada).subscribe((data:any) => {
       this.disciplinas = data
+        .filter((disciplina:any) => disciplina.serie_ano <= 3)
         .map((disciplina:any) => {
           return {
             title: `${disciplina.name} - ${disciplina.serie_ano} ° ano`,
