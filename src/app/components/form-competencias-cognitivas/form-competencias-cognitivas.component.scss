@@ -18,3 +18,18 @@ h2{
     Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol";
 }
+
+  .file-upload {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 38%;
+  }
+
+  .file-name {
+    font-size: 14px;
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--gray-700);
+    margin-left: 5px;
+    margin-bottom: 0;
+  }
