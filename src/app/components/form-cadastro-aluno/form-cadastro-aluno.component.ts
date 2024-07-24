@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {  MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelect, MatSelectModule } from '@angular/material/select';
+import { MatSelect, MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { FormBuilder,  FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataSharedService } from '../../shared/data-shared.service';
@@ -36,11 +36,13 @@ export class FormCadastroAlunoComponent {
 
   public serieOptions: string[] = ['1º ano do ensino médio', '2º ano do ensino médio', '3º ano do ensino médio']
 
-  public escolasOptions: {name: string, id: any}[] = []
+  public escolasOptions: {name: string, id: any, turmas:{nome:string}[] }[] = []
 
   public applyForm: FormGroup = new FormGroup({})
 
   public isSending: boolean = false
+
+  public turmasOptions: string[] = []
 
   public sendData: (data: AlunoInterface) => Observable<any> = this._alunoService.insertAluno;
 
@@ -56,10 +58,10 @@ export class FormCadastroAlunoComponent {
   ngOnInit() {
     this.applyForm = this._formBuilder.group({
       name: ['', Validators.required],
-      serie: ['', Validators.required],
       email: ['', Validators.email],
-      matricula: ['', Validators.required],
-      escola: ['', Validators.required]
+      escola: ['', Validators.required],
+      turma: ['', Validators.required],
+      ano_referencia: ['', Validators.required],
     })
 
     this._escolasService.getEscolasOptions().subscribe({
@@ -72,8 +74,8 @@ export class FormCadastroAlunoComponent {
     })
   }
 
-  protected getSerieValue = (serie: string): string => {
-    return serie.slice(0, 6)
+  onChange(value: string){
+    this.turmasOptions = this.escolasOptions.find(escola => escola.id === value)?.turmas.map(turma=>turma.nome) || []
   }
 
   protected submitAlunoForm() {
@@ -85,6 +87,7 @@ export class FormCadastroAlunoComponent {
         const userData = {...response, ...aluno}
         this.dataService.setData(userData)
         this.router.navigate(['/areas'])
+        this.isSending = false
       },
       error: (error) => {
         console.error(error)
