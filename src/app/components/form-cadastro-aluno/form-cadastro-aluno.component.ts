@@ -11,9 +11,9 @@ import { DataSharedService } from '../../shared/data-shared.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, delay, of } from 'rxjs';
-import { AlunoInterface } from '../../interfaces/aluno-interface';
-import { AlunoFormUtils } from '../../utils/aluno-form-utils';
-import { FormAlunosService } from '../../services/form-alunos.service';
+import { DadosRespostaProfessorInterface } from '../../interfaces/dados-reposta-professor-interface';
+import { ProfessorFormUtils } from '../../utils/professor-form-utils';
+import { FormProfessoresService } from '../../services/form-professores.service';
 import { EscolasService } from '../../services/escolas.service';
 @Component({
   selector: 'app-form-cadastro-aluno',
@@ -44,14 +44,14 @@ export class FormCadastroAlunoComponent {
 
   public turmasOptions: string[] = []
 
-  public sendData: (data: AlunoInterface) => Observable<any> = this._alunoService.insertAluno;
+  public sendData: (data: DadosRespostaProfessorInterface) => Observable<any> = this._professoresService.insertProfessor;
 
   constructor(
     private dataService: DataSharedService,
     private router:Router, 
     private _formBuilder: FormBuilder,
     public dialog: MatDialog,
-    private _alunoService: FormAlunosService,
+    private _professoresService: FormProfessoresService,
     private _escolasService: EscolasService
   ) {}
 
@@ -80,11 +80,11 @@ export class FormCadastroAlunoComponent {
 
   protected submitAlunoForm() {
     this.isSending = true
-    const aluno:AlunoInterface = AlunoFormUtils.makeAlunoFromFormGroup(this.applyForm.value)
-    console.log(aluno)
-    this._alunoService.insertAluno(aluno).subscribe({
+    const professor:DadosRespostaProfessorInterface = ProfessorFormUtils.makeAlunoFromFormGroup(this.applyForm.value)
+    console.log(professor)
+    this._professoresService.insertProfessor(professor).subscribe({
       next: (response) => {
-        const userData = {...response, ...aluno}
+        const userData = {...response, ...professor}
         this.dataService.setData(userData)
         this.router.navigate(['/areas'])
         this.isSending = false

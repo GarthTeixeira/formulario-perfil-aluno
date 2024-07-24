@@ -27,13 +27,13 @@
     </div>
     <div [ngClass] = "'form-row'">
         <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill">
-            <mat-select formControlName="serie" required="true" [disabled]="turmasOptions.length==0">
+            <mat-select formControlName="turma" required="true" [disabled]="turmasOptions.length==0">
                 @for (turma of turmasOptions; track $index) {
                     <mat-option [value]="turma">{{turma}}</mat-option>
                 }
             
             </mat-select>
-            <mat-label>Ano</mat-label>
+            <mat-label>Turma</mat-label>
             <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
         </mat-form-field>
         <mat-form-field [ngStyle]="{'flex-grow':'2'}" appearance="fill">

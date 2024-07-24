@@ -11,7 +11,7 @@ import getCompetencesFromArray from '../../mocks/generateCompetencias';
 import { MainFormUtils } from '../../utils/main-form-utils';
 import { CompetecenciasService } from '../../services/competecencias.service';
 import { map } from 'rxjs';
-import { FormAlunosService } from '../../services/form-alunos.service';
+import { FormProfessoresService } from '../../services/form-professores.service';
 import { DataSharedService } from '../../shared/data-shared.service';
 
 interface IDictionarySkill<TValue> {
@@ -61,7 +61,7 @@ export class MainFormComponent{
     return `${this.itemSelecionado?.title} - ${competenceDescription}`
   }
   constructor(
-    private formAlunosService: FormAlunosService , 
+    private formProfessoresService: FormProfessoresService , 
     private _formBuilder: FormBuilder, 
     private competenciasService:CompetecenciasService,
     private dataShared: DataSharedService,
@@ -92,7 +92,7 @@ export class MainFormComponent{
         'aluno': this.dataShared.getData()
       }
       const resposta = MainFormUtils.makeRespostaForm(sendData);
-      this.formAlunosService.insertResposta(resposta).subscribe({
+      this.formProfessoresService.insertResposta(resposta).subscribe({
         next: (response) => {
 
           console.log(response)

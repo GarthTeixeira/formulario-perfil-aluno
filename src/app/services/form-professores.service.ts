@@ -1,19 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AlunoInterface } from '../interfaces/aluno-interface';
-
+import { DadosRespostaProfessorInterface } from '../interfaces/dados-reposta-professor-interface';
 @Injectable({
   providedIn: 'root'
 })
-export class FormAlunosService {
+export class FormProfessoresService {
 
   apiUrl = 'http://localhost:5000/student_form';
 
   constructor(private http:HttpClient) {}
 
-  insertAluno(aluno: AlunoInterface) {
+  insertProfessor(professor: DadosRespostaProfessorInterface) {
    
-    return this.http.post(this.apiUrl+'/insert-aluno', aluno)
+    return this.http.post(this.apiUrl+'/insert-aluno', professor)
   }
 
   insertResposta(resposta: any) {
