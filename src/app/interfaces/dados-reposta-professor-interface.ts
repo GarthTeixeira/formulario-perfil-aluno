@@ -1,7 +1,7 @@
 export interface DadosRespostaProfessorInterface {
     nome: string;
     email: string;
-    escola: string;
+    escola_id: string;
     turma: string;
-    ano_referencia: number;
+    ano_escolar: number;
 }

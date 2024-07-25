@@ -12,7 +12,7 @@ export class FormProfessoresService {
 
   insertProfessor(professor: DadosRespostaProfessorInterface) {
    
-    return this.http.post(this.apiUrl+'/insert-aluno', professor)
+    return this.http.post(this.apiUrl+'/insert-professor', professor)
   }
 
   insertResposta(resposta: any) {

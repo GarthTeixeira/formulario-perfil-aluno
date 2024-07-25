@@ -1,23 +1,24 @@
 import { AlunoInterface } from "../interfaces/aluno-interface";
 import { DadosRespostaProfessorInterface } from "../interfaces/dados-reposta-professor-interface";
 export class ProfessorFormUtils {
-    public static makeAlunoFormGroup = (professor: DadosRespostaProfessorInterface, _formBuilder: any) => {
-        return {
-            name: [professor.nome],
-            email: [professor.email],
-            turma: [professor.turma],
-            escola: [professor.escola],
-            ano_referencia: [professor.ano_referencia]
-        }
-    }
+    // public static makeAlunoFormGroup = (professor: DadosRespostaProfessorInterface, _formBuilder: any) => {
+    //     return {
+    //         name: [professor.nome],
+    //         email: [professor.email],
+    //         turma: [professor.turma],
+    //         escola: [professor.escola],
+    //         ano_escolar: [professor.ano_escolar]
+    //     }
+    // }
 
-    public static makeAlunoFromFormGroup = (formGroup: any): DadosRespostaProfessorInterface => {
+    public static makeAlunoFromFormGroup = (valueFormGroup: any): DadosRespostaProfessorInterface => {
+        console.log(valueFormGroup)
         return {
-            nome: formGroup.name,
-            turma: formGroup.turma,
-            email: formGroup.email,
-            ano_referencia: formGroup.ano_referencia,
-            escola: formGroup.escola
+            nome: valueFormGroup.name,
+            turma: valueFormGroup.turma,
+            email: valueFormGroup.email,
+            ano_escolar: valueFormGroup.ano_escolar,
+            escola_id: valueFormGroup.escola
         }
     }
 

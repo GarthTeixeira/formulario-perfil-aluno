@@ -61,7 +61,7 @@ export class FormCadastroAlunoComponent {
       email: ['', Validators.email],
       escola: ['', Validators.required],
       turma: ['', Validators.required],
-      ano_referencia: ['', Validators.required],
+      ano_escolar: ['', Validators.required],
     })
 
     this._escolasService.getEscolasOptions().subscribe({
