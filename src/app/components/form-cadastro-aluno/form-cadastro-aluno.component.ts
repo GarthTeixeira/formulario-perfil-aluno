@@ -15,6 +15,7 @@ import { DadosRespostaProfessorInterface } from '../../interfaces/dados-reposta-
 import { ProfessorFormUtils } from '../../utils/professor-form-utils';
 import { FormProfessoresService } from '../../services/form-professores.service';
 import { EscolasService } from '../../services/escolas.service';
+import { LocalStorageService } from '../../shared/services/local-storage-service.service';
 @Component({
   selector: 'app-form-cadastro-aluno',
   standalone: true,
@@ -48,6 +49,7 @@ export class FormCadastroAlunoComponent {
 
   constructor(
     private dataService: DataSharedService,
+    private localStorageService: LocalStorageService,
     private router:Router, 
     private _formBuilder: FormBuilder,
     public dialog: MatDialog,
@@ -56,6 +58,10 @@ export class FormCadastroAlunoComponent {
   ) {}
 
   ngOnInit() {
+    if(this.localStorageService.getItem('userData')){
+      //realizar método para verificar se o usuário já está logado
+      //this.router.navigate(['/areas'])
+    }
     this.applyForm = this._formBuilder.group({
       name: ['', Validators.required],
       email: ['', Validators.email],
@@ -81,10 +87,11 @@ export class FormCadastroAlunoComponent {
   protected submitAlunoForm() {
     this.isSending = true
     const professor:DadosRespostaProfessorInterface = ProfessorFormUtils.makeAlunoFromFormGroup(this.applyForm.value)
-    console.log(professor)
     this._professoresService.insertProfessor(professor).subscribe({
       next: (response) => {
         const userData = {...response, ...professor}
+        console.log(userData)
+        this.localStorageService.setItem('userData', userData)
         this.dataService.setData(userData)
         this.router.navigate(['/areas'])
         this.isSending = false

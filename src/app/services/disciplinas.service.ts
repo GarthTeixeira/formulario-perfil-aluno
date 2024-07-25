@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataSharedService } from '../shared/data-shared.service';
+import { LocalStorageService } from '../shared/services/local-storage-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,11 @@ export class DisciplinasService {
     'Access-Control-Allow-Origin': '*'
   });
 
-  constructor(private http: HttpClient, private dataShared: DataSharedService) { }
+  constructor(
+    private http: HttpClient, 
+    private dataShared: DataSharedService, 
+    private localStorageService: LocalStorageService
+  ) { }
 
     getAllDisciplinas(): Observable<any> {
       const baseUrl = this.dataShared.getHost();
@@ -22,7 +27,7 @@ export class DisciplinasService {
 
     getByArea(area: string) {
       const baseUrl = this.dataShared.getHost();
-      const school_id = this.dataShared.getData().escola;
+      const school_id = this.dataShared.getData()?.escola_id || this.localStorageService.getItem('userData')['escola_id'];
       return this.http.get<any>(
         `${baseUrl}/schools/get-by-area?school=${school_id}&area=${area}`,
         {headers: this.corsHeaders}
