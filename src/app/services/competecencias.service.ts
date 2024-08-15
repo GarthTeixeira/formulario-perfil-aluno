@@ -14,4 +14,8 @@ export class CompetecenciasService {
   getByArea(area: string | undefined) : Observable<any> { 
     return this.http.get<any>(`${this.apiUrl}/get-area/${area}?withHabilities=true`);
   }
+
+  getCognitive() : Observable<any> { 
+    return this.http.get<any>(`${this.apiUrl}/get-area/COGNITIVOS?withHabilities=false`);
+  }
 }

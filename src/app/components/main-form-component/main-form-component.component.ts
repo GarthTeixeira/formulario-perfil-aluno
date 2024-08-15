@@ -41,7 +41,9 @@ export class MainFormComponent{
 
   public disiplnaSelecionada:string = '';
 
-  public questionarioFormGroup: FormGroup = this._formBuilder.group([]);
+  public questionarioAreasFormGroup: FormGroup = this._formBuilder.group([]);
+
+  public questionarioCognitivoFormGroup: FormGroup = this._formBuilder.group([]);
 
   public isLinear = true;
 
@@ -51,7 +53,7 @@ export class MainFormComponent{
     return MainFormUtils.getSkillLevelsAswerNumberValue(skill)
   }
 
-  get competences():AbstractControl<any, any> | any { return this.questionarioFormGroup?.get('competences') || []; }
+  get competences():AbstractControl<any, any> | any { return this.questionarioAreasFormGroup?.get('competences') || []; }
 
   get skillLevelsOptions():string[] { return MainFormUtils.skillLevels } 
 
@@ -74,16 +76,22 @@ export class MainFormComponent{
 
     MainFormUtils.getCompetences(this._formBuilder,this.competenciasService, tag)
       .subscribe((competencesFromArray: any) => {
-        console.log(competencesFromArray)
         this.iterableCompetences = competencesFromArray
-        this.questionarioFormGroup = MainFormUtils.getQuestionarioFormGroup(this.iterableCompetences,this._formBuilder);
-        console.log(this.questionarioFormGroup)
+        console.log( typeof this.iterableCompetences)
+        this.questionarioAreasFormGroup = MainFormUtils.getQuestionarioFormGroup(this.iterableCompetences,this._formBuilder);
+        console.log(this.questionarioAreasFormGroup)
+      })
+    
+    MainFormUtils.getCognitiveCompetences(this._formBuilder,this.competenciasService)
+      .subscribe((competencesFromArray: any) => {
+        this.questionarioCognitivoFormGroup = MainFormUtils.getQuestionarioFormGroup(competencesFromArray,this._formBuilder);
+        console.log(this.questionarioCognitivoFormGroup)
       })
     
   }
 
   onSubmit(stepper: any) {
-    const formValue = this.questionarioFormGroup.getRawValue();
+    const formValue = this.questionarioAreasFormGroup.getRawValue();
     
     if (formValue) {
       const sendData = {

@@ -1,5 +1,5 @@
 import { CompetecenciasService } from "../services/competecencias.service";
-import {map, mergeMap, toArray} from 'rxjs/operators';
+import {concatMap, map, mergeMap, toArray} from 'rxjs/operators';
 import { Observable, from, merge } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Skill } from "../interfaces/skill-interface";
@@ -7,10 +7,13 @@ import { competenceFormGroup } from "../interfaces/competence-form-group-interfa
 import { FormRespostaInterface } from "../interfaces/form-resposta-interface";
 
 
-interface competenceModel {id: string, descricao_area: string, competencias_habilidades: string[]}
+type CompetenceAreaModel = {id: string, descricao_area: string, competencias_habilidades: string[]}
 
-interface competenceFormModel {id: string, descricao: string, habilidades: Skill[]}
+type CompetenceCognitiveModel = {id: string, descricao: string}
 
+type CompetenceAreaFormModel = {id: string, descricao: string, habilidades: Skill[]}
+
+type CompetenceCognitiveFormModel = {id: string, descricao_pergunta: string, resposta: string}
 
 
 export  class MainFormUtils {
@@ -39,7 +42,7 @@ export  class MainFormUtils {
         return Object.keys(habilidades).map((key: string) => habilidades[key])
     }
 
-    private static processCompetence = ({id, descricao_area, competencias_habilidades}: competenceModel): competenceFormModel => {
+    private static processAreaCompetence = ({id, descricao_area, competencias_habilidades}: CompetenceAreaModel): CompetenceAreaFormModel => {
         return {
             id: id,
             descricao: descricao_area,
@@ -48,7 +51,15 @@ export  class MainFormUtils {
         }
     }
 
-    private static makeCompetenceFormGroup = (competence: competenceFormModel,_formBuilder:FormBuilder): competenceFormGroup => {
+    private static processCognitiveCompetence = ({id, descricao}: CompetenceCognitiveModel): CompetenceCognitiveFormModel => {
+        return {
+            id: id,
+            descricao_pergunta: this.makeQuestion(descricao),
+            resposta: ''
+        }
+    }
+
+    private static makeCompetenceFormGroup = (competence: CompetenceAreaFormModel,_formBuilder:FormBuilder): competenceFormGroup => {
         return {
             id: [competence.id],
             descricao: [competence.descricao, Validators.required],
@@ -65,31 +76,66 @@ export  class MainFormUtils {
         return this.aplicarRegraDeTres(atualValue, atualMin, atualMax, 1, 10)
     }
 
-    private static getCompetenceFormBuilderForCompetences = (competence:competenceFormModel, _formBuilder:FormBuilder): FormGroup => {
+    private static getCompetenceFormBuilderForCompetences = (competence:CompetenceAreaFormModel, _formBuilder:FormBuilder): FormGroup => {
         return _formBuilder.group(this.makeCompetenceFormGroup(competence,_formBuilder))
       }
+
+    private static getCompetenceFormBuilderForCognitive = (competence:CompetenceCognitiveFormModel, _formBuilder:FormBuilder): FormGroup => {
+        return _formBuilder.group({
+            id: [competence.id],
+            descricao_pergunta: [competence.descricao_pergunta, Validators.required],
+            resposta: [competence.resposta, Validators.required]
+        })
+    }
     
-    private static competencesEmitterObservable(service:CompetecenciasService,tag:any): Observable<any> {  
-        return service.getByArea(tag)
+    //faz com que cada competencia seja emitida individualmente
+    private static competencesEmitterObservable(service:CompetecenciasService,areaTag:any): Observable<any> {  
+        return service.getByArea(areaTag)
         .pipe(
             mergeMap((array: any[]) => from(array)),
         );
     }
 
-    private static processEachCompetenceEmitted = (service:CompetecenciasService,tag:any):Observable<any> => {
+    private static cognitiveEmitterObservable(service:CompetecenciasService): Observable<any> {
+        return service.getCognitive()
+        .pipe(
+            mergeMap((array: any[]) => from(array)),
+        );
+    }
+
+    private static processEachCompetenceEmitted = (service:CompetecenciasService,tag:any):Observable<CompetenceAreaFormModel> => {
         return this.competencesEmitterObservable(service, tag).pipe(
-            map((competence: any) => this.processCompetence(competence)),
+            map((competence: CompetenceAreaModel) => this.processAreaCompetence(competence)),
+        )
+    }
+    private static processEachCognitiveEmitted = (service:CompetecenciasService):Observable<CompetenceCognitiveFormModel> => {
+        return this.cognitiveEmitterObservable(service).pipe(
+            map((competence: CompetenceCognitiveModel) => this.processCognitiveCompetence(competence)),
         )
     }
 
-    public static getCompetences = (_formBuilder:FormBuilder,service:CompetecenciasService,tag:any):Observable<any> => {
+    public static getCompetences = (_formBuilder:FormBuilder,service:CompetecenciasService,tag:any):Observable<CompetenceAreaFormModel []> => {
         return this.processEachCompetenceEmitted(service,tag).pipe(toArray())
     }
 
-    public static getQuestionarioFormGroup = (competencesArray:any[],_formBuilder:FormBuilder):FormGroup => {
+    public static getCognitiveCompetences = (_formBuilder:FormBuilder,service:CompetecenciasService):Observable<CompetenceCognitiveFormModel []> => {
+        return this.processEachCognitiveEmitted(service).pipe(toArray())
+    }
+
+    public static getQuestionarioFormGroup = (competencesArray: any [] ,_formBuilder:FormBuilder):FormGroup => {
+        //check if competencesArray is an CompetenceAreaFormModel array
+        if (competencesArray.every((competece) => 'habilidades' in competece)) {
+            return _formBuilder.group({
+                competences: _formBuilder.array(competencesArray.map(competence =>
+                  this.getCompetenceFormBuilderForCompetences(competence,_formBuilder)
+                )
+            )});
+
+        }
+
         return _formBuilder.group({
             competences: _formBuilder.array(competencesArray.map(competence =>
-              this.getCompetenceFormBuilderForCompetences(competence,_formBuilder)
+              this.getCompetenceFormBuilderForCognitive(competence,_formBuilder)
             )
         )});
     }
