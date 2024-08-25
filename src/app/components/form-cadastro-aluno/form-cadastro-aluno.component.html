@@ -16,7 +16,7 @@
             <mat-hint>Email para contato</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}" >
-            <mat-select formControlName="escola" required="true" (selectionChange)="onChange($event.value)">
+            <mat-select formControlName="escola" required="true" (selectionChange)="onChangeEscola($event.value)">
                 @for (escola of escolasOptions; track escola.id) {
                     <mat-option [value]="escola.id">{{escola.name}}</mat-option>
                 }
@@ -27,18 +27,23 @@
     </div>
     <div [ngClass] = "'form-row'">
         <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill">
+            <mat-select formControlName="serie" required="true" (selectionChange)="onChangeSerie($event.value)" [disabled]="serieOptions.length==0">
+                @for (serie of serieOptions; track $index) {
+                    <mat-option [value]="serie">{{serie}}</mat-option>
+                }
+            
+            </mat-select>
+            <mat-label>Serie</mat-label>
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        </mat-form-field>
+        <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill">
             <mat-select formControlName="turma" required="true" [disabled]="turmasOptions.length==0">
                 @for (turma of turmasOptions; track $index) {
-                    <mat-option [value]="turma">{{turma}}</mat-option>
+                    <mat-option [value]="turma">{{turma.nome}}</mat-option>
                 }
             
             </mat-select>
             <mat-label>Turma</mat-label>
-            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-        </mat-form-field>
-        <mat-form-field [ngStyle]="{'flex-grow':'2'}" appearance="fill">
-            <mat-label>Ano da turma</mat-label>
-            <input formControlName="ano_escolar" matInput placeholder="Selcione o ano referente a essa turma">
             <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
         </mat-form-field>
     </div>

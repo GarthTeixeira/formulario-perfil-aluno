@@ -35,15 +35,17 @@ import { LocalStorageService } from '../../shared/services/local-storage-service
 })
 export class FormCadastroAlunoComponent {
 
-  public serieOptions: string[] = ['1º ano do ensino médio', '2º ano do ensino médio', '3º ano do ensino médio']
+  public serieOptions: any[] = []
 
-  public escolasOptions: {name: string, id: any, turmas:{nome:string}[] }[] = []
+  public escolasOptions: {name: string, id: any, turmas:{nome:string, id: string, serie: string}[] }[] = []
+
+  public selectedSchool: any;
 
   public applyForm: FormGroup = new FormGroup({})
 
   public isSending: boolean = false
 
-  public turmasOptions: string[] = []
+  public turmasOptions: any[] = []
 
   public sendData: (data: DadosRespostaProfessorInterface) => Observable<any> = this._professoresService.insertProfessor;
 
@@ -66,8 +68,8 @@ export class FormCadastroAlunoComponent {
       name: ['', Validators.required],
       email: ['', Validators.email],
       escola: ['', Validators.required],
+      serie: ['', Validators.required],
       turma: ['', Validators.required],
-      ano_escolar: ['', Validators.required],
     })
 
     this._escolasService.getEscolasOptions().subscribe({
@@ -80,13 +82,25 @@ export class FormCadastroAlunoComponent {
     })
   }
 
-  onChange(value: string){
-    this.turmasOptions = this.escolasOptions.find(escola => escola.id === value)?.turmas.map(turma=>turma.nome) || []
+  onChangeEscola(value: string){
+    this.selectedSchool = this.escolasOptions.find(escola=>escola.id == value)
+    
+    this.serieOptions = [ ... new Set(
+      this.selectedSchool?.turmas.map((turma: any) => turma?.serie || '') || []
+    )]
+    
+  }
+
+  onChangeSerie(value: string) {
+    this.turmasOptions = this.selectedSchool.turmas.filter((turma:any)=> turma.serie == value)
+    console.log(this.turmasOptions)
   }
 
   protected submitAlunoForm() {
     this.isSending = true
-    const professor:DadosRespostaProfessorInterface = ProfessorFormUtils.makeAlunoFromFormGroup(this.applyForm.value)
+    const professor:DadosRespostaProfessorInterface = ProfessorFormUtils.makeAlunoFromFormGroup(
+      this.applyForm.value
+    )
     this._professoresService.insertProfessor(professor).subscribe({
       next: (response) => {
         const userData = {...response, ...professor}

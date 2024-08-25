@@ -12,7 +12,6 @@ export class ProfessorFormUtils {
     // }
 
     public static makeAlunoFromFormGroup = (valueFormGroup: any): DadosRespostaProfessorInterface => {
-        console.log(valueFormGroup)
         return {
             nome: valueFormGroup.name,
             turma: valueFormGroup.turma,
