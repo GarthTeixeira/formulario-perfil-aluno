@@ -25,6 +25,12 @@ export class DisciplinasService {
       return this.http.get<any>(baseUrl+'/get-all');
     }
 
+    getDisciplinasOfSchool(): Observable<any>{
+      const baseUrl = this.dataShared.getHost()
+      const school_id = this.dataShared.getData()?.escola_id || this.localStorageService.getItem('userData')['escola_id'];
+      return this.http.get<any>(`${baseUrl}/disciplina/${school_id}`)
+    }
+
     getByArea(area: string) {
       const baseUrl = this.dataShared.getHost();
       const school_id = this.dataShared.getData()?.escola_id || this.localStorageService.getItem('userData')['escola_id'];

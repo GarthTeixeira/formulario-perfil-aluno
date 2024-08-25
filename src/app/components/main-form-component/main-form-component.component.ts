@@ -13,10 +13,18 @@ import { CompetecenciasService } from '../../services/competecencias.service';
 import { map } from 'rxjs';
 import { FormProfessoresService } from '../../services/form-professores.service';
 import { DataSharedService } from '../../shared/data-shared.service';
+import { LocalStorageService } from '../../shared/services/local-storage-service.service';
 
 interface IDictionarySkill<TValue> {
   [id: string]: TValue;
 }
+
+type FormMode = 'AREA'|'COGNITIVE'| undefined;
+
+type SubmitParams = { 
+  requestParams: { disciplina:string | undefined, competencias:any, professor:any }
+  callback: Function
+} | null;
 
 @Component({
   selector: 'app-main-form-component',
@@ -37,8 +45,12 @@ interface IDictionarySkill<TValue> {
 })
 export class MainFormComponent{
 
+  
+
   public itemSelecionado: {tag:string, title:string, color:string, id: string} | undefined = {tag:'', title:'', color:'', id:''};
 
+  public formMode: FormMode; 
+  
   public disiplnaSelecionada:string = '';
 
   public questionarioAreasFormGroup: FormGroup = this._formBuilder.group([]);
@@ -66,7 +78,7 @@ export class MainFormComponent{
     private formProfessoresService: FormProfessoresService , 
     private _formBuilder: FormBuilder, 
     private competenciasService:CompetecenciasService,
-    private dataShared: DataSharedService,
+    private localStorageService:LocalStorageService,
     private router: Router
   ) {}
 
@@ -80,6 +92,7 @@ export class MainFormComponent{
         console.log( typeof this.iterableCompetences)
         this.questionarioAreasFormGroup = MainFormUtils.getQuestionarioFormGroup(this.iterableCompetences,this._formBuilder);
         console.log(this.questionarioAreasFormGroup)
+        this.formMode = 'AREA';
       })
     
     MainFormUtils.getCognitiveCompetences(this._formBuilder,this.competenciasService)
@@ -90,24 +103,37 @@ export class MainFormComponent{
     
   }
 
+  gotoNextPhase = (stepper: any) => {
+    stepper.reset()
+    this.formMode = 'COGNITIVE'
+  }
+
+  goToPreviousRoute = (stepper: any) => {
+    stepper.reset()
+    this.router.navigate(['/disciplinas'])
+  }
+
   onSubmit(stepper: any) {
     const formValue = this.questionarioAreasFormGroup.getRawValue();
+
+    let submitParams: SubmitParams = null;
     
-    if (formValue) {
+    if(this.formMode === 'AREA'){
       const sendData = {
         'disciplina': this.itemSelecionado?.id, 
         'competencias': formValue.competences, 
-        'aluno': this.dataShared.getData()
+        'professor':  this.localStorageService.getItem('userData')['id']
       }
-      const resposta = MainFormUtils.makeRespostaForm(sendData);
-      this.formProfessoresService.insertResposta(resposta).subscribe({
-        next: (response) => {
+      
+      submitParams = {requestParams: sendData, callback:this.gotoNextPhase}
+    } 
 
-          console.log(response)
-          stepper.reset();
-          // go to previous route
-          this.router.navigate(['/disciplinas'])
-        },
+    console.log(submitParams)
+
+    if (formValue && submitParams) {
+      const resposta = MainFormUtils.makeRespostaForm(submitParams?.requestParams);
+      this.formProfessoresService.insertResposta(resposta).subscribe({
+        next: () => {submitParams?.callback(stepper)},
         error: (error) => {
           console.error(error)
           stepper.reset();

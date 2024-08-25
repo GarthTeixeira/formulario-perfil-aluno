@@ -149,7 +149,7 @@ export  class MainFormUtils {
         return {
             disciplina: formValues.disciplina,
             competencias: competencias,
-            id: formValues.aluno.id
+            id: formValues.professor.id
         }
     }
 
