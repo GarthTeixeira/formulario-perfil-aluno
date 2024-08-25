@@ -143,13 +143,14 @@ export  class MainFormUtils {
     public static makeRespostaForm = (formValues: any): FormRespostaInterface => {
         const competencias:any = {}
         formValues.competencias.forEach((competencia: any) => {
-            console.log(competencia)
             competencias[competencia.id] = competencia.habilidades
         })
+        const { disciplina, professor, area } = formValues;
         return {
-            disciplina: formValues.disciplina,
+            disciplina,
             competencias: competencias,
-            id: formValues.professor.id
+            professor,
+            area
         }
     }
 

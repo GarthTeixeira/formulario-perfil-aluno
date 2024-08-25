@@ -1,5 +1,6 @@
 export interface FormRespostaInterface {
     "disciplina": number,
-    "competencias":any
-    "id": string
+    "competencias":any,
+    "professor": string,
+    "area":string,
 }

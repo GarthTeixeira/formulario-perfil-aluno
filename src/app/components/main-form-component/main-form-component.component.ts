@@ -49,7 +49,7 @@ export class MainFormComponent{
 
   public itemSelecionado: {tag:string, title:string, color:string, id: string} | undefined = {tag:'', title:'', color:'', id:''};
 
-  public formMode: FormMode; 
+  public formMode: FormMode = 'AREA'; 
   
   public disiplnaSelecionada:string = '';
 
@@ -122,7 +122,8 @@ export class MainFormComponent{
       const sendData = {
         'disciplina': this.itemSelecionado?.id, 
         'competencias': formValue.competences, 
-        'professor':  this.localStorageService.getItem('userData')['id']
+        'professor':  this.localStorageService.getItem('userData')['id'],
+        'area': this.itemSelecionado?.tag
       }
       
       submitParams = {requestParams: sendData, callback:this.gotoNextPhase}
