@@ -39,4 +39,14 @@ export class DisciplinasService {
         {headers: this.corsHeaders}
       );
     }
+
+    getByAreaWithActualSerie(area: string) {
+      const baseUrl = this.dataShared.getHost();
+      const school_id = this.dataShared.getData()?.escola_id || this.localStorageService.getItem('userData')['escola_id'];
+      const serie = this.localStorageService.getItem('userData')['turma']['serie']
+      return this.http.get<any>(
+        `${baseUrl}/schools/get-by-area?school=${school_id}&area=${area}&serie=${serie[0]}`,
+        {headers: this.corsHeaders}
+      );
+    }
 }
