@@ -1,6 +1,6 @@
 import { CompetecenciasService } from "../services/competecencias.service";
 import {concatMap, map, mergeMap, toArray} from 'rxjs/operators';
-import { Observable, from, merge } from 'rxjs';
+import { ArgumentOutOfRangeError, Observable, from, merge } from 'rxjs';
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Skill } from "../interfaces/skill-interface";
 import { competenceFormGroup } from "../interfaces/competence-form-group-interface";
@@ -141,14 +141,23 @@ export  class MainFormUtils {
     }
 
     public static makeRespostaForm = (formValues: any): FormRespostaInterface => {
-        const competencias:any = {}
-        formValues.competencias.forEach((competencia: any) => {
-            competencias[competencia.id] = competencia.habilidades
-        })
+        const competenciasDict:any = {}
         const { disciplina, professor, area } = formValues;
+
+        formValues.competencias.forEach((competencia: any) => {
+            const arrayResposta = area != 'COGNITIVOS'
+            ? competencia.habilidades
+            : [competencia.resposta]
+            
+            if (arrayResposta || arrayResposta.some((resposta:any) => resposta == null || resposta == undefined))
+                throw Error("respostas invalidas")
+            
+            competenciasDict[competencia.id] = arrayResposta;
+        })
+       
         return {
             disciplina,
-            competencias: competencias,
+            competencias: competenciasDict,
             professor,
             area
         }

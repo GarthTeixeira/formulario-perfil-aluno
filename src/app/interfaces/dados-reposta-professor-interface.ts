@@ -1,7 +1,7 @@
 export interface DadosRespostaProfessorInterface {
     nome: string;
     email: string;
-    escola_id: string;
+    escola: string;
     turma: {
         nome:string;
         serie:string;

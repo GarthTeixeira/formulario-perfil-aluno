@@ -17,7 +17,7 @@ export class ProfessorFormUtils {
             turma: valueFormGroup.turma,
             email: valueFormGroup.email,
             ano_escolar: valueFormGroup.ano_escolar,
-            escola_id: valueFormGroup.escola
+            escola: valueFormGroup.escola
         }
     }
 

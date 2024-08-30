@@ -22,7 +22,7 @@ interface IDictionarySkill<TValue> {
 type FormMode = 'AREA'|'COGNITIVE'| undefined;
 
 type SubmitParams = { 
-  requestParams: { disciplina:string | undefined, competencias:any, professor:any }
+  requestParams: { disciplina:string | undefined, competencias:any, professor:any, area:string }
   callback: Function
 } | null;
 
@@ -114,24 +114,29 @@ export class MainFormComponent{
   }
 
   onSubmit(stepper: any) {
-    const formValue = this.questionarioAreasFormGroup.getRawValue();
+   
 
-    let submitParams: SubmitParams = null;
-    
-    if(this.formMode === 'AREA'){
-      const sendData = {
+    let submitParams: SubmitParams = (this.formMode === 'AREA') ? {
+      requestParams: {
         'disciplina': this.itemSelecionado?.id, 
-        'competencias': formValue.competences, 
+        'competencias': this.questionarioAreasFormGroup.getRawValue().competences, 
         'professor':  this.localStorageService.getItem('userData')['id'],
-        'area': this.itemSelecionado?.tag
-      }
+        'area': this.itemSelecionado?.tag || ''
+      },
+      callback: this.gotoNextPhase
       
-      submitParams = {requestParams: sendData, callback:this.gotoNextPhase}
-    } 
+    } : {
+      requestParams: {
+        'disciplina': this.itemSelecionado?.id,
+        'competencias':this.questionarioCognitivoFormGroup.getRawValue(),
+        'professor': this.localStorageService.getItem('userData')['id'],
+        'area': "COGNITIVOS"
+      },
+      callback: this.goToPreviousRoute
+    }
 
-    console.log(submitParams)
 
-    if (formValue && submitParams) {
+    if (submitParams) {
       const resposta = MainFormUtils.makeRespostaForm(submitParams?.requestParams);
       this.formProfessoresService.insertResposta(resposta).subscribe({
         next: () => {submitParams?.callback(stepper)},

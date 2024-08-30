@@ -27,13 +27,13 @@ export class DisciplinasService {
 
     getDisciplinasOfSchool(): Observable<any>{
       const baseUrl = this.dataShared.getHost()
-      const school_id = this.dataShared.getData()?.escola_id || this.localStorageService.getItem('userData')['escola_id'];
+      const school_id = this.dataShared.getData()?.escola || this.localStorageService.getItem('userData')['escola'];
       return this.http.get<any>(`${baseUrl}/disciplina/${school_id}`)
     }
 
     getByArea(area: string) {
       const baseUrl = this.dataShared.getHost();
-      const school_id = this.dataShared.getData()?.escola_id || this.localStorageService.getItem('userData')['escola_id'];
+      const school_id = this.dataShared.getData()?.escola || this.localStorageService.getItem('userData')['escola'];
       return this.http.get<any>(
         `${baseUrl}/schools/get-by-area?school=${school_id}&area=${area}`,
         {headers: this.corsHeaders}
@@ -42,7 +42,7 @@ export class DisciplinasService {
 
     getByAreaWithActualSerie(area: string) {
       const baseUrl = this.dataShared.getHost();
-      const school_id = this.dataShared.getData()?.escola_id || this.localStorageService.getItem('userData')['escola_id'];
+      const school_id = this.dataShared.getData()?.escola || this.localStorageService.getItem('userData')['escola'];
       const serie = this.localStorageService.getItem('userData')['turma']['serie']
       return this.http.get<any>(
         `${baseUrl}/schools/get-by-area?school=${school_id}&area=${area}&serie=${serie[0]}`,
