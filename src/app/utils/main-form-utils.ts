@@ -134,7 +134,7 @@ export  class MainFormUtils {
         }
 
         return _formBuilder.group({
-            competences: _formBuilder.array(competencesArray.map(competence =>
+            competencesCognitive: _formBuilder.array(competencesArray.map(competence =>
               this.getCompetenceFormBuilderForCognitive(competence,_formBuilder)
             )
         )});
@@ -149,10 +149,10 @@ export  class MainFormUtils {
             ? competencia.habilidades
             : [competencia.resposta]
             
-            if (arrayResposta || arrayResposta.some((resposta:any) => resposta == null || resposta == undefined))
+            if (arrayResposta && arrayResposta.some((resposta:any) => resposta == null || resposta == undefined))
                 throw Error("respostas invalidas")
             
-            competenciasDict[competencia.id] = arrayResposta;
+            competenciasDict[competencia.id] = arrayResposta;  
         })
        
         return {

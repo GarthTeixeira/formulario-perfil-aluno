@@ -67,9 +67,13 @@ export class MainFormComponent{
 
   get competences():AbstractControl<any, any> | any { return this.questionarioAreasFormGroup?.get('competences') || []; }
 
+  get competencesCognitive(): AbstractControl<any,any> | any {return this.questionarioCognitivoFormGroup?.get('competencesCognitive') || [] ;}
+
   get skillLevelsOptions():string[] { return MainFormUtils.skillLevels } 
 
   public iterableCompetences:any[] = []
+
+  public iterableCognitives:any[] =[]
   
   public formTitle (competenceDescription: any) {
     return `${this.itemSelecionado?.title} - ${competenceDescription}`
@@ -91,14 +95,16 @@ export class MainFormComponent{
         this.iterableCompetences = competencesFromArray
         console.log( typeof this.iterableCompetences)
         this.questionarioAreasFormGroup = MainFormUtils.getQuestionarioFormGroup(this.iterableCompetences,this._formBuilder);
-        console.log(this.questionarioAreasFormGroup)
+        console.log('Por Area:',this.questionarioAreasFormGroup)
         this.formMode = 'AREA';
       })
     
     MainFormUtils.getCognitiveCompetences(this._formBuilder,this.competenciasService)
       .subscribe((competencesFromArray: any) => {
-        this.questionarioCognitivoFormGroup = MainFormUtils.getQuestionarioFormGroup(competencesFromArray,this._formBuilder);
-        console.log(this.questionarioCognitivoFormGroup)
+        this.iterableCognitives = competencesFromArray
+        this.questionarioCognitivoFormGroup = MainFormUtils.getQuestionarioFormGroup(this.iterableCognitives,this._formBuilder);
+        console.log( typeof this.iterableCompetences)
+        console.log('Cognitivos:',this.questionarioCognitivoFormGroup)
       })
     
   }
@@ -128,7 +134,7 @@ export class MainFormComponent{
     } : {
       requestParams: {
         'disciplina': this.itemSelecionado?.id,
-        'competencias':this.questionarioCognitivoFormGroup.getRawValue(),
+        'competencias':this.questionarioCognitivoFormGroup.getRawValue().competencesCognitive,
         'professor': this.localStorageService.getItem('userData')['id'],
         'area': "COGNITIVOS"
       },

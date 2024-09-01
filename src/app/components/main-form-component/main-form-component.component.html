@@ -1,19 +1,56 @@
 <div class="mainForm">
-  <form [formGroup]="questionarioAreasFormGroup">
-    @if(competences.length > 0){ 
-      <mat-stepper #linearVerticalStepper="matVerticalStepper" [linear]="isLinear" formArrayName="competences" #stepper>
+  @if(formMode == 'AREA'){
+    <form [formGroup]="questionarioAreasFormGroup">
+      @if(competences.length > 0){ 
+        <mat-stepper #linearVerticalStepper="matVerticalStepper" [linear]="isLinear" formArrayName="competences" #stepper>
 
-        @for (competence of iterableCompetences; track competence; let i = $index) {
-        <mat-step #mat_step [formGroupName]="i" [stepControl]="competences?.get([i])">
-          <ng-template matStepLabel>>{{'Q'}}{{ i+1 }}</ng-template>
-          <h3>{{formTitle(competence.descricao)}}</h3>
-          <ng-container formArrayName="habilidades">
-            <div [ngStyle]="{ 'display':'flex', 'flex-direction': 'column', 'max-width': '1500px'}"
-              *ngFor="let habilidade of competence.habilidades; let j = index">
-              <span [ngStyle]="{'text-align':'start'}">{{(j+1) +" - " + habilidade.question}}</span>
+          @for (competence of iterableCompetences; track competence; let i = $index) {
+          <mat-step #mat_step [formGroupName]="i" [stepControl]="competences?.get([i])">
+            <ng-template matStepLabel>>{{'Q'}}{{ i+1 }}</ng-template>
+            <h3>{{formTitle(competence.descricao)}}</h3>
+            <ng-container formArrayName="habilidades">
+              <div [ngStyle]="{ 'display':'flex', 'flex-direction': 'column', 'max-width': '1500px'}"
+                *ngFor="let habilidade of competence.habilidades; let j = index">
+                <span [ngStyle]="{'text-align':'start'}">{{(j+1) +" - " + habilidade.question}}</span>
+                <mat-form-field [ngClass]="'mat-form-selector'">
+                  <mat-label>Escolha</mat-label>
+                  <mat-select [formControlName]="j" required>
+                    @for (skill of skillLevelsOptions; track $index) {
+                    <mat-option [value]="getSkillLevelsAswerNumberValue(skill)">
+                      {{getSkillLevelsAswer[skill]}}
+                    </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </ng-container>
+          </mat-step>
+          }
+          <mat-step>
+            <ng-template matStepLabel>Fim</ng-template>
+            Gostaria de enviar o questionário das áreas?
+            <div>
+              <button mat-button matStepperPrevious>Voltar</button>
+              <button mat-button (click)="onSubmit(stepper)">Enviar</button>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      } 
+      @else {
+      <h3 class="no-competences">Nenhuma competência encontrada</h3>
+    }
+    </form>
+  } @else{
+    <form [formGroup]="questionarioCognitivoFormGroup" >
+      @if(competencesCognitive.length > 0){ 
+        <mat-stepper #linnearVerticalStepper="matVerticalStepper" [linear]="isLinear" formArrayName = "competencesCognitive" #stepper> 
+          @for (competence of iterableCognitives; track competence; let i = $index) {
+            <mat-step #mat_step [formGroupName]="i" [stepControl]="competencesCognitive?.get([i])">
+              <ng-template>{{'Q'}}{{i+1}}</ng-template>
+              <h3>{{formTitle(competence.descricao_pergunta)}}</h3>
               <mat-form-field [ngClass]="'mat-form-selector'">
                 <mat-label>Escolha</mat-label>
-                <mat-select [formControlName]="j" required>
+                <mat-select [formControlName]="'resposta'" required>
                   @for (skill of skillLevelsOptions; track $index) {
                   <mat-option [value]="getSkillLevelsAswerNumberValue(skill)">
                     {{getSkillLevelsAswer[skill]}}
@@ -21,26 +58,22 @@
                   }
                 </mat-select>
               </mat-form-field>
-            </div>
-          </ng-container>
-        </mat-step>
-        }
-        <mat-step>
-          <ng-template matStepLabel>Fim</ng-template>
-          Gostaria de enviar o questionário?
-          <div>
-            <button mat-button matStepperPrevious>Voltar</button>
-            <button mat-button (click)="onSubmit(stepper)">Enviar</button>
-          </div>
-        </mat-step>
-      </mat-stepper>
-    } @else if(competences.length) {
-      
-    }
-    @else {
-    <h3 class="no-competences">Nenhuma competência encontrada</h3>
+            </mat-step>
+            }<mat-step>
+              <ng-template matStepLabel>Fim</ng-template>
+              Gostaria de enviar o questionário das competências cognitivas (comum entre áreas)?
+              <div>
+                <button mat-button matStepperPrevious>Voltar</button>
+                <button mat-button (click)="onSubmit(stepper)">Enviar</button>
+              </div>
+            </mat-step>
+        </mat-stepper>
+      }@else {
+        <h3 class="no-competences">Nenhuma competência encontrada</h3>
+      }
+    </form>
   }
-  </form>
+
   
   <div class="pill-group">
     <a
