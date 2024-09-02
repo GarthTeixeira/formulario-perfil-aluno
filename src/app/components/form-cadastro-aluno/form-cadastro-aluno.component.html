@@ -4,7 +4,7 @@
         <mat-form-field [ngStyle]="{'width':'600px'}" appearance="fill" >
           <mat-label>Nome</mat-label>
           <input formControlName="name" matInput placeholder="Digite o nome completo" required>
-          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-icon matSuffix>badge</mat-icon>
           <mat-hint>Nome completo</mat-hint>
         </mat-form-field>
     </div>
@@ -12,7 +12,7 @@
         <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'2'}" >
             <mat-label>Email</mat-label>
             <input required formControlName="email" matInput placeholder="Digite seu email">
-            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-icon matSuffix>alternate_email</mat-icon>
             <mat-hint>Email para contato</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}" >
@@ -22,7 +22,7 @@
                 }
             </mat-select>
             <mat-label>Escola</mat-label>
-            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-icon matSuffix>school</mat-icon>
         </mat-form-field>
     </div>
     <div [ngClass] = "'form-row'">
@@ -34,7 +34,7 @@
             
             </mat-select>
             <mat-label>Serie</mat-label>
-            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-icon matSuffix>123</mat-icon>
         </mat-form-field>
         <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill">
             <mat-select formControlName="turma" required="true" [disabled]="turmasOptions.length==0">
@@ -44,7 +44,7 @@
             
             </mat-select>
             <mat-label>Turma</mat-label>
-            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-icon matSuffix>groups</mat-icon>
         </mat-form-field>
     </div>
     <div class="send-div">
