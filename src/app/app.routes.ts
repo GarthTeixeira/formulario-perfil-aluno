@@ -4,10 +4,14 @@ import { FormCadastroAlunoComponent } from './components/form-cadastro-aluno/for
 import { MainFormComponent } from './components/main-form-component/main-form-component.component';
 import { FormDisciplineSelectorComponent } from './components/form-discipline-selector-component/form-discipline-selector-component.component';
 import { FormCompetenciasCognitivasComponent } from './components/form-competencias-cognitivas/form-competencias-cognitivas.component';
+import { SelectTypeLoginComponent } from './components/select-type-login/select-type-login.component';
+import { SelectFormLoginComponent } from './components/select-form-login/select-form-login.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
-    { path: 'home', component: FormCadastroAlunoComponent },
+    { path: 'home', component: SelectTypeLoginComponent },
+    { path: 'selecionar-formulario', component: SelectFormLoginComponent},
+    { path: 'cadastro', component: FormCadastroAlunoComponent},
     { path: 'areas', component: FormAreaSelectorComponent, data: { animation: 'areas' }},
     { path: 'disciplinas', component: FormDisciplineSelectorComponent,  data: { animation: 'disciplinas' }},
     {

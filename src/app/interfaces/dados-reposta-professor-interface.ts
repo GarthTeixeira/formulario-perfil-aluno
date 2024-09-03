@@ -1,3 +1,4 @@
+//TODO: ajustar todas as interfeces e types
 export interface DadosRespostaProfessorInterface {
     nome: string;
     email: string;
@@ -5,7 +6,6 @@ export interface DadosRespostaProfessorInterface {
     turma: {
         nome:string;
         serie:string;
-        id:string;
+        _id:string;
     }
-    ano_escolar: number;
 }

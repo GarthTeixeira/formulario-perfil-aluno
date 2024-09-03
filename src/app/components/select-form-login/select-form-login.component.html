@@ -1,0 +1,25 @@
+<div style="display: flex; justify-content: center; margin-top: 30px;">
+    <div class = "flex-select-cadastro">
+        <mat-form-field appearance="fill" style ="flex-grow:1" >
+            <mat-select required="true" (selectionChange)="onChangeEscola($event.value)">
+                @for (escola of escolasOptions; track escola.id) {
+                    <mat-option [value]="escola.id">{{escola.name}}</mat-option>
+                }
+            </mat-select>
+            <mat-label>Escola</mat-label>
+            <mat-icon matSuffix>school</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="flex-grow:2" >
+            <mat-label>Professor</mat-label>
+            <mat-select [(ngModel)]="selectedForm" required="true" [disabled]="formOptions.length==0">
+                @for (formulario of formOptions; track $index) {
+                    <mat-option [value]="formulario">{{formulario.nome}}</mat-option>
+                }
+            </mat-select>
+            <mat-icon matSuffix>edit_note</mat-icon>
+        </mat-form-field>
+        <button mat-stroked-button color="primary" class="send-button" [disabled]="!selectedForm">
+            <span>Login</span>
+        </button>
+    </div>
+</div>

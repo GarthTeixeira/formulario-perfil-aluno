@@ -16,6 +16,7 @@ import { ProfessorFormUtils } from '../../utils/professor-form-utils';
 import { FormProfessoresService } from '../../services/form-professores.service';
 import { EscolasService } from '../../services/escolas.service';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
+import { UserDataLocalStorage } from '../../types/types';
 @Component({
   selector: 'app-form-cadastro-aluno',
   standalone: true,
@@ -102,8 +103,8 @@ export class FormCadastroAlunoComponent {
       this.applyForm.value
     )
     this._professoresService.insertProfessor(professor).subscribe({
-      next: (response) => {
-        const userData = {...response, ...professor}
+      next: (response: {id:string}) => {
+        const userData: UserDataLocalStorage = {...response, ...professor}
         console.log(userData)
         this.localStorageService.setItem('userData', userData)
         this.dataService.setData(userData)
