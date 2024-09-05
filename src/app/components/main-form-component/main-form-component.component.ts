@@ -116,7 +116,7 @@ export class MainFormComponent{
 
   goToPreviousRoute = (stepper: any) => {
     stepper.reset()
-    this.router.navigate(['/disciplinas'])
+    this.router.navigate(['/areas'])
   }
 
   onSubmit(stepper: any) {

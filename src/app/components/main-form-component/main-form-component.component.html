@@ -48,16 +48,18 @@
             <mat-step #mat_step [formGroupName]="i" [stepControl]="competencesCognitive?.get([i])">
               <ng-template>{{'Q'}}{{i+1}}</ng-template>
               <h3>{{formTitle(competence.descricao_pergunta)}}</h3>
-              <mat-form-field [ngClass]="'mat-form-selector'">
-                <mat-label>Escolha</mat-label>
-                <mat-select [formControlName]="'resposta'" required>
-                  @for (skill of skillLevelsOptions; track $index) {
-                  <mat-option [value]="getSkillLevelsAswerNumberValue(skill)">
-                    {{getSkillLevelsAswer[skill]}}
-                  </mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
+              <div [style]="{display:'flex'}">
+                <mat-form-field [ngClass]="'mat-form-selector'">
+                  <mat-label>Escolha</mat-label>
+                  <mat-select [formControlName]="'resposta'" required>
+                    @for (skill of skillLevelsOptions; track $index) {
+                    <mat-option [value]="getSkillLevelsAswerNumberValue(skill)">
+                      {{getSkillLevelsAswer[skill]}}
+                    </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
             </mat-step>
             }<mat-step>
               <ng-template matStepLabel>Fim</ng-template>

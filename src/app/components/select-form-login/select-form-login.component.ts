@@ -59,7 +59,7 @@ export class SelectFormLoginComponent implements OnInit{
     this.formProfessoresService.getFormulariosBySchool(this.selectedSchool.id).subscribe({
       next:(response) => {
         this.selectedForm = null
-        this.formOptions = response.map((form:any)=>form.professor)
+        this.formOptions = response.map((form:any):UserDataLocalStorage =>{return {...form.professor, id: form.id}})
       },
       error: (error)=>{
         console.error(error)
@@ -68,11 +68,7 @@ export class SelectFormLoginComponent implements OnInit{
   }
 
   onSubmit(){
-    const userData:UserDataLocalStorage = {
-      id:this.selectedForm.id,
-      ...this.selectedForm.professor
-    }
-    this.localStorageService.setItem('userData',userData)
+    this.localStorageService.setItem('userData',this.selectedForm)
     this.router.navigate(['/areas'])
   }
 }
