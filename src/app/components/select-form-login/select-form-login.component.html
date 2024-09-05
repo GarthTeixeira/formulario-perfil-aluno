@@ -18,7 +18,7 @@
             </mat-select>
             <mat-icon matSuffix>edit_note</mat-icon>
         </mat-form-field>
-        <button mat-stroked-button color="primary" class="send-button" [disabled]="!selectedForm">
+        <button mat-stroked-button color="primary" class="send-button" [disabled]="!selectedForm" (click)="onSubmit()">
             <span>Login</span>
         </button>
     </div>

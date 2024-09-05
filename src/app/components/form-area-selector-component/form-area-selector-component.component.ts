@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { areas } from '../../utils/areas';
 import { SelectorComponent } from '../selector-component/selector-component.component';
 import { DataSharedService } from '../../shared/data-shared.service';
 @Component({
   selector: 'app-form-area-selector-component',
   standalone: true,
-  imports: [SelectorComponent],
+  imports: [SelectorComponent,RouterLink],
   templateUrl: './form-area-selector-component.component.html',
   styleUrl: './form-area-selector-component.component.scss'
 })
