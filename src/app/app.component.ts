@@ -17,8 +17,15 @@ import { slideInAnimation } from './animations';
 export class AppComponent {
   title = 'Olá Professor, seja muito bem vindo ao nosso formulário';
 
-  descitpion =  'Seja muito bem vindo ao nosso formulário, essa pesquisa consiste em avaliarmos as competências e habilidades do enem que seus estudantes conseguiram desenvolver durante o ensino médio.'
+  descitpion =  'Essa pesquisa consiste em avaliarmos as competências e habilidades do ENEM que seus estudantes conseguiram desenvolver durante o ensino médio.'
 
+  instructions = [
+    'Se cadastre, caso tenha um cadastro escolha este;',
+    'Ao se cadastrar, escolha sua instiuição, a série da sua turma e a turma respectva à série;',
+    'Escolha uma área de conhecimento que deseja avaliar;',
+    'Escolha uma disciplina e boa avaliação;',
+    'As respostas são salvas automaticamente a cada disciplina avaliada.'
+  ]
   getRouteAnimationData() {
     return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
   }

@@ -18,8 +18,10 @@
         </svg>
         
       <h1>{{ title }}</h1>
-      <p>{{descitpion}} Por favor scolha uma área de conhecimento,<br>
-         avalie suas competências para suas disciplinas! ✏️📖🤓📚🚀</p>
+      <p>{{descitpion}} ✏️📖🤓📚🚀 <br></p>
+      @for (instruction of instructions; track $index) {
+        <li>{{instruction}}</li>
+      }
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div [@routeAnimations]="prepareRoute(outlet)" class="right-side">
