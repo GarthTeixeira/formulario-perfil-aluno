@@ -5,15 +5,14 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { MatSelectModule } from '@angular/material/select';
 import { Router, RouterModule } from '@angular/router';
 import getCompetencesFromArray from '../../mocks/generateCompetencias';
 import { MainFormUtils } from '../../utils/main-form-utils';
 import { CompetecenciasService } from '../../services/competecencias.service';
-import { map } from 'rxjs';
 import { FormProfessoresService } from '../../services/form-professores.service';
-import { DataSharedService } from '../../shared/data-shared.service';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
+import {MatSliderModule} from '@angular/material/slider';
+
 
 interface IDictionarySkill<TValue> {
   [id: string]: TValue;
@@ -32,7 +31,7 @@ type SubmitParams = {
   imports: [
     MatButtonModule,
     MatStepperModule,
-    MatSelectModule,
+    MatSliderModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -45,7 +44,7 @@ type SubmitParams = {
 })
 export class MainFormComponent{
 
-  
+  public INICIAL_VALUE:number = 5.0;
 
   public itemSelecionado: {tag:string, title:string, color:string, id: string} | undefined = {tag:'', title:'', color:'', id:''};
 
@@ -58,12 +57,6 @@ export class MainFormComponent{
   public questionarioCognitivoFormGroup: FormGroup = this._formBuilder.group([]);
 
   public isLinear = true;
-
-  public getSkillLevelsAswer:IDictionarySkill<string> = {'high':'Alto', 'basic':'Medio', 'low':'Baixo'}
-
-  public getSkillLevelsAswerNumberValue(skill:string) {
-    return MainFormUtils.getSkillLevelsAswerNumberValue(skill)
-  }
 
   get competences():AbstractControl<any, any> | any { return this.questionarioAreasFormGroup?.get('competences') || []; }
 
@@ -94,7 +87,7 @@ export class MainFormComponent{
       .subscribe((competencesFromArray: any) => {
         this.iterableCompetences = competencesFromArray
         console.log( typeof this.iterableCompetences)
-        this.questionarioAreasFormGroup = MainFormUtils.getQuestionarioFormGroup(this.iterableCompetences,this._formBuilder);
+        this.questionarioAreasFormGroup = MainFormUtils.getQuestionarioFormGroup(this.iterableCompetences,this._formBuilder,this.INICIAL_VALUE);
         console.log('Por Area:',this.questionarioAreasFormGroup)
         this.formMode = 'AREA';
       })
@@ -102,7 +95,7 @@ export class MainFormComponent{
     MainFormUtils.getCognitiveCompetences(this._formBuilder,this.competenciasService)
       .subscribe((competencesFromArray: any) => {
         this.iterableCognitives = competencesFromArray
-        this.questionarioCognitivoFormGroup = MainFormUtils.getQuestionarioFormGroup(this.iterableCognitives,this._formBuilder);
+        this.questionarioCognitivoFormGroup = MainFormUtils.getQuestionarioFormGroup(this.iterableCognitives,this._formBuilder,this.INICIAL_VALUE);
         console.log( typeof this.iterableCompetences)
         console.log('Cognitivos:',this.questionarioCognitivoFormGroup)
       })

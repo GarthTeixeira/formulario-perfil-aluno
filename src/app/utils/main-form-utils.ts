@@ -13,7 +13,7 @@ type CompetenceCognitiveModel = {id: string, descricao: string}
 
 type CompetenceAreaFormModel = {id: string, descricao: string, habilidades: Skill[]}
 
-type CompetenceCognitiveFormModel = {id: string, descricao_pergunta: string, resposta: string}
+type CompetenceCognitiveFormModel = {id: string, descricao_pergunta: string, resposta: number }
 
 
 export  class MainFormUtils {
@@ -55,36 +55,27 @@ export  class MainFormUtils {
         return {
             id: id,
             descricao_pergunta: this.makeQuestion(descricao),
-            resposta: ''
+            resposta: 0
         }
     }
 
-    private static makeCompetenceFormGroup = (competence: CompetenceAreaFormModel,_formBuilder:FormBuilder): competenceFormGroup => {
+    private static makeCompetenceFormGroup = (competence: CompetenceAreaFormModel,_formBuilder:FormBuilder, inicialValue:number): competenceFormGroup => {
         return {
             id: [competence.id],
             descricao: [competence.descricao, Validators.required],
-            habilidades:_formBuilder.array([...Array(competence.habilidades.length)].map(() => ''), Validators.required)
+            habilidades:_formBuilder.array([...Array(competence.habilidades.length)].map(() => inicialValue), Validators.required)
         }
     }
-    
-    public static getSkillLevelsAswerNumberValue = (skill:string) => {
-        const atualMax:number = this.skillLevels.length;
-        const atualMin:number = 1;
 
-        const atualValue:number = this.skillLevels.indexOf(skill) + 1;
-
-        return this.aplicarRegraDeTres(atualValue, atualMin, atualMax, 1, 10)
-    }
-
-    private static getCompetenceFormBuilderForCompetences = (competence:CompetenceAreaFormModel, _formBuilder:FormBuilder): FormGroup => {
-        return _formBuilder.group(this.makeCompetenceFormGroup(competence,_formBuilder))
+    private static getCompetenceFormBuilderForCompetences = (competence:CompetenceAreaFormModel, _formBuilder:FormBuilder, inicialValue:number): FormGroup => {
+        return _formBuilder.group(this.makeCompetenceFormGroup(competence,_formBuilder, inicialValue))
       }
 
-    private static getCompetenceFormBuilderForCognitive = (competence:CompetenceCognitiveFormModel, _formBuilder:FormBuilder): FormGroup => {
+    private static getCompetenceFormBuilderForCognitive = (competence:CompetenceCognitiveFormModel, _formBuilder:FormBuilder, inicialValue:number): FormGroup => {
         return _formBuilder.group({
             id: [competence.id],
             descricao_pergunta: [competence.descricao_pergunta, Validators.required],
-            resposta: [competence.resposta, Validators.required]
+            resposta: [inicialValue, Validators.required]
         })
     }
     
@@ -122,12 +113,12 @@ export  class MainFormUtils {
         return this.processEachCognitiveEmitted(service).pipe(toArray())
     }
 
-    public static getQuestionarioFormGroup = (competencesArray: any [] ,_formBuilder:FormBuilder):FormGroup => {
+    public static getQuestionarioFormGroup = (competencesArray: any [] ,_formBuilder:FormBuilder, inicialValue:number):FormGroup => {
         //check if competencesArray is an CompetenceAreaFormModel array
         if (competencesArray.every((competece) => 'habilidades' in competece)) {
             return _formBuilder.group({
                 competences: _formBuilder.array(competencesArray.map(competence =>
-                  this.getCompetenceFormBuilderForCompetences(competence,_formBuilder)
+                  this.getCompetenceFormBuilderForCompetences(competence,_formBuilder, inicialValue)
                 )
             )});
 
@@ -135,7 +126,7 @@ export  class MainFormUtils {
 
         return _formBuilder.group({
             competencesCognitive: _formBuilder.array(competencesArray.map(competence =>
-              this.getCompetenceFormBuilderForCognitive(competence,_formBuilder)
+              this.getCompetenceFormBuilderForCognitive(competence,_formBuilder,inicialValue)
             )
         )});
     }
