@@ -1,6 +1,7 @@
-<div style="display: flex; justify-content: center; margin-top: 30px;">
+<div style="display: flex; flex-direction: column;align-items: center; margin-top: 30px;">
+    <h3>Escolha um formulário já cadastrado</h3>
     <div class = "flex-select-cadastro">
-        <mat-form-field appearance="fill" style ="flex-grow:1" >
+        <mat-form-field appearance="fill" style ="flex-grow:2" >
             <mat-select required="true" (selectionChange)="onChangeEscola($event.value)">
                 @for (escola of escolasOptions; track escola.id) {
                     <mat-option [value]="escola.id">{{escola.name}}</mat-option>
@@ -8,6 +9,7 @@
             </mat-select>
             <mat-label>Escola</mat-label>
             <mat-icon matSuffix>school</mat-icon>
+            <mat-hint>Escola em que o formulário foi cadastrado</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill" style="flex-grow:2" >
             <mat-label>Professor</mat-label>
@@ -17,9 +19,10 @@
                 }
             </mat-select>
             <mat-icon matSuffix>edit_note</mat-icon>
+            <mat-hint>Selecione o nome no qual o formulário foi criado</mat-hint>
         </mat-form-field>
         <button mat-stroked-button color="primary" class="send-button" [disabled]="!selectedForm" (click)="onSubmit()">
-            <span>Login</span>
+            <span>Entrar</span>
         </button>
     </div>
 </div>

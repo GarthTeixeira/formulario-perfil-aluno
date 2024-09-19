@@ -35,6 +35,7 @@
             </mat-select>
             <mat-label>Série</mat-label>
             <mat-icon matSuffix>123</mat-icon>
+            <mat-hint>Ano da turma que deseja avaliar</mat-hint>
         </mat-form-field>
         <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill">
             <mat-select formControlName="turma" required="true" [disabled]="turmasOptions.length==0">
@@ -49,7 +50,7 @@
     </div>
     <div class="send-div">
         <button [disabled]="!applyForm.valid" type="submit" mat-stroked-button color="primary" class="send-button">
-            <span>Enviar</span>
+            <span>Cadastrar</span>
         </button>
     </div>
 </form>}

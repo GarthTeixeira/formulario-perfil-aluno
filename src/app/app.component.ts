@@ -21,9 +21,9 @@ export class AppComponent {
 
   instructions = [
     'Se cadastre, caso tenha um cadastro escolha este;',
-    'Ao se cadastrar, escolha sua instiuição, a série da sua turma e a turma respectva à série;',
+    'Ao se cadastrar, escolha sua instiuição, a série da sua turma e a turma respectiva à série;',
     'Escolha uma área de conhecimento que deseja avaliar;',
-    'Escolha uma disciplina e boa avaliação;',
+    'Escolha uma disciplina;',
     'As respostas são salvas automaticamente a cada disciplina avaliada.'
   ]
   getRouteAnimationData() {
