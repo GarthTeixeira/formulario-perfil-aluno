@@ -3,26 +3,47 @@
 ## Proposta
 Formulário direcionado a alunos do ensino médio para avaliar as competências do ENEM.
 
-
 Este projeto foi gerado com [Angular CLI](https://github.com/angular/angular-cli) na versão 17.2.1.
 
 ## Requisitos
-- nvm
+- node
 
-## Node
-Use a versão do node especificada no projeto
+Para instalar a versão desejada, você pode usar ferramentas como:
+- nvm
+- asdf
+
+A versão utilizada estará no arquivo `.tool-versions` ou `.nvmrc`
+
+## Nvm
+Use a versão do node especificada no projeto, no caso de utilizar o [nvm](https://github.com/nvm-sh/nvm)
 ```
 nvm use
 ```
-
 Rode caso não tenha a versão instalada
 
 ```
 nvm install
 ```
+
+## asdf
+Use a versão do node especificada no projeto, no caso de utilizar o [asdf](https://asdf-vm.com/guide/getting-started.html)
+
+Adicione o plugin node e execute:
+
+````
+asdf install nodjs <version>
+```
+
+## Angular CLI
+para a utilização de comandos como `ng` instale o angular CLI:
+
+```
+npm install -g @angular/cli@17.2.1
+```
+
 ## Servidor de Desenvolvimento
 
-Execute `ng serve` para iniciar um servidor de desenvolvimento. Acesse [http://localhost:4200/](http://localhost:4200/) no navegador. A aplicação será recarregada automaticamente se você modificar algum dos arquivos de origem.
+Execute `ng serve` ou `npm start` para iniciar um servidor de desenvolvimento. Acesse [http://localhost:4200/](http://localhost:4200/) no navegador.
 
 ## Compilação
 
