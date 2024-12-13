@@ -5,11 +5,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { EscolasService } from '../../services/escolas.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormProfessoresService } from '../../services/form-professores.service';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
 import { UserDataLocalStorage } from '../../types/types';
-import { DadosRespostaProfessorInterface } from '../../interfaces/dados-reposta-professor-interface';
+import { DecodeUTF8Pipe } from '../../pipes/decode-utf8.pipe';
 
 @Component({
   selector: 'app-select-form-login',
@@ -19,8 +19,8 @@ import { DadosRespostaProfessorInterface } from '../../interfaces/dados-reposta-
     MatSelectModule, 
     FormsModule, 
     MatIconModule, 
-    MatButtonModule, 
-    RouterLink
+    MatButtonModule,
+    DecodeUTF8Pipe, 
   ],
   templateUrl: './select-form-login.component.html',
   styleUrl: './select-form-login.component.scss'
@@ -59,12 +59,18 @@ export class SelectFormLoginComponent implements OnInit{
     this.formProfessoresService.getFormulariosBySchool(this.selectedSchool.id).subscribe({
       next:(response) => {
         this.selectedForm = null
-        this.formOptions = response.map((form:any):UserDataLocalStorage =>{return {...form.professor, id: form.id}})
+        this.formOptions = response.map((form:any):UserDataLocalStorage =>this.passToUserDataLocalStorage(form))
       },
       error: (error)=>{
         console.error(error)
       }
     })
+  }
+
+  passToUserDataLocalStorage(data:any):UserDataLocalStorage {
+    const newId = data['formulario']
+    delete data['formulario']
+    return {...data, id: newId}
   }
 
   onSubmit(){

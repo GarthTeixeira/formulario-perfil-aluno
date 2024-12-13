@@ -4,7 +4,7 @@
         <mat-form-field appearance="fill" style ="flex-grow:2" >
             <mat-select required="true" (selectionChange)="onChangeEscola($event.value)">
                 @for (escola of escolasOptions; track escola.id) {
-                    <mat-option [value]="escola.id">{{escola.name}}</mat-option>
+                    <mat-option [value]="escola.id">{{escola.name | decodeUTF8}}</mat-option>
                 }
             </mat-select>
             <mat-label>Escola</mat-label>
