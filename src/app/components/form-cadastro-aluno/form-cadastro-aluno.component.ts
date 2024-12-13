@@ -17,6 +17,7 @@ import { FormProfessoresService } from '../../services/form-professores.service'
 import { EscolasService } from '../../services/escolas.service';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
 import { UserDataLocalStorage } from '../../types/types';
+import { DecodeUTF8Pipe } from '../../pipes/decode-utf8.pipe';
 @Component({
   selector: 'app-form-cadastro-aluno',
   standalone: true,
@@ -29,7 +30,7 @@ import { UserDataLocalStorage } from '../../types/types';
     MatButtonModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-
+    DecodeUTF8Pipe
   ],
   templateUrl: './form-cadastro-aluno.component.html',
   styleUrl: './form-cadastro-aluno.component.scss'
@@ -95,6 +96,11 @@ export class FormCadastroAlunoComponent {
   onChangeSerie(value: string) {
     this.turmasOptions = this.selectedSchool.turmas.filter((turma:any)=> turma.serie == value)
     console.log(this.turmasOptions)
+  }
+
+  //Improve performance
+  trackById(index: number, item: any): number {
+    return item.id;
   }
 
   protected submitAlunoForm() {

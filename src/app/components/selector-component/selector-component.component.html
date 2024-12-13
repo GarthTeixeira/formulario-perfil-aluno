@@ -4,6 +4,6 @@
       [routerLink]="[destinyRoute]"
       [state]="{ itemData: item}"
     >
-      <span>{{ item.title }}</span>
+      <span>{{ item.title | decodeUTF8 }}</span>
     </a>
   }
