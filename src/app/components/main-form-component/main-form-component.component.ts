@@ -6,7 +6,6 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import getCompetencesFromArray from '../../mocks/generateCompetencias';
 import { MainFormUtils } from '../../utils/main-form-utils';
 import { CompetecenciasService } from '../../services/competecencias.service';
 import { FormProfessoresService } from '../../services/form-professores.service';
@@ -21,7 +20,7 @@ interface IDictionarySkill<TValue> {
 type FormMode = 'AREA'|'COGNITIVE'| undefined;
 
 type SubmitParams = { 
-  requestParams: { disciplina:string | undefined, competencias:any, professor:any, area:string }
+  requestParams: { disciplina:string | undefined, competencias:any, formulario:string ,professor:any, area:string }
   callback: Function
 } | null;
 
@@ -114,25 +113,27 @@ export class MainFormComponent{
 
   onSubmit(stepper: any) {
    
+    const userData = this.localStorageService.getItem('userData');
+    const isAreaMode = this.formMode ==='AREA'
+    const commonParams = {
+      disciplina: this.itemSelecionado?.id,
+      formulario: userData['id'],
+      professor: {
+        nome: userData['nome'],
+        email: userData['email'],
+      }
+    };
 
-    let submitParams: SubmitParams = (this.formMode === 'AREA') ? {
+    let submitParams: SubmitParams = {
       requestParams: {
-        'disciplina': this.itemSelecionado?.id, 
-        'competencias': this.questionarioAreasFormGroup.getRawValue().competences, 
-        'professor':  this.localStorageService.getItem('userData')['id'],
-        'area': this.itemSelecionado?.tag || ''
+        ...commonParams,
+        competencias: isAreaMode 
+          ? this.questionarioAreasFormGroup.getRawValue().competences 
+          : this.questionarioCognitivoFormGroup.getRawValue().competencesCognitive,
+        area: isAreaMode ? this.itemSelecionado?.tag || '' : 'COGNITIVOS'
       },
-      callback: this.gotoNextPhase
-      
-    } : {
-      requestParams: {
-        'disciplina': this.itemSelecionado?.id,
-        'competencias':this.questionarioCognitivoFormGroup.getRawValue().competencesCognitive,
-        'professor': this.localStorageService.getItem('userData')['id'],
-        'area': "COGNITIVOS"
-      },
-      callback: this.goToPreviousRoute
-    }
+      callback: isAreaMode ? this.gotoNextPhase : this.goToPreviousRoute
+    };
 
 
     if (submitParams) {
