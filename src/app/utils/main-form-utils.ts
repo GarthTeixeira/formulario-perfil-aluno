@@ -133,7 +133,7 @@ export  class MainFormUtils {
 
     public static makeRespostaForm = (formValues: any): FormRespostaInterface => {
         const competenciasDict:any = {}
-        const { disciplina, professor, area } = formValues;
+        const { disciplina, professor, area, formulario } = formValues;
 
         formValues.competencias.forEach((competencia: any) => {
             const arrayResposta = area != 'COGNITIVOS'
@@ -147,6 +147,7 @@ export  class MainFormUtils {
         })
        
         return {
+            formulario,
             disciplina,
             competencias: competenciasDict,
             professor,
