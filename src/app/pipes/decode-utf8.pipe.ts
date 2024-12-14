@@ -7,7 +7,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DecodeUTF8Pipe implements PipeTransform {
 
   transform(value: string): string {
-    console.log(value)
     if (this.isLikelyUtf8(value)) {
       try {
         const decoder = new TextDecoder('utf-8');

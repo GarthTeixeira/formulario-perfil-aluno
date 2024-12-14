@@ -95,7 +95,6 @@ export class FormCadastroAlunoComponent {
 
   onChangeSerie(value: string) {
     this.turmasOptions = this.selectedSchool.turmas.filter((turma:any)=> turma.serie == value)
-    console.log(this.turmasOptions)
   }
 
   //Improve performance
