@@ -31,7 +31,7 @@ export class SelectFormLoginComponent implements OnInit{
 
   public selectedSchool: any;
 
-  public formOptions:any[] = [];
+  public formOptions:UserDataLocalStorage[] = [];
 
   public selectedForm:any | null = null;
 
@@ -70,10 +70,13 @@ export class SelectFormLoginComponent implements OnInit{
   passToUserDataLocalStorage(data:any):UserDataLocalStorage {
     const newId = data['formulario']
     delete data['formulario']
+    data['escola'] = this.selectedSchool.id
+    data['turma'] = this.selectedSchool.turmas.find((turma:any)=>turma['_id'] === data['turma'])
     return {...data, id: newId}
   }
 
   onSubmit(){
+    console.log(this.selectedForm)
     this.localStorageService.setItem('userData',this.selectedForm)
     this.router.navigate(['/areas'])
   }
