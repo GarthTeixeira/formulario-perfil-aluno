@@ -70,8 +70,8 @@ export class FormCadastroAlunoComponent {
       name: ['', Validators.required],
       email: ['', Validators.email],
       escola: ['', Validators.required],
-      serie: ['', Validators.required],
-      turma: ['', Validators.required],
+      serie: [{value:'', disabled:true}, Validators.required],
+      turma: [{value:'', disabled:true}, Validators.required],
     })
 
     this._escolasService.getEscolasOptions().subscribe({
@@ -91,10 +91,14 @@ export class FormCadastroAlunoComponent {
       this.selectedSchool?.turmas.map((turma: any) => turma?.serie || '') || []
     )]
     
+    if(this.serieOptions.length!=0)
+      this.applyForm.get('serie')?.enable();
   }
 
   onChangeSerie(value: string) {
     this.turmasOptions = this.selectedSchool.turmas.filter((turma:any)=> turma.serie == value)
+    if(this.turmasOptions.length!=0)
+      this.applyForm.get('turma')?.enable();
   }
 
   //Improve performance
