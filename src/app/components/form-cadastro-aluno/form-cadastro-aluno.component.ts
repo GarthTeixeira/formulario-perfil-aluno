@@ -12,7 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, delay, of } from 'rxjs';
 import { DadosRespostaProfessorInterface } from '../../interfaces/dados-reposta-professor-interface';
-import { ProfessorFormUtils } from '../../utils/professor-form-utils';
+import { makeAlunoFromFormGroup } from '../../utils/professor-form-utils';
 import { FormProfessoresService } from '../../services/form-professores.service';
 import { EscolasService } from '../../services/escolas.service';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
@@ -63,7 +63,7 @@ export class FormCadastroAlunoComponent {
 
   ngOnInit() {
     if(this.localStorageService.getItem('userData')){
-      //realizar método para verificar se o usuário já está logado
+      //TODO:realizar método para verificar se o usuário já está logado
       //this.router.navigate(['/areas'])
     }
     this.applyForm = this._formBuilder.group({
@@ -104,7 +104,7 @@ export class FormCadastroAlunoComponent {
 
   protected submitAlunoForm() {
     this.isSending = true
-    const professor:DadosRespostaProfessorInterface = ProfessorFormUtils.makeAlunoFromFormGroup(
+    const professor:DadosRespostaProfessorInterface = makeAlunoFromFormGroup(
       this.applyForm.value
     )
     this._professoresService.insertProfessor(professor).subscribe({
