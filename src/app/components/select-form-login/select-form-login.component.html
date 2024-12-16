@@ -1,19 +1,42 @@
-<div style="display: flex; flex-direction: column;align-items: center; margin-top: 30px;">
+<form [formGroup]="applyForm"  style="display: flex; flex-direction: column;align-items: center; margin-top: 30px;">
     <h3>Escolha um formulário já cadastrado</h3>
     <div class = "flex-select-cadastro">
         <mat-form-field appearance="fill" style ="flex-grow:2" >
-            <mat-select required="true" (selectionChange)="onChangeEscola($event.value)">
+            <mat-select required="true"formControlName="escola" >
                 @for (escola of escolasOptions; track escola.id) {
-                    <mat-option [value]="escola.id">{{escola.name | decodeUTF8}}</mat-option>
+                    <mat-option [value]="escola">{{escola.name | decodeUTF8}}</mat-option>
                 }
             </mat-select>
             <mat-label>Escola</mat-label>
             <mat-icon matSuffix>school</mat-icon>
             <mat-hint>Escola em que o formulário foi cadastrado</mat-hint>
         </mat-form-field>
+        <mat-form-field style="flex-grow:2" appearance="fill">
+            <mat-select required="true" formControlName="serie">
+                @for (serie of serieOptions; track $index) {
+                    <mat-option [value]="serie">{{serie}}</mat-option>
+                }
+            
+            </mat-select>
+            <mat-label>Série</mat-label>
+            <mat-icon matSuffix>123</mat-icon>
+            <mat-hint>Ano referente ao formulário</mat-hint>
+        </mat-form-field>
+    </div>
+    <div class = "flex-select-cadastro">
+        <mat-form-field style="flex-grow:1" appearance="fill">
+            <mat-select formControlName="turma" required="true">
+                @for (turma of turmasOptions; track $index) {
+                    <mat-option [value]="turma">{{turma.nome}}</mat-option>
+                }
+            
+            </mat-select>
+            <mat-label>Turma</mat-label>
+            <mat-icon matSuffix>groups</mat-icon>
+        </mat-form-field>
         <mat-form-field appearance="fill" style="flex-grow:2" >
             <mat-label>Professor</mat-label>
-            <mat-select [(ngModel)]="selectedForm" required="true" [disabled]="formOptions.length==0">
+            <mat-select formControlName="formulario" required="true" >
                 @for (formulario of formOptions; track $index) {
                     <mat-option [value]="formulario">{{formulario.nome}}</mat-option>
                 }
@@ -21,8 +44,8 @@
             <mat-icon matSuffix>edit_note</mat-icon>
             <mat-hint>Selecione o nome no qual o formulário foi criado</mat-hint>
         </mat-form-field>
-        <button mat-stroked-button color="primary" class="send-button" [disabled]="!selectedForm" (click)="onSubmit()">
-            <span>Entrar</span>
-        </button>
     </div>
-</div>
+    <button mat-stroked-button color="primary" class="send-button" [disabled]="!selectedForm" (click)="onSubmit()">
+        <span>Entrar</span>
+    </button>
+</form>

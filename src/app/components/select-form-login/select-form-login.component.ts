@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { EscolasService } from '../../services/escolas.service';
@@ -10,6 +10,7 @@ import { FormProfessoresService } from '../../services/form-professores.service'
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
 import { UserDataLocalStorage } from '../../types/types';
 import { DecodeUTF8Pipe } from '../../pipes/decode-utf8.pipe';
+import { getAnoFromSerieString } from '../../utils/professor-form-utils'
 
 @Component({
   selector: 'app-select-form-login',
@@ -21,6 +22,7 @@ import { DecodeUTF8Pipe } from '../../pipes/decode-utf8.pipe';
     MatIconModule, 
     MatButtonModule,
     DecodeUTF8Pipe, 
+    ReactiveFormsModule,
   ],
   templateUrl: './select-form-login.component.html',
   styleUrl: './select-form-login.component.scss'
@@ -31,7 +33,15 @@ export class SelectFormLoginComponent implements OnInit{
 
   public selectedSchool: any;
 
+  public selectedSerie: string = ''
+
+  public applyForm: FormGroup = new FormGroup({})
+
   public formOptions:UserDataLocalStorage[] = [];
+
+  public serieOptions:string [] = []
+
+  public turmasOptions:any [] = []
 
   public selectedForm:any | null = null;
 
@@ -39,10 +49,18 @@ export class SelectFormLoginComponent implements OnInit{
     private _escolasService:EscolasService,
     private formProfessoresService: FormProfessoresService , 
     private localStorageService: LocalStorageService,
+    private _formBuilder: FormBuilder,
     private router: Router
   ){}
 
   ngOnInit(): void {
+    this.applyForm = this._formBuilder.group({ 
+          formulario: [{value:{}, disabled:true}, Validators.required],
+          escola: [{}, Validators.required],
+          serie: [{value:'', disabled:true}, Validators.required],
+          turma: [{value:null, disabled:true}, Validators.required],
+        })
+    
     this._escolasService.getEscolasOptions().subscribe({
       next: (response) => {
         this.escolasOptions = response
@@ -51,15 +69,48 @@ export class SelectFormLoginComponent implements OnInit{
         console.error(error)
       }
     })
+
+    this.applyForm.get('escola')?.valueChanges.subscribe(this.onChangeSchool.bind(this))
+    this.applyForm.get('serie')?.valueChanges.subscribe(this.onChangeSerie.bind(this))
+    this.applyForm.get('turma')?.valueChanges.subscribe(this.onChangeTurma.bind(this))
+  }
+
+  onChangeSchool(value:any){
+    console.log("onChangeSchool")
+    this.serieOptions = value['turmas'].map((turma:any)=>turma.serie)
+    if(this.serieOptions && this.serieOptions.length!=0)
+      this.applyForm.get("serie")?.enable()
+  }
+
+  onChangeSerie(value:any){
+    console.log("onChangeSerie", value)
+    if (this.applyForm.value['escola'] && value){
+      this.turmasOptions = this.applyForm.value['escola'].turmas
+        .filter((turma:any) =>getAnoFromSerieString(turma.serie) == getAnoFromSerieString(value))
+
+      console.log(this.turmasOptions)
+      if(this.turmasOptions && this.turmasOptions.length!=0){}
+        this.applyForm.get("turma")?.enable()
+    }
+  }
+
+  onChangeTurma(value:any){
+    console.log("onChangeTurma",value)
+    if (this.applyForm.value['escola'] && !!value){
+      this.fetchSchoolForms()
+    }
   }
   
-  onChangeEscola(value: string){
-    this.selectedSchool = this.escolasOptions.find(escola=>escola.id == value)
-    
-    this.formProfessoresService.getFormulariosBySchool(this.selectedSchool.id).subscribe({
+  fetchSchoolForms(){
+    this.formProfessoresService.getFormulariosBySchool(this.applyForm.value['escola'].id).subscribe({
       next:(response) => {
         this.selectedForm = null
-        this.formOptions = response.map((form:any):UserDataLocalStorage =>this.passToUserDataLocalStorage(form))
+        if(response?.length == 0)
+          window.alert("Não há formulários cadastrados ainda") // trocar por uma dialog de alerta/ fazer componentes de alerta
+        else {
+          this.formOptions = response.map((form:any):UserDataLocalStorage =>this.passToUserDataLocalStorage(form))
+          this.applyForm.get('formulario')?.enable()
+        }
       },
       error: (error)=>{
         console.error(error)
@@ -70,8 +121,8 @@ export class SelectFormLoginComponent implements OnInit{
   passToUserDataLocalStorage(data:any):UserDataLocalStorage {
     const newId = data['formulario']
     delete data['formulario']
-    data['escola'] = this.selectedSchool.id
-    data['turma'] = this.selectedSchool.turmas.find((turma:any)=>turma['_id'] === data['turma'])
+    data['escola'] = this.applyForm.value['escola'].id
+    data['turma'] = this.applyForm.value['escola'].turmas.find((turma:any)=>turma['_id'] === data['turma'])
     return {...data, id: newId}
   }
 
