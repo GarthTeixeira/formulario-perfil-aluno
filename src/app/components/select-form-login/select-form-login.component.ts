@@ -87,28 +87,38 @@ export class SelectFormLoginComponent implements OnInit{
     if (this.applyForm.value['escola'] && value){
       this.turmasOptions = this.applyForm.value['escola'].turmas
         .filter((turma:any) =>getAnoFromSerieString(turma.serie) == getAnoFromSerieString(value))
+      
+      if(this.applyForm.get('turma')?.enabled) {
+        this.applyForm.get('turma')?.setValue(null)
+        this.applyForm.get('turma')?.disable()
+      }
 
-      console.log(this.turmasOptions)
       if(this.turmasOptions && this.turmasOptions.length!=0){}
         this.applyForm.get("turma")?.enable()
     }
   }
 
   onChangeTurma(value:any){
-    console.log("onChangeTurma",value)
+    if(this.applyForm.get('formulario')?.enabled) {
+      this.applyForm.get('formulario')?.setValue({}) 
+      this.applyForm.get('formulario')?.disable()
+    }
     if (this.applyForm.value['escola'] && !!value){
-      this.fetchSchoolForms()
+      this.fetchSchoolForms(value._id)
     }
   }
   
-  fetchSchoolForms(){
+  fetchSchoolForms(turmaId: string){
     this.formProfessoresService.getFormulariosBySchool(this.applyForm.value['escola'].id).subscribe({
       next:(response) => {
         this.selectedForm = null
         if(response?.length == 0)
           window.alert("Não há formulários cadastrados ainda") // trocar por uma dialog de alerta/ fazer componentes de alerta
         else {
-          this.formOptions = response.map((form:any):UserDataLocalStorage =>this.passToUserDataLocalStorage(form))
+          console.log(turmaId)
+          this.formOptions = response
+            .filter((form:any) => form.turma === turmaId)
+            .map((form:any):UserDataLocalStorage =>this.passToUserDataLocalStorage(form))
           this.applyForm.get('formulario')?.enable()
         }
       },
