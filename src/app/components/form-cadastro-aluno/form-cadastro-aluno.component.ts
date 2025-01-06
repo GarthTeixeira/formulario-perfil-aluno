@@ -16,7 +16,7 @@ import { makeAlunoFromFormGroup } from '../../utils/professor-form-utils';
 import { FormProfessoresService } from '../../services/form-professores.service';
 import { EscolasService } from '../../services/escolas.service';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
-import { UserDataLocalStorage } from '../../types/types';
+import { UserDataLocalStorage } from '../../types/localStorageTypes';
 import { DecodeUTF8Pipe } from '../../pipes/decode-utf8.pipe';
 @Component({
   selector: 'app-form-cadastro-aluno',

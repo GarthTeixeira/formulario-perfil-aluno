@@ -24,4 +24,8 @@ export class FormProfessoresService {
     return this.http.get(`${this.apiUrl}/get-by-school/${escolaId}`)
   }
 
+  getProfessorRegister(formId:string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-subject-registers/${formId}`)
+  }
+
 }

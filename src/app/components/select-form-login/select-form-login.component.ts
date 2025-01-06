@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { FormProfessoresService } from '../../services/form-professores.service';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
-import { UserDataLocalStorage } from '../../types/types';
+import { UserDataLocalStorage } from '../../types/localStorageTypes';
 import { DecodeUTF8Pipe } from '../../pipes/decode-utf8.pipe';
 import { getAnoFromSerieString } from '../../utils/professor-form-utils'
 
