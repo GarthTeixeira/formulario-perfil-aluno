@@ -14,3 +14,22 @@
     --pill-accent: var(--hot-red);
 }
 
+.link-container {
+    display: flex;
+    justify-content: space-between; /* Distribui o conteúdo para os lados opostos */
+    align-items: center; /* Alinha verticalmente ao centro */
+    position: relative; /* Necessário para posicionamento absoluto do ícone */
+    padding: 0.5rem; /* Opcional, para ajustar o espaçamento interno */
+  }
+  
+  .link-text {
+    flex: 1; /* Ocupa todo o espaço disponível */
+  }
+  
+  .link-icon {
+    position: absolute;
+    top: -10px; /* Desloca o ícone para cima */
+    right: 0px; /* Posiciona à direita */
+    font-size: 24px; /* Ajusta o tamanho do ícone */
+    color: green;
+  }

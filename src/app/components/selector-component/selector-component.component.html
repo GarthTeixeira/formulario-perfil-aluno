@@ -3,7 +3,11 @@
       [ngClass]="'pill ' + item.color"
       [routerLink]="[destinyRoute]"
       [state]="{ itemData: item}"
+      class="link-container"
     >
-      <span>{{ item.title | decodeUTF8 }}</span>
+      <span class="link-text">{{ item.title | decodeUTF8 }}</span>
+      @if(isAnswered(item)){
+        <mat-icon class="link-icon" matSuffix>check</mat-icon>
+      }
     </a>
   }
