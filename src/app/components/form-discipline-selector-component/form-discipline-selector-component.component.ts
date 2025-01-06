@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SelectorComponent } from '../selector-component/selector-component.component';
 import { RouterLink } from '@angular/router';
 import { DisciplinasService } from '../../services/disciplinas.service';
+import { DisciplinaSelectItem } from '../../types/componentsTypes';
+import { Disciplina } from '../../types/serviceTypes';
 
 @Component({
   selector: 'app-form-discipline-selector-component',
@@ -12,7 +14,7 @@ import { DisciplinasService } from '../../services/disciplinas.service';
 })
 export class FormDisciplineSelectorComponent  {
   
-  disciplinas:Array<any> = [];
+  disciplinas:Array<DisciplinaSelectItem> = [];
 
   areaSelecionada:string = '';
 
@@ -25,8 +27,8 @@ export class FormDisciplineSelectorComponent  {
   getDisciplinas() {
     this.disciplinasService.getByAreaWithActualSerie(this.areaSelecionada).subscribe((data:any) => {
       this.disciplinas = data
-        .filter((disciplina:any) => disciplina.serie_ano <= 3)
-        .map((disciplina:any) => {
+        .filter((disciplina:Disciplina) => disciplina.serie_ano <= 3)
+        .map((disciplina:Disciplina) => {
           return {
             title: `${disciplina.name} - ${disciplina.serie_ano} ° ano`,
             id: disciplina.id, 
