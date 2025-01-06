@@ -1,3 +1,15 @@
+type Register = {
+    professor: string,
+    tipo: string,
+    ultima_resposta: string
+}
+
+export type TypeProfessorRegister = {
+    id: string,
+    nome: string,
+    register: Register []
+  }
+
 export type Disciplina = {
     area:string,
     codigoBNCC:string,

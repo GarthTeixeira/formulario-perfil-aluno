@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DadosRespostaProfessorInterface } from '../interfaces/dados-reposta-professor-interface';
 import { Observable } from 'rxjs';
+import { TypeProfessorRegister } from '../types/serviceTypes';
 @Injectable({
   providedIn: 'root'
 })
@@ -24,8 +25,8 @@ export class FormProfessoresService {
     return this.http.get(`${this.apiUrl}/get-by-school/${escolaId}`)
   }
 
-  getProfessorRegister(formId:string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/get-subject-registers/${formId}`)
+  getProfessorRegister(formId:string): Observable<TypeProfessorRegister[]> {
+    return this.http.get<TypeProfessorRegister[]>(`${this.apiUrl}/get-subject-registers/${formId}`)
   }
 
 }

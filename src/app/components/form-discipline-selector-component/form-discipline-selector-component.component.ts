@@ -3,7 +3,11 @@ import { SelectorComponent } from '../selector-component/selector-component.comp
 import { RouterLink } from '@angular/router';
 import { DisciplinasService } from '../../services/disciplinas.service';
 import { DisciplinaSelectItem } from '../../types/componentsTypes';
-import { Disciplina } from '../../types/serviceTypes';
+import { Disciplina, TypeProfessorRegister } from '../../types/serviceTypes';
+import { FormProfessoresService } from '../../services/form-professores.service';
+import { forkJoin } from 'rxjs';
+import { LocalStorageService } from '../../shared/services/local-storage-service.service';
+import { getTituloFormatoDisciplinaNomeSerie } from '../../utils/professor-form-utils'
 
 @Component({
   selector: 'app-form-discipline-selector-component',
@@ -20,25 +24,38 @@ export class FormDisciplineSelectorComponent  {
 
   color:string = '';
 
-  constructor(private disciplinasService: DisciplinasService) {
-    
-  }
+  constructor(
+    private disciplinasService: DisciplinasService,
+    private formProfessorService: FormProfessoresService,
+    private localStorageService:LocalStorageService
+  ) {}
 
   getDisciplinas() {
-    this.disciplinasService.getByAreaWithActualSerie(this.areaSelecionada).subscribe((data:any) => {
-      this.disciplinas = data
+
+    const getDiscipinasArea = this.disciplinasService.getByAreaWithActualSerie(this.areaSelecionada)
+    const getProfessorRegister = this.formProfessorService.getProfessorRegister(this.localStorageService.getItem('userData')['id'])
+
+    forkJoin([getDiscipinasArea,getProfessorRegister]).subscribe(([disciplinas, professoreRegisters])=>{
+      console.log(professoreRegisters)
+      this.disciplinas = disciplinas
         .filter((disciplina:Disciplina) => disciplina.serie_ano <= 3)
         .map((disciplina:Disciplina) => {
+          const title = getTituloFormatoDisciplinaNomeSerie(disciplina)
           return {
-            title: `${disciplina.name} - ${disciplina.serie_ano} ° ano`,
+            title,
             id: disciplina.id, 
             tag: disciplina.area, 
-            color: this.color
+            color: this.color,
+            answered: this.isAnswered(title, professoreRegisters)
           }
         }
       );
 
-    });
+    })
+  }
+
+  isAnswered(disciplinaTitle:string, professoreRegisters:TypeProfessorRegister []): boolean {
+    return professoreRegisters.some(profReg=>profReg.nome===disciplinaTitle)
   }
 
   ngOnInit() {

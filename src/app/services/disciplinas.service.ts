@@ -35,7 +35,7 @@ export class DisciplinasService {
     getByArea(area: string) {
       const baseUrl = this.dataShared.getHost();
       const school_id = this.dataShared.getData()?.escola || this.localStorageService.getItem('userData')['escola'];
-      return this.http.get<Disciplina>(
+      return this.http.get<Disciplina []>(
         `${baseUrl}/schools/get-by-area?school=${school_id}&area=${area}`,
         {headers: this.corsHeaders}
       );
@@ -45,7 +45,7 @@ export class DisciplinasService {
       const baseUrl = this.dataShared.getHost();
       const school_id = this.dataShared.getData()?.escola || this.localStorageService.getItem('userData')['escola'];
       const serie = this.localStorageService.getItem('userData')['turma']['serie']
-      return this.http.get<Disciplina>(
+      return this.http.get<Disciplina []>(
         `${baseUrl}/schools/get-by-area?school=${school_id}&area=${area}&serie=${serie[0]}`,
         {headers: this.corsHeaders}
       );
