@@ -3,6 +3,7 @@ import { RouterLink, RouterModule } from '@angular/router';
 import { areas } from '../../utils/areas';
 import { SelectorComponent } from '../selector-component/selector-component.component';
 import { DataSharedService } from '../../shared/data-shared.service';
+import { AreasSelectItem } from '../../types/componentsTypes';
 @Component({
   selector: 'app-form-area-selector-component',
   standalone: true,
@@ -11,10 +12,10 @@ import { DataSharedService } from '../../shared/data-shared.service';
   styleUrl: './form-area-selector-component.component.scss'
 })
 export class FormAreaSelectorComponent {
-  areas:Array<any> = [];
+  areas:Array<AreasSelectItem> = [];
   cores:Array<string> = ['primary', 'secondary', 'tertiary', 'quaternary'];
 
- constructor(private dataService: DataSharedService) {}
+ constructor() {}
 
  ngOnInit() {
 
