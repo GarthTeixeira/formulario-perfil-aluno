@@ -43,7 +43,7 @@ export class SelectFormLoginComponent implements OnInit{
 
   public turmasOptions:any [] = []
 
-  public selectedForm:any | null = null;
+  public selectedForm:UserDataLocalStorage | null = null;
 
   constructor(
     private _escolasService:EscolasService,
@@ -55,7 +55,7 @@ export class SelectFormLoginComponent implements OnInit{
 
   ngOnInit(): void {
     this.applyForm = this._formBuilder.group({ 
-          formulario: [{value:{}, disabled:true}, Validators.required],
+          formulario: [{value:null, disabled:true}, Validators.required],
           escola: [{}, Validators.required],
           serie: [{value:'', disabled:true}, Validators.required],
           turma: [{value:null, disabled:true}, Validators.required],
@@ -73,6 +73,7 @@ export class SelectFormLoginComponent implements OnInit{
     this.applyForm.get('escola')?.valueChanges.subscribe(this.onChangeSchool.bind(this))
     this.applyForm.get('serie')?.valueChanges.subscribe(this.onChangeSerie.bind(this))
     this.applyForm.get('turma')?.valueChanges.subscribe(this.onChangeTurma.bind(this))
+    this.applyForm.get('formulario')?.valueChanges.subscribe(this.onChangeForm.bind(this))
   }
 
   onChangeSchool(value:any){
@@ -100,12 +101,16 @@ export class SelectFormLoginComponent implements OnInit{
 
   onChangeTurma(value:any){
     if(this.applyForm.get('formulario')?.enabled) {
-      this.applyForm.get('formulario')?.setValue({}) 
+      this.applyForm.get('formulario')?.setValue(null) 
       this.applyForm.get('formulario')?.disable()
     }
     if (this.applyForm.value['escola'] && !!value){
       this.fetchSchoolForms(value._id)
     }
+  }
+
+  onChangeForm(value:UserDataLocalStorage){
+    this.selectedForm = value
   }
   
   fetchSchoolForms(turmaId: string){
@@ -116,10 +121,15 @@ export class SelectFormLoginComponent implements OnInit{
           window.alert("Não há formulários cadastrados ainda") // trocar por uma dialog de alerta/ fazer componentes de alerta
         else {
           console.log(turmaId)
-          this.formOptions = response
+          const formsOfTurma = response
             .filter((form:any) => form.turma === turmaId)
             .map((form:any):UserDataLocalStorage =>this.passToUserDataLocalStorage(form))
-          this.applyForm.get('formulario')?.enable()
+          if(formsOfTurma.length == 0)
+            window.alert("Não há formularios referentes a essa turma")
+          else{ 
+            this.formOptions =formsOfTurma
+            this.applyForm.get('formulario')?.enable()
+          }
         }
       },
       error: (error)=>{
@@ -137,7 +147,6 @@ export class SelectFormLoginComponent implements OnInit{
   }
 
   onSubmit(){
-    console.log(this.selectedForm)
     this.localStorageService.setItem('userData',this.selectedForm)
     this.router.navigate(['/areas'])
   }
