@@ -39,7 +39,7 @@ export class SelectFormLoginComponent implements OnInit{
 
   public formOptions:UserDataLocalStorage[] = [];
 
-  public serieOptions:string [] = []
+  public serieOptions:string []  = []
 
   public turmasOptions:any [] = []
 
@@ -77,7 +77,7 @@ export class SelectFormLoginComponent implements OnInit{
 
   onChangeSchool(value:any){
     console.log("onChangeSchool")
-    this.serieOptions = value['turmas'].map((turma:any)=>turma.serie)
+    this.serieOptions = [... new Set<string>(value['turmas'].map((turma:any)=>turma.serie))]
     if(this.serieOptions && this.serieOptions.length!=0)
       this.applyForm.get("serie")?.enable()
   }
