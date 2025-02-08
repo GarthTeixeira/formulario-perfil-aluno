@@ -1,21 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { DataSharedService } from '../shared/data-shared.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompetecenciasService {
 
-  apiUrl = 'http://localhost:5000/competences';
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private dataService: DataSharedService) { }
 
   getByArea(area: string | undefined) : Observable<any> { 
-    return this.http.get<any>(`${this.apiUrl}/get-area/${area}?withHabilities=true`);
+    const apiUrl = `${this.dataService.getHost()}/competences`
+    return this.http.get<any>(`${apiUrl}/get-area/${area}?withHabilities=true`);
   }
 
   getCognitive() : Observable<any> { 
-    return this.http.get<any>(`${this.apiUrl}/get-area/COGNITIVOS?withHabilities=false`);
+    const apiUrl = `${this.dataService.getHost()}/competences`
+    return this.http.get<any>(`${apiUrl}/get-area/COGNITIVOS?withHabilities=false`);
   }
 }
