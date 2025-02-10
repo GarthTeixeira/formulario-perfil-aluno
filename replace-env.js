@@ -11,3 +11,4 @@ content = content.replace('{{API_KEY}}', process.env.API_KEY || '');
 fs.writeFileSync(prodPath, content, 'utf8');
 
 console.log('Arquivo environment.prod.ts gerado com sucesso!');
+console.log(prodPath)
