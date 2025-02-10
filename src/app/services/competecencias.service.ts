@@ -8,15 +8,17 @@ import { DataSharedService } from '../shared/data-shared.service';
 })
 export class CompetecenciasService {
 
-  constructor(private http: HttpClient,private dataService: DataSharedService) { }
+  apiUrl:string | undefined
+
+  constructor(private http: HttpClient,private dataService: DataSharedService) {
+     this.apiUrl = `${this.dataService.getHost()}/competences`
+   }
 
   getByArea(area: string | undefined) : Observable<any> { 
-    const apiUrl = `${this.dataService.getHost()}/competences`
-    return this.http.get<any>(`${apiUrl}/get-area/${area}?withHabilities=true`);
+    return this.http.get<any>(`${this.apiUrl}/get-area/${area}?withHabilities=true`);
   }
 
   getCognitive() : Observable<any> { 
-    const apiUrl = `${this.dataService.getHost()}/competences`
-    return this.http.get<any>(`${apiUrl}/get-area/COGNITIVOS?withHabilities=false`);
+    return this.http.get<any>(`${this.apiUrl}/get-area/COGNITIVOS?withHabilities=false`);
   }
 }
