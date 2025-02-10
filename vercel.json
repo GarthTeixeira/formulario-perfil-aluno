@@ -9,7 +9,7 @@
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "dist/formulario-perfil-aluno/browser/index.html"
+        "dest": "dist/formulario-perfil-aluno/index.html"
       }
     ]
   }
