@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "replace-env": "node replace-env.js",
+    "prebuild": "node replace-env.js",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
