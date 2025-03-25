@@ -1,37 +1,54 @@
 @if(!isSending){ <form [formGroup]="applyForm" class="aluno-form" (ngSubmit)="submitAlunoForm()">
     <h3>Preencha seus dados</h3>
     <div>
-        <mat-form-field [ngStyle]="{'width':'600px'}" appearance="fill" >
-          <mat-label>Nome</mat-label>
-          <input formControlName="name" matInput placeholder="Digite o nome completo" required>
-          <mat-icon matSuffix>badge</mat-icon>
-          <mat-hint>Nome completo</mat-hint>
+        <mat-form-field [ngStyle]="{'width':'600px'}" appearance="fill">
+            <mat-label>Nome</mat-label>
+            <input formControlName="name" matInput placeholder="Digite o nome completo" required>
+            <mat-icon matSuffix>badge</mat-icon>
+            <mat-hint>Nome completo</mat-hint>
         </mat-form-field>
     </div>
-    <div [ngClass] = "'form-row'">
-        <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'2'}" >
+    <div [ngClass]="'form-row'">
+        <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'2'}">
             <mat-label>Email</mat-label>
             <input required formControlName="email" matInput placeholder="Digite seu email">
             <mat-icon matSuffix>alternate_email</mat-icon>
             <mat-hint>Email para contato</mat-hint>
         </mat-form-field>
-        <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}" >
-            <mat-select formControlName="escola" required="true" (selectionChange)="onChangeEscola($event.value)">
-                @for (escola of escolasOptions; track escola.id) {
-                    <mat-option [value]="escola.id">{{escola.name | decodeUTF8}}</mat-option>
-                }
-            </mat-select>
-            <mat-label>Escola</mat-label>
-            <mat-icon matSuffix>school</mat-icon>
-        </mat-form-field>
+        
+        @defer(when loadingData | async){
+            @if(!errorLoadingSchools){ 
+                <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}" >
+                    <mat-select formControlName="escola" required="true" (selectionChange)="onChangeEscola($event.value)">
+                        @for (escola of escolasOptions; track escola.id) {
+                            <mat-option [value]="escola.id">{{escola.name | decodeUTF8}}</mat-option>
+                        }
+                    </mat-select>
+                    <mat-label>Escola</mat-label>
+                    <mat-icon matSuffix>school</mat-icon>
+                </mat-form-field>
+            }@else{
+                <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}" >
+                    <mat-select formControlName="escola" required="true">
+                        <mat-option [value]="null">Erro ao carregar escolas</mat-option>
+                    </mat-select>
+                    <mat-label>Escola</mat-label>
+                    <mat-icon matSuffix>school</mat-icon>
+                </mat-form-field>
+            }
+        }@placeholder {
+            <div  [ngClass]="'spinner-container '" [ngStyle]="{'width': '278px' }">
+                <mat-spinner [diameter]="50"></mat-spinner>
+            </div>
+        }
     </div>
-    <div [ngClass] = "'form-row'">
+    <div [ngClass]="'form-row'">
         <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill">
             <mat-select formControlName="serie" required="true" (selectionChange)="onChangeSerie($event.value)">
                 @for (serie of serieOptions; track $index) {
-                    <mat-option [value]="serie">{{serie}}</mat-option>
+                <mat-option [value]="serie">{{serie}}</mat-option>
                 }
-            
+
             </mat-select>
             <mat-label>Série</mat-label>
             <mat-icon matSuffix>123</mat-icon>
@@ -40,9 +57,9 @@
         <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill">
             <mat-select formControlName="turma" required="true">
                 @for (turma of turmasOptions; track $index) {
-                    <mat-option [value]="turma">{{turma.nome}}</mat-option>
+                <mat-option [value]="turma">{{turma.nome}}</mat-option>
                 }
-            
+
             </mat-select>
             <mat-label>Turma</mat-label>
             <mat-icon matSuffix>groups</mat-icon>
@@ -55,11 +72,9 @@
     </div>
 </form>}
 @else {
-    <div [ngStyle]="{'display':'flex','flex-direction':'column', 'align-items':'center', 'margin-top':'100px'}">
-        <h1>Enviando...</h1>
-        <p>Por favor, aguarde</p>
-        <mat-spinner></mat-spinner>
-    </div>
-  }
-
-
+<div [ngStyle]="{'display':'flex','flex-direction':'column', 'align-items':'center', 'margin-top':'100px'}">
+    <h1>Enviando...</h1>
+    <p>Por favor, aguarde</p>
+    <mat-spinner></mat-spinner>
+</div>
+}

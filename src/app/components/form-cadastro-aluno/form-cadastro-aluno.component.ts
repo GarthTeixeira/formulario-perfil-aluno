@@ -4,13 +4,13 @@ import { MatButtonModule } from '@angular/material/button';
 import {  MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelect, MatSelectChange, MatSelectModule } from '@angular/material/select';
+import {  MatSelectModule } from '@angular/material/select';
 import { FormBuilder,  FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataSharedService } from '../../shared/data-shared.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, delay, of } from 'rxjs';
+import { Observable, catchError, delay, of } from 'rxjs';
 import { DadosRespostaProfessorInterface } from '../../interfaces/dados-reposta-professor-interface';
 import { makeAlunoFromFormGroup } from '../../utils/professor-form-utils';
 import { FormProfessoresService } from '../../services/form-professores.service';
@@ -30,7 +30,8 @@ import { DecodeUTF8Pipe } from '../../pipes/decode-utf8.pipe';
     MatButtonModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-    DecodeUTF8Pipe
+    DecodeUTF8Pipe,
+    MatProgressSpinnerModule
   ],
   templateUrl: './form-cadastro-aluno.component.html',
   styleUrl: './form-cadastro-aluno.component.scss'
@@ -49,6 +50,11 @@ export class FormCadastroAlunoComponent {
 
   public turmasOptions: any[] = []
 
+  public loadingData:Observable<any> | null = null
+
+  public errorLoadingSchools: boolean = false;
+
+
   public sendData: (data: DadosRespostaProfessorInterface) => Observable<any> = this._professoresService.insertProfessor;
 
   constructor(
@@ -59,7 +65,15 @@ export class FormCadastroAlunoComponent {
     public dialog: MatDialog,
     private _professoresService: FormProfessoresService,
     private _escolasService: EscolasService
-  ) {}
+  ) {
+    this.loadingData = this._escolasService.getEscolasOptions().pipe(
+      catchError((error) => {
+        this.errorLoadingSchools = true;
+        console.error('Erro ao carregar escolas:', error);
+        return of([]); 
+      })
+    );
+  }
 
   ngOnInit() {
     if(this.localStorageService.getItem('userData')){
@@ -74,14 +88,9 @@ export class FormCadastroAlunoComponent {
       turma: [{value:'', disabled:true}, Validators.required],
     })
 
-    this._escolasService.getEscolasOptions().subscribe({
-      next: (response) => {
+    this.loadingData?.subscribe((response) => {
         this.escolasOptions = response
-      },
-      error: (error) => {
-        console.error(error)
-      }
-    })
+      });
   }
 
   onChangeEscola(value: string){
