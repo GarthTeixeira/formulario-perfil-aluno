@@ -30,8 +30,8 @@ Use a versão do node especificada no projeto, no caso de utilizar o [asdf](http
 
 Adicione o plugin node e execute:
 
-````
-asdf install nodjs <version>
+```
+asdf install nodejs <version>
 ```
 
 ## Angular CLI
@@ -39,6 +39,19 @@ para a utilização de comandos como `ng` instale o angular CLI:
 
 ```
 npm install -g @angular/cli@17.2.1
+```
+
+## Angular CLI(Local)
+Instalando localmente sem a flag `-g`
+
+```
+npm install @angular/cli@17.2.1
+```
+
+terá de utilizar os comandos de `ng` como o exemplo a baixo
+
+```
+npx ng serve
 ```
 
 ## Servidor de Desenvolvimento
