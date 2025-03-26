@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { EscolasService } from '../../services/escolas.service';
@@ -9,8 +9,9 @@ import { Router } from '@angular/router';
 import { FormProfessoresService } from '../../services/form-professores.service';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
 import { UserDataLocalStorage } from '../../types/localStorageTypes';
-import { DecodeUTF8Pipe } from '../../pipes/decode-utf8.pipe';
 import { getAnoFromSerieString } from '../../utils/professor-form-utils'
+import { LoadingFormFieldComponent } from '../loading-form-field/loading-form-field.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-select-form-login',
@@ -21,8 +22,8 @@ import { getAnoFromSerieString } from '../../utils/professor-form-utils'
     FormsModule, 
     MatIconModule, 
     MatButtonModule,
-    DecodeUTF8Pipe, 
     ReactiveFormsModule,
+    LoadingFormFieldComponent
   ],
   templateUrl: './select-form-login.component.html',
   styleUrl: './select-form-login.component.scss'
@@ -43,6 +44,8 @@ export class SelectFormLoginComponent implements OnInit{
 
   public turmasOptions:any [] = []
 
+  public loadingSchoolData:Observable<any> | null = null
+
   public selectedForm:UserDataLocalStorage | null = null;
 
   constructor(
@@ -53,6 +56,10 @@ export class SelectFormLoginComponent implements OnInit{
     private router: Router
   ){}
 
+   get escolaControl(): FormControl {
+      return this.applyForm.get('escola') as FormControl;
+    }
+  
   ngOnInit(): void {
     this.applyForm = this._formBuilder.group({ 
           formulario: [{value:null, disabled:true}, Validators.required],
@@ -61,14 +68,7 @@ export class SelectFormLoginComponent implements OnInit{
           turma: [{value:null, disabled:true}, Validators.required],
         })
     
-    this._escolasService.getEscolasOptions().subscribe({
-      next: (response) => {
-        this.escolasOptions = response
-      },
-      error: (error) => {
-        console.error(error)
-      }
-    })
+    this.loadingSchoolData = this._escolasService.getEscolasOptions()
 
     this.applyForm.get('escola')?.valueChanges.subscribe(this.onChangeSchool.bind(this))
     this.applyForm.get('serie')?.valueChanges.subscribe(this.onChangeSerie.bind(this))

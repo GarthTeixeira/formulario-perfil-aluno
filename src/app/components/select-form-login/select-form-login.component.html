@@ -1,16 +1,14 @@
 <form [formGroup]="applyForm"  style="display: flex; flex-direction: column;align-items: center; margin-top: 30px;">
     <h3>Escolha um formulário já cadastrado</h3>
     <div class = "flex-select-cadastro">
-        <mat-form-field appearance="fill" style ="flex-grow:2" >
-            <mat-select required="true"formControlName="escola" >
-                @for (escola of escolasOptions; track escola.id) {
-                    <mat-option [value]="escola">{{escola.name | decodeUTF8}}</mat-option>
-                }
-            </mat-select>
-            <mat-label>Escola</mat-label>
-            <mat-icon matSuffix>school</mat-icon>
-            <mat-hint>Escola em que o formulário foi cadastrado</mat-hint>
-        </mat-form-field>
+        <app-loading-form-field
+            [control]="escolaControl"  
+            [label]="'Escola'"
+            [icon]="'school'"
+            [optionDisplayField]="'name'"
+            [fetchData]="loadingSchoolData"
+        >
+        </app-loading-form-field>
         <mat-form-field style="flex-grow:2" appearance="fill">
             <mat-select required="true" formControlName="serie">
                 @for (serie of serieOptions; track $index) {
