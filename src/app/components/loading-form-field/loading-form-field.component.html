@@ -1,0 +1,29 @@
+@defer(when loadingData | async){
+    @if(!errorLoadingItems){ 
+        <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}" >
+            <mat-select 
+                [formControl]="control"  
+                required="true" 
+                (selectionChange)="onSelectionChange($event)"
+            >
+                @for (item of itemsOptions; track item.id) {
+                    <mat-option [value]="item">{{item[optionDisplayField] | decodeUTF8}}</mat-option>
+                }
+            </mat-select>
+            <mat-label>{{label}}</mat-label>
+            <mat-icon matSuffix>{{icon}}</mat-icon>
+        </mat-form-field>
+    }@else{
+        <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}" >
+            <mat-select [formControl]="control"  required="true">
+                <mat-option [value]="null">Erro ao carregar {{label.toLocaleLowerCase()}}s</mat-option>
+            </mat-select>
+            <mat-label>{{label}}</mat-label>
+            <mat-icon matSuffix>{{icon}}</mat-icon>
+        </mat-form-field>
+    }
+}@placeholder {
+    <div  [ngClass]="'spinner-container'" [ngStyle]="{'width': '278px' }">
+        <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+}

@@ -15,32 +15,16 @@
             <mat-icon matSuffix>alternate_email</mat-icon>
             <mat-hint>Email para contato</mat-hint>
         </mat-form-field>
-        
-        @defer(when loadingData | async){
-            @if(!errorLoadingSchools){ 
-                <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}" >
-                    <mat-select formControlName="escola" required="true" (selectionChange)="onChangeEscola($event.value)">
-                        @for (escola of escolasOptions; track escola.id) {
-                            <mat-option [value]="escola.id">{{escola.name | decodeUTF8}}</mat-option>
-                        }
-                    </mat-select>
-                    <mat-label>Escola</mat-label>
-                    <mat-icon matSuffix>school</mat-icon>
-                </mat-form-field>
-            }@else{
-                <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}" >
-                    <mat-select formControlName="escola" required="true">
-                        <mat-option [value]="null">Erro ao carregar escolas</mat-option>
-                    </mat-select>
-                    <mat-label>Escola</mat-label>
-                    <mat-icon matSuffix>school</mat-icon>
-                </mat-form-field>
-            }
-        }@placeholder {
-            <div  [ngClass]="'spinner-container '" [ngStyle]="{'width': '278px' }">
-                <mat-spinner [diameter]="50"></mat-spinner>
-            </div>
-        }
+        <app-loading-form-field
+            [control]="escolaControl"  
+            [itemsOptions]="escolasOptions"
+            [label]="'Escola'"
+            [icon]="'school'"
+            [optionDisplayField]="'name'"
+            (selectionChange)="onChangeEscola($event)"
+            [fetchData]="loadingSchoolData"
+            >
+        </app-loading-form-field>
     </div>
     <div [ngClass]="'form-row'">
         <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill">
