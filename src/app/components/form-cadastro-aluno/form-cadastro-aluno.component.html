@@ -15,7 +15,24 @@
             <mat-icon matSuffix>alternate_email</mat-icon>
             <mat-hint>Email para contato</mat-hint>
         </mat-form-field>
+        
+    </div>
+    <div [ngClass]="'form-row'">
+        <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}">
+            <mat-label>Telefone</mat-label>
+            <input 
+                formControlName="phone" 
+                matInput 
+                placeholder="Digite seu Número: (DDD) + Número" 
+                (input)="formatarTelefone($event,applyForm.get('phone'))"
+                maxlength="15"
+            >
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-hint>Telefone para contato</mat-hint>
+
+        </mat-form-field>
         <app-loading-form-field
+            [ngStyle]="{'flex-grow':'1', 'display':'flex'}"
             [control]="escolaControl"  
             [label]="'Escola'"
             [icon]="'school'"

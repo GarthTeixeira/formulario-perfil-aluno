@@ -10,14 +10,15 @@ import { Router } from '@angular/router';
 import { DataSharedService } from '../../shared/data-shared.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, catchError, delay, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { DadosRespostaProfessorInterface } from '../../interfaces/dados-reposta-professor-interface';
-import { makeAlunoFromFormGroup } from '../../utils/professor-form-utils';
+import { makeAlunoFromFormGroup, formatarTelefone } from '../../utils/professor-form-utils';
 import { FormProfessoresService } from '../../services/form-professores.service';
 import { EscolasService } from '../../services/escolas.service';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
 import { UserDataLocalStorage } from '../../types/localStorageTypes';
 import { LoadingFormFieldComponent } from '../loading-form-field/loading-form-field.component';
+import { phoneValidator } from '../../validators/phone.validator';
 @Component({
   selector: 'app-form-cadastro-aluno',
   standalone: true,
@@ -53,6 +54,8 @@ export class FormCadastroAlunoComponent {
 
   public errorLoadingSchools: boolean = false;
 
+  public formatarTelefone = formatarTelefone;
+
 
   public sendData: (data: DadosRespostaProfessorInterface) => Observable<any> = this._professoresService.insertProfessor;
 
@@ -71,6 +74,9 @@ export class FormCadastroAlunoComponent {
   get escolaControl(): FormControl {
     return this.applyForm.get('escola') as FormControl;
   }
+  get phoneControl(): FormControl {
+    return this.applyForm.get('phone') as FormControl;
+  }
 
   ngOnInit() {
     if(this.localStorageService.getItem('userData')){
@@ -83,6 +89,7 @@ export class FormCadastroAlunoComponent {
       escola: ['', Validators.required],
       serie: [{value:'', disabled:true}, Validators.required],
       turma: [{value:'', disabled:true}, Validators.required],
+      phone: [null, phoneValidator()]
     })
 
   }
