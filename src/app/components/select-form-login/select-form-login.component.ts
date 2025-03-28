@@ -141,7 +141,7 @@ export class SelectFormLoginComponent implements OnInit{
   passToUserDataLocalStorage(data:any):UserDataLocalStorage {
     const newId = data['formulario']
     delete data['formulario']
-    data['escola'] = this.applyForm.value['escola'].id
+    data['escola'] = this.applyForm.value['escola']
     data['turma'] = this.applyForm.value['escola'].turmas.find((turma:any)=>turma['_id'] === data['turma'])
     return {...data, id: newId}
   }
