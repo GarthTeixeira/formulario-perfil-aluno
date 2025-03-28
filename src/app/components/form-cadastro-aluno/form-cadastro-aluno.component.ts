@@ -40,8 +40,6 @@ export class FormCadastroAlunoComponent {
 
   public serieOptions: any[] = []
 
-  public escolasOptions: {name: string, id: any, turmas:{nome:string, id: string, serie: string}[] }[] = []
-
   public selectedSchool: any;
 
   public applyForm: FormGroup = new FormGroup({})
@@ -75,41 +73,58 @@ export class FormCadastroAlunoComponent {
     return this.applyForm.get('escola') as FormControl;
   }
   get phoneControl(): FormControl {
-    return this.applyForm.get('phone') as FormControl;
+    return this.applyForm.get('telefone') as FormControl;
   }
 
+  get enableTurma(): boolean {
+    return this.turmasOptions.length!=0
+  }
   ngOnInit() {
     if(this.localStorageService.getItem('userData')){
       //TODO:realizar método para verificar se o usuário já está logado
       //this.router.navigate(['/areas'])
     }
     this.applyForm = this._formBuilder.group({
-      name: ['', Validators.required],
+      nome: ['', Validators.required],
       email: ['', Validators.email],
       escola: ['', Validators.required],
-      serie: [{value:'', disabled:true}, Validators.required],
-      turma: [{value:'', disabled:true}, Validators.required],
-      phone: [null, phoneValidator()]
+      telefone: [null, phoneValidator()],
+      turma: this._formBuilder.group({
+        _id: [''],
+        serie: [{value:'',disabled:true}, Validators.required],
+        nome: ['', Validators.required]
+      })
     })
 
+    this.applyForm.get('escola')?.valueChanges.subscribe(this.onChangeEscola.bind(this))
+    this.applyForm.get('turma.serie')?.valueChanges.subscribe(this.onChangeSerie.bind(this))
   }
 
   onChangeEscola(event: MatSelectChange){
-
-    this.selectedSchool = event.value
-    
+    this.selectedSchool = this.applyForm.get('escola')?.value
     this.serieOptions = [ ... new Set(
       this.selectedSchool?.turmas.map((turma: any) => turma?.serie || '') || []
     )]
-    
     if(this.serieOptions.length!=0)
-      this.applyForm.get('serie')?.enable();
+      this.applyForm.get('turma.serie')?.enable();
   }
 
-  onChangeSerie(value: string) {
+  onChangeSerie() {
+    console.log("onChangeSerie")
+    const value = this.applyForm.get('turma.serie')?.value
     this.turmasOptions = this.selectedSchool.turmas.filter((turma:any)=> turma.serie == value)
-    if(this.turmasOptions.length!=0)
-      this.applyForm.get('turma')?.enable();
+      
+  }
+
+  onChangeTurma(event: MatSelectChange){
+    console.log("onChangeTurma")
+    console.log(event)
+    const turmaSelecionada = event.value
+    if(!turmaSelecionada) return
+    this.applyForm.get('turma')?.patchValue({
+      _id: turmaSelecionada._id,
+      nome: turmaSelecionada.nome
+    })
   }
 
   //Improve performance
@@ -119,9 +134,7 @@ export class FormCadastroAlunoComponent {
 
   protected submitAlunoForm() {
     this.isSending = true
-    const professor:DadosRespostaProfessorInterface = makeAlunoFromFormGroup(
-      this.applyForm.value
-    )
+    const professor:DadosRespostaProfessorInterface = this.applyForm.value
     this._professoresService.insertProfessor(professor).subscribe({
       next: (response: {id:string}) => {
         const userData: UserDataLocalStorage = {...response, ...professor}

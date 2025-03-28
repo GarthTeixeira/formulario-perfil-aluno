@@ -3,6 +3,7 @@ export interface DadosRespostaProfessorInterface {
     nome: string;
     email: string;
     escola: string;
+    telefone: string;
     turma: {
         nome:string;
         serie:string;
