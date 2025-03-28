@@ -1,3 +1,4 @@
+//TODO: será usado na exibição de resultados
 export interface AlunoInterface {
     nome: string;
     serie: string;

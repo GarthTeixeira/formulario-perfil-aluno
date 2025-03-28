@@ -1,3 +1,5 @@
+import { EscolaInterface } from "../interfaces/escola-interface";
+
 export type Turma = {
     _id:string;
     serie:string;
@@ -6,7 +8,7 @@ export type Turma = {
 export type UserDataLocalStorage = {
     id: string;
     nome: string;
-    escola:string;
+    escola:EscolaInterface;
     email:string;
     turma:Turma
   };

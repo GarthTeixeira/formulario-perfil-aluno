@@ -1,8 +1,10 @@
 //TODO: ajustar todas as interfeces e types
+import { EscolaInterface } from "./escola-interface";
+
 export interface DadosRespostaProfessorInterface {
     nome: string;
     email: string;
-    escola: string;
+    escola: EscolaInterface;
     telefone: string;
     turma: {
         nome:string;

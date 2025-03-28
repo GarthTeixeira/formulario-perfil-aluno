@@ -12,7 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { DadosRespostaProfessorInterface } from '../../interfaces/dados-reposta-professor-interface';
-import { makeAlunoFromFormGroup, formatarTelefone } from '../../utils/professor-form-utils';
+import { formatarTelefone } from '../../utils/professor-form-utils';
 import { FormProfessoresService } from '../../services/form-professores.service';
 import { EscolasService } from '../../services/escolas.service';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
@@ -87,7 +87,7 @@ export class FormCadastroAlunoComponent {
     this.applyForm = this._formBuilder.group({
       nome: ['', Validators.required],
       email: ['', Validators.email],
-      escola: ['', Validators.required],
+      escola: [{}, Validators.required],
       telefone: [null, phoneValidator()],
       turma: this._formBuilder.group({
         _id: [''],
