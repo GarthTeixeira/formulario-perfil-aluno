@@ -1,11 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import {  MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import {  MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { FormBuilder,  FormControl,  FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataSharedService } from '../../shared/data-shared.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -20,7 +26,7 @@ import { UserDataLocalStorage } from '../../types/localStorageTypes';
 import { LoadingFormFieldComponent } from '../loading-form-field/loading-form-field.component';
 import { phoneValidator } from '../../validators/phone.validator';
 @Component({
-  selector: 'app-form-cadastro-aluno',
+  selector: 'app-form-cadastro-formulario',
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -31,42 +37,41 @@ import { phoneValidator } from '../../validators/phone.validator';
     MatButtonModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-    LoadingFormFieldComponent
+    LoadingFormFieldComponent,
   ],
-  templateUrl: './form-cadastro-aluno.component.html',
-  styleUrl: './form-cadastro-aluno.component.scss'
+  templateUrl: './form-cadastro-formulario.component.html',
+  styleUrl: './form-cadastro-formulario.component.scss',
 })
-export class FormCadastroAlunoComponent {
-
-  public serieOptions: any[] = []
+export class FormCadatroFormularioComponent {
+  public serieOptions: any[] = [];
 
   public selectedSchool: any;
 
-  public applyForm: FormGroup = new FormGroup({})
+  public applyForm: FormGroup = new FormGroup({});
 
-  public isSending: boolean = false
+  public isSending: boolean = false;
 
-  public turmasOptions: any[] = []
+  public turmasOptions: any[] = [];
 
-  public loadingSchoolData:Observable<any> | null = null
+  public loadingSchoolData: Observable<any> | null = null;
 
   public errorLoadingSchools: boolean = false;
 
   public formatarTelefone = formatarTelefone;
 
-
-  public sendData: (data: DadosRespostaProfessorInterface) => Observable<any> = this._professoresService.insertProfessor;
+  public sendData: (data: DadosRespostaProfessorInterface) => Observable<any> =
+    this._professoresService.insertProfessor;
 
   constructor(
     private dataService: DataSharedService,
     private localStorageService: LocalStorageService,
-    private router:Router, 
+    private router: Router,
     private _formBuilder: FormBuilder,
     public dialog: MatDialog,
     private _professoresService: FormProfessoresService,
     private _escolasService: EscolasService
   ) {
-    this.loadingSchoolData = this._escolasService.getEscolasOptions()
+    this.loadingSchoolData = this._escolasService.getEscolasOptions();
   }
 
   get escolaControl(): FormControl {
@@ -77,10 +82,10 @@ export class FormCadastroAlunoComponent {
   }
 
   get enableTurma(): boolean {
-    return this.turmasOptions.length!=0
+    return this.turmasOptions.length != 0;
   }
   ngOnInit() {
-    if(this.localStorageService.getItem('userData')){
+    if (this.localStorageService.getItem('userData')) {
       //TODO:realizar método para verificar se o usuário já está logado
       //this.router.navigate(['/areas'])
     }
@@ -91,40 +96,48 @@ export class FormCadastroAlunoComponent {
       telefone: [null, phoneValidator()],
       turma: this._formBuilder.group({
         _id: [''],
-        serie: [{value:'',disabled:true}, Validators.required],
-        nome: ['', Validators.required]
-      })
-    })
+        serie: [{ value: '', disabled: true }, Validators.required],
+        nome: ['', Validators.required],
+      }),
+    });
 
-    this.applyForm.get('escola')?.valueChanges.subscribe(this.onChangeEscola.bind(this))
-    this.applyForm.get('turma.serie')?.valueChanges.subscribe(this.onChangeSerie.bind(this))
+    this.applyForm
+      .get('escola')
+      ?.valueChanges.subscribe(this.onChangeEscola.bind(this));
+    this.applyForm
+      .get('turma.serie')
+      ?.valueChanges.subscribe(this.onChangeSerie.bind(this));
   }
 
-  onChangeEscola(event: MatSelectChange){
-    this.selectedSchool = this.applyForm.get('escola')?.value
-    this.serieOptions = [ ... new Set(
-      this.selectedSchool?.turmas.map((turma: any) => turma?.serie || '') || []
-    )]
-    if(this.serieOptions.length!=0)
+  onChangeEscola(event: MatSelectChange) {
+    this.selectedSchool = this.applyForm.get('escola')?.value;
+    this.serieOptions = [
+      ...new Set(
+        this.selectedSchool?.turmas.map((turma: any) => turma?.serie || '') ||
+          []
+      ),
+    ];
+    if (this.serieOptions.length != 0)
       this.applyForm.get('turma.serie')?.enable();
   }
 
   onChangeSerie() {
-    console.log("onChangeSerie")
-    const value = this.applyForm.get('turma.serie')?.value
-    this.turmasOptions = this.selectedSchool.turmas.filter((turma:any)=> turma.serie == value)
-      
+    console.log('onChangeSerie');
+    const value = this.applyForm.get('turma.serie')?.value;
+    this.turmasOptions = this.selectedSchool.turmas.filter(
+      (turma: any) => turma.serie == value
+    );
   }
 
-  onChangeTurma(event: MatSelectChange){
-    console.log("onChangeTurma")
-    console.log(event)
-    const turmaSelecionada = event.value
-    if(!turmaSelecionada) return
+  onChangeTurma(event: MatSelectChange) {
+    console.log('onChangeTurma');
+    console.log(event);
+    const turmaSelecionada = event.value;
+    if (!turmaSelecionada) return;
     this.applyForm.get('turma')?.patchValue({
       _id: turmaSelecionada._id,
-      nome: turmaSelecionada.nome
-    })
+      nome: turmaSelecionada.nome,
+    });
   }
 
   //Improve performance
@@ -133,21 +146,21 @@ export class FormCadastroAlunoComponent {
   }
 
   protected submitAlunoForm() {
-    this.isSending = true
-    const professor:DadosRespostaProfessorInterface = this.applyForm.value
+    this.isSending = true;
+    const professor: DadosRespostaProfessorInterface = this.applyForm.value;
     this._professoresService.insertProfessor(professor).subscribe({
-      next: (response: {id:string}) => {
-        const userData: UserDataLocalStorage = {...response, ...professor}
-        console.log(userData)
-        this.localStorageService.setItem('userData', userData)
-        this.dataService.setData(userData)
-        this.router.navigate(['/areas'])
-        this.isSending = false
+      next: (response: { id: string }) => {
+        const userData: UserDataLocalStorage = { ...response, ...professor };
+        console.log(userData);
+        this.localStorageService.setItem('userData', userData);
+        this.dataService.setData(userData);
+        this.router.navigate(['/areas']);
+        this.isSending = false;
       },
       error: (error) => {
-        console.error(error)
-        this.isSending = false
-      }
-    })
+        console.error(error);
+        this.isSending = false;
+      },
+    });
   }
 }
