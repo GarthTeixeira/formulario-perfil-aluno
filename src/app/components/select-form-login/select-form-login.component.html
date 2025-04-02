@@ -1,49 +1,61 @@
-<form [formGroup]="applyForm"  style="display: flex; flex-direction: column;align-items: center; margin-top: 30px;">
-    <h3>Escolha um formulário já cadastrado</h3>
-    <div class = "flex-select-cadastro">
-        <app-loading-form-field
-            [control]="escolaControl"  
-            [label]="'Escola'"
-            [icon]="'school'"
-            [optionDisplayField]="'name'"
-            [fetchData]="loadingSchoolData"
-        >
-        </app-loading-form-field>
-        <mat-form-field style="flex-grow:2" appearance="fill">
-            <mat-select required="true" formControlName="serie">
-                @for (serie of serieOptions; track $index) {
-                    <mat-option [value]="serie">{{serie}}</mat-option>
-                }
-            
-            </mat-select>
-            <mat-label>Série</mat-label>
-            <mat-icon matSuffix>123</mat-icon>
-            <mat-hint>Ano referente ao formulário</mat-hint>
-        </mat-form-field>
-    </div>
-    <div class = "flex-select-cadastro">
-        <mat-form-field style="flex-grow:1" appearance="fill">
-            <mat-select formControlName="turma" required="true">
-                @for (turma of turmasOptions; track $index) {
-                    <mat-option [value]="turma">{{turma.nome}}</mat-option>
-                }
-            
-            </mat-select>
-            <mat-label>Turma</mat-label>
-            <mat-icon matSuffix>groups</mat-icon>
-        </mat-form-field>
-        <mat-form-field appearance="fill" style="flex-grow:2" >
-            <mat-label>Professor</mat-label>
-            <mat-select formControlName="formulario" required="true" >
-                @for (formulario of formOptions; track $index) {
-                    <mat-option [value]="formulario">{{formulario.nome}}</mat-option>
-                }
-            </mat-select>
-            <mat-icon matSuffix>edit_note</mat-icon>
-            <mat-hint>Selecione o nome no qual o formulário foi criado</mat-hint>
-        </mat-form-field>
-    </div>
-    <button mat-stroked-button color="primary" class="send-button" [disabled]="!selectedForm" (click)="onSubmit()">
-        <span>Entrar</span>
-    </button>
+<form
+  [formGroup]="applyForm"
+  style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+  "
+>
+  <h3>Escolha um formulário já cadastrado</h3>
+  <div class="flex-select-cadastro">
+    <app-loading-form-field
+      [control]="escolaControl"
+      [label]="'Escola'"
+      [icon]="'school'"
+      [optionDisplayField]="'name'"
+      [fetchData]="loadingSchoolData"
+    >
+    </app-loading-form-field>
+    <mat-form-field style="flex-grow: 2" appearance="fill">
+      <mat-select required="true" formControlName="serie">
+        @for (serie of serieOptions; track $index) {
+        <mat-option [value]="serie">{{ serie }}</mat-option>
+        }
+      </mat-select>
+      <mat-label>Série</mat-label>
+      <mat-icon matSuffix>123</mat-icon>
+      <mat-hint>Ano referente ao formulário</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="flex-select-cadastro">
+    <mat-form-field style="flex-grow: 1" appearance="fill">
+      <mat-select formControlName="turma" required="true">
+        @for (turma of turmasOptions; track $index) {
+        <mat-option [value]="turma">{{ turma.nome }}</mat-option>
+        }
+      </mat-select>
+      <mat-label>Turma</mat-label>
+      <mat-icon matSuffix>groups</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="flex-grow: 2">
+      <mat-label>Professor</mat-label>
+      <mat-select formControlName="formulario" required="true">
+        @for (formulario of formOptions; track $index) {
+        <mat-option [value]="formulario">{{ formulario.nome }}</mat-option>
+        }
+      </mat-select>
+      <mat-icon matSuffix>edit_note</mat-icon>
+      <mat-hint>Selecione o nome no qual o formulário foi criado</mat-hint>
+    </mat-form-field>
+  </div>
+  <button
+    mat-stroked-button
+    color="primary"
+    class="send-button"
+    [disabled]="!selectedForm"
+    (click)="onSubmit()"
+  >
+    <span>Entrar</span>
+  </button>
 </form>
