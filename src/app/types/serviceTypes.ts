@@ -1,19 +1,19 @@
 type Register = {
-    professor: string,
-    tipo: string,
-    ultima_resposta: string
-}
+  professor: string;
+  tipo: string;
+  ultima_resposta: string;
+};
 
 export type TypeProfessorRegister = {
-    id: string,
-    nome: string,
-    register: Register []
-  }
+  id: string;
+  nome: string;
+  register: Register[];
+};
 
 export type Disciplina = {
-    area:string,
-    codigoBNCC:string,
-    id:string,
-    name:string,
-    serie_ano: number
-}
+  area: string;
+  codigoBNCC: string;
+  id: string;
+  nome: string;
+  serie_ano: number;
+};
