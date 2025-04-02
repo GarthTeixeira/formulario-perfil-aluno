@@ -1,78 +1,103 @@
-@if(!isSending){ <form [formGroup]="applyForm" class="aluno-form" (ngSubmit)="submitAlunoForm()">
-    <h3>Preencha seus dados</h3>
-    <div>
-        <mat-form-field [ngStyle]="{'width':'600px'}" appearance="fill">
-            <mat-label>Nome</mat-label>
-            <input formControlName="nome" matInput placeholder="Digite o nome completo" required>
-            <mat-icon matSuffix>badge</mat-icon>
-            <mat-hint>Nome completo</mat-hint>
-        </mat-form-field>
-    </div>
-    <div [ngClass]="'form-row'">
-        <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'2'}">
-            <mat-label>Email</mat-label>
-            <input required formControlName="email" matInput placeholder="Digite seu email">
-            <mat-icon matSuffix>alternate_email</mat-icon>
-            <mat-hint>Email para contato</mat-hint>
-        </mat-form-field>
-        
-    </div>
-    <div [ngClass]="'form-row'">
-        <mat-form-field appearance="fill" [ngStyle]="{'flex-grow':'1'}">
-            <mat-label>Telefone</mat-label>
-            <input 
-                formControlName="telefone" 
-                matInput 
-                placeholder="Digite seu Número: (DDD) + Número" 
-                (input)="formatarTelefone($event,applyForm.get('telefone'))"
-                maxlength="15"
-            >
-            <mat-icon matSuffix>phone</mat-icon>
-            <mat-hint>Telefone para contato</mat-hint>
-
-        </mat-form-field>
-        <app-loading-form-field
-            [ngStyle]="{'flex-grow':'1', 'display':'flex'}"
-            [control]="escolaControl"  
-            [label]="'Escola'"
-            [icon]="'school'"
-            [optionDisplayField]="'name'"
-            [fetchData]="loadingSchoolData"
-            >
-        </app-loading-form-field>
-    </div>
-    <div [ngClass]="'form-row'" formGroupName="turma" >
-        <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill">
-            <mat-select formControlName="serie" required="true">
-                @for (serie of serieOptions; track $index) {
-                <mat-option [value]="serie">{{serie}}</mat-option>
-                }
-
-            </mat-select>
-            <mat-label>Série</mat-label>
-            <mat-icon matSuffix>123</mat-icon>
-            <mat-hint>Ano da turma que deseja avaliar</mat-hint>
-        </mat-form-field>
-        <mat-form-field [ngStyle]="{'flex-grow':'1'}" appearance="fill">
-            <mat-select [disabled]="!enableTurma" required="true" (selectionChange)="onChangeTurma($event)">
-                @for (turma of turmasOptions; track $index) {
-                <mat-option [value]="turma">{{turma.nome}}</mat-option>
-                }
-            </mat-select>
-            <mat-label>Turma</mat-label>
-            <mat-icon matSuffix>groups</mat-icon>
-        </mat-form-field>
-    </div>
-    <div class="send-div">
-        <button [disabled]="!applyForm.valid" type="submit" mat-stroked-button color="primary" class="send-button">
-            <span>Cadastrar</span>
-        </button>
-    </div>
-</form>}
-@else {
-<div [ngStyle]="{'display':'flex','flex-direction':'column', 'align-items':'center', 'margin-top':'100px'}">
-    <h1>Enviando...</h1>
-    <p>Por favor, aguarde</p>
-    <mat-spinner></mat-spinner>
+@if(!isSending){
+<form [formGroup]="applyForm" class="aluno-form" (ngSubmit)="submitAlunoForm()">
+  <h3>Preencha seus dados</h3>
+  <div>
+    <mat-form-field [ngStyle]="{ width: '600px' }" appearance="fill">
+      <mat-label>Nome</mat-label>
+      <input
+        formControlName="nome"
+        matInput
+        placeholder="Digite o nome completo"
+        required
+      />
+      <mat-icon matSuffix>badge</mat-icon>
+      <mat-hint>Nome completo</mat-hint>
+    </mat-form-field>
+  </div>
+  <div [ngClass]="'form-row'">
+    <mat-form-field appearance="fill" [ngStyle]="{ 'flex-grow': '2' }">
+      <mat-label>Email</mat-label>
+      <input
+        required
+        formControlName="email"
+        matInput
+        placeholder="Digite seu email"
+      />
+      <mat-icon matSuffix>alternate_email</mat-icon>
+      <mat-hint>Email para contato</mat-hint>
+    </mat-form-field>
+  </div>
+  <div [ngClass]="'form-row'">
+    <mat-form-field appearance="fill" [ngStyle]="{ 'flex-grow': '1' }">
+      <mat-label>Telefone</mat-label>
+      <input
+        formControlName="telefone"
+        matInput
+        placeholder="Digite seu Número: (DDD) + Número"
+        (input)="formatarTelefone($event, applyForm.get('telefone'))"
+        maxlength="15"
+      />
+      <mat-icon matSuffix>phone</mat-icon>
+      <mat-hint>Telefone para contato</mat-hint>
+    </mat-form-field>
+    <app-loading-form-field
+      [ngStyle]="{ 'flex-grow': '1', display: 'flex' }"
+      [control]="escolaControl"
+      [label]="'Escola'"
+      [icon]="'school'"
+      [optionDisplayField]="'name'"
+      [fetchData]="loadingSchoolData"
+    >
+    </app-loading-form-field>
+  </div>
+  <div [ngClass]="'form-row'" formGroupName="turma">
+    <mat-form-field [ngStyle]="{ 'flex-grow': '1' }" appearance="fill">
+      <mat-select formControlName="serie" required="true">
+        @for (serie of serieOptions; track $index) {
+        <mat-option [value]="serie">{{ serie }}</mat-option>
+        }
+      </mat-select>
+      <mat-label>Série</mat-label>
+      <mat-icon matSuffix>123</mat-icon>
+      <mat-hint>Ano da turma que deseja avaliar</mat-hint>
+    </mat-form-field>
+    <mat-form-field [ngStyle]="{ 'flex-grow': '1' }" appearance="fill">
+      <mat-select
+        [disabled]="!enableTurma"
+        required="true"
+        (selectionChange)="onChangeTurma($event)"
+      >
+        @for (turma of turmasOptions; track $index) {
+        <mat-option [value]="turma">{{ turma.nome }}</mat-option>
+        }
+      </mat-select>
+      <mat-label>Turma</mat-label>
+      <mat-icon matSuffix>groups</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="send-div">
+    <button
+      [disabled]="!applyForm.valid"
+      type="submit"
+      mat-stroked-button
+      color="primary"
+      class="send-button"
+    >
+      <span>Cadastrar</span>
+    </button>
+  </div>
+</form>
+} @else {
+<div
+  [ngStyle]="{
+    display: 'flex',
+    'flex-direction': 'column',
+    'align-items': 'center',
+    'margin-top': '100px'
+  }"
+>
+  <h1>Enviando...</h1>
+  <p>Por favor, aguarde</p>
+  <mat-spinner></mat-spinner>
 </div>
 }
