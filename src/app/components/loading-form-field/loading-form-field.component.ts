@@ -46,7 +46,7 @@ export class LoadingFormFieldComponent {
   @Input() icon = 'arrow_drop_down';
 
   @Input() label = 'Selecione';
-  @Input() optionDisplayField = 'name';
+  @Input() optionDisplayField = 'nome';
 
   ngOnInit() {
     this.loadingData = this.fetchData?.pipe(
