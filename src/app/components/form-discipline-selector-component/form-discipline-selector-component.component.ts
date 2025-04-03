@@ -50,20 +50,19 @@ export class FormDisciplineSelectorComponent {
               id: disciplina.id,
               tag: disciplina.area,
               color: this.color,
-              answered: this.isAnswered(title, professoreRegisters),
+              answered: this.isAnswered(disciplina.id, professoreRegisters),
             };
           });
       }
     );
   }
 
+  //NOTE: estava selecionando o registro pelo nome antes, porque?
   isAnswered(
-    disciplinaTitle: string,
+    disciplinaId: string,
     professoreRegisters: TypeDisciplinaRegister[]
   ): boolean {
-    return professoreRegisters.some(
-      (profReg) => profReg.nome === disciplinaTitle
-    );
+    return professoreRegisters.some((profReg) => profReg.id === disciplinaId);
   }
 
   ngOnInit() {
