@@ -2,34 +2,36 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DadosRespostaProfessorInterface } from '../interfaces/dados-reposta-professor-interface';
 import { Observable } from 'rxjs';
-import { TypeProfessorRegister } from '../types/serviceTypes';
+import { TypeDisciplinaRegister } from '../types/serviceTypes';
 import { DataSharedService } from '../shared/data-shared.service';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FormProfessoresService {
+  apiUrl: string | undefined;
 
-  apiUrl:string | undefined
-  
-  constructor(private http: HttpClient,private dataService: DataSharedService) {
-      this.apiUrl = `${this.dataService.getHost()}/professor-form`
-    }
+  constructor(
+    private http: HttpClient,
+    private dataService: DataSharedService
+  ) {
+    this.apiUrl = `${this.dataService.getHost()}/professor-form`;
+  }
 
-  insertProfessor(professor: DadosRespostaProfessorInterface):Observable<any> {
-   
-    return this.http.post(this.apiUrl+'/insert-professor', professor)
+  insertProfessor(professor: DadosRespostaProfessorInterface): Observable<any> {
+    return this.http.post(this.apiUrl + '/insert-professor', professor);
   }
 
   insertResposta(resposta: any) {
-    return this.http.put(this.apiUrl+'/insert-resposta', resposta)
+    return this.http.put(this.apiUrl + '/insert-resposta', resposta);
   }
 
-  getFormulariosBySchool(escolaId:any): Observable<any> {
-    return this.http.get(`${this.apiUrl}/get-by-school/${escolaId}`)
+  getFormulariosBySchool(escolaId: any): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-by-school/${escolaId}`);
   }
 
-  getProfessorRegister(formId:string): Observable<TypeProfessorRegister[]> {
-    return this.http.get<TypeProfessorRegister[]>(`${this.apiUrl}/get-subject-registers/${formId}`)
+  getDisciplinaRegister(formId: string): Observable<TypeDisciplinaRegister[]> {
+    return this.http.get<TypeDisciplinaRegister[]>(
+      `${this.apiUrl}/get-subject-registers/${formId}`
+    );
   }
-
 }

@@ -4,7 +4,7 @@ type Register = {
   ultima_resposta: string;
 };
 
-export type TypeProfessorRegister = {
+export type TypeDisciplinaRegister = {
   id: string;
   nome: string;
   register: Register[];
