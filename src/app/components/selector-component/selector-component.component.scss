@@ -1,35 +1,64 @@
-:host .primary{
-    --pill-accent: var(--bright-blue);
+:host .primary {
+  --pill-accent: var(--bright-blue);
 }
 
-:host .secondary{
-    --pill-accent: var(--electric-violet);
+:host .secondary {
+  --pill-accent: var(--electric-violet);
 }
 
-:host .tertiary{
-    --pill-accent: var(--vivid-pink);
+:host .tertiary {
+  --pill-accent: var(--vivid-pink);
 }
 
-:host .quaternary{
-    --pill-accent: var(--hot-red);
+:host .quaternary {
+  --pill-accent: var(--hot-red);
 }
 
 .link-container {
-    display: flex;
-    justify-content: space-between; /* Distribui o conteúdo para os lados opostos */
-    align-items: center; /* Alinha verticalmente ao centro */
-    position: relative; /* Necessário para posicionamento absoluto do ícone */
-    padding: 0.5rem; /* Opcional, para ajustar o espaçamento interno */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding: 0.5rem;
+}
+
+.link-text {
+  flex: 1;
+}
+
+.link-icon {
+  position: absolute;
+  top: -10px;
+  right: 0px;
+  font-size: 24px;
+  color: green;
+}
+
+.tooltip {
+  position: fixed;
+  background-color: #333;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 1000;
+
+  &.visible {
+    opacity: 1;
   }
-  
-  .link-text {
-    flex: 1; /* Ocupa todo o espaço disponível */
-  }
-  
-  .link-icon {
+
+  // Seta opcional
+  &::after {
+    content: "";
     position: absolute;
-    top: -10px; /* Desloca o ícone para cima */
-    right: 0px; /* Posiciona à direita */
-    font-size: 24px; /* Ajusta o tamanho do ícone */
-    color: green;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #333 transparent;
   }
+}

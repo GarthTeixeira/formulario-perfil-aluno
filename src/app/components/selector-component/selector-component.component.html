@@ -1,13 +1,24 @@
 @for (item of items; track item.title) {
-    <a
-      [ngClass]="'pill ' + item.color"
-      [routerLink]="[destinyRoute]"
-      [state]="{ itemData: item}"
-      class="link-container"
-    >
-      <span class="link-text">{{ item.title | decodeUTF8 }}</span>
-      @if(isAnswered(item)){
-        <mat-icon class="link-icon" matSuffix>check</mat-icon>
-      }
-    </a>
+<a
+  [ngClass]="'pill ' + item.color"
+  [routerLink]="[destinyRoute]"
+  [state]="{ itemData: item }"
+  class="link-container"
+  (mouseenter)="showTooltip($event, item)"
+  (mouseleave)="hideTooltip()"
+>
+  <span class="link-text">{{ item.title | decodeUTF8 }}</span>
+  @if(isAnswered(item)){
+  <mat-icon class="link-icon" matSuffix>check</mat-icon>
   }
+</a>
+}
+
+<div
+  class="tooltip"
+  [class.visible]="isTooltipVisible"
+  [style.left]="tooltipPosition.x + 'px'"
+  [style.top]="tooltipPosition.y + 'px'"
+>
+  {{ tooltipContent }}
+</div>

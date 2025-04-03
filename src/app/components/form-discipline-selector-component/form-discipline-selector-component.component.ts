@@ -3,7 +3,11 @@ import { SelectorComponent } from '../selector-component/selector-component.comp
 import { RouterLink } from '@angular/router';
 import { DisciplinasService } from '../../services/disciplinas.service';
 import { DisciplinaSelectItem } from '../../types/componentsTypes';
-import { Disciplina, TypeDisciplinaRegister } from '../../types/serviceTypes';
+import {
+  Disciplina,
+  Register,
+  TypeDisciplinaRegister,
+} from '../../types/serviceTypes';
 import { FormProfessoresService } from '../../services/form-professores.service';
 import { forkJoin } from 'rxjs';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
@@ -39,30 +43,44 @@ export class FormDisciplineSelectorComponent {
       );
 
     forkJoin([getDiscipinasArea, getDisciplinaRegister]).subscribe(
-      ([disciplinas, professoreRegisters]) => {
-        console.log(professoreRegisters);
+      ([disciplinas, registersByDisciplina]) => {
         this.disciplinas = disciplinas
           .filter((disciplina: Disciplina) => disciplina.serie_ano <= 3)
           .map((disciplina: Disciplina) => {
             const title = getTituloFormatoDisciplinaNomeSerie(disciplina);
-            return {
+            const essencial = {
               title,
               id: disciplina.id,
               tag: disciplina.area,
               color: this.color,
-              answered: this.isAnswered(disciplina.id, professoreRegisters),
             };
+            const lastRegister = this.getLastRegister(
+              disciplina.id,
+              registersByDisciplina
+            );
+            return !lastRegister ? essencial : { ...essencial, lastRegister };
           });
       }
     );
   }
 
   //NOTE: estava selecionando o registro pelo nome antes, porque?
-  isAnswered(
+  getLastRegister(
     disciplinaId: string,
-    professoreRegisters: TypeDisciplinaRegister[]
-  ): boolean {
-    return professoreRegisters.some((profReg) => profReg.id === disciplinaId);
+    registersByDisciplina: TypeDisciplinaRegister[]
+  ): Register | null {
+    const registers = registersByDisciplina.find(
+      (r) => r.id === disciplinaId
+    )?.register;
+
+    if (!registers?.length) return null;
+
+    return registers.reduce((latest, current) =>
+      new Date(current.ultima_resposta).getTime() >
+      new Date(latest.ultima_resposta).getTime()
+        ? current
+        : latest
+    );
   }
 
   ngOnInit() {

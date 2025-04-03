@@ -1,4 +1,4 @@
-type Register = {
+export type Register = {
   professor: string;
   tipo: string;
   ultima_resposta: string;
