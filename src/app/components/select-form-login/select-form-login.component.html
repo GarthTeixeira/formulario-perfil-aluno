@@ -39,7 +39,9 @@
       <mat-icon matSuffix>groups</mat-icon>
     </mat-form-field>
     <mat-form-field appearance="fill" style="flex-grow: 2">
-      <mat-label>Professor</mat-label>
+      <mat-label [ngStyle]="{ 'font-style': professorLabel.font }">{{
+        professorLabel.value
+      }}</mat-label>
       <mat-select formControlName="formulario" required="true">
         @for (formulario of formOptions; track $index) {
         <mat-option [value]="formulario">{{ formulario.nome }}</mat-option>

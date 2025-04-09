@@ -20,6 +20,7 @@ import { getAnoFromSerieString } from '../../utils/professor-form-utils';
 import { LoadingFormFieldComponent } from '../loading-form-field/loading-form-field.component';
 import { Observable } from 'rxjs';
 import { DataSharedService } from '../../shared/data-shared.service';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-select-form-login',
@@ -32,6 +33,7 @@ import { DataSharedService } from '../../shared/data-shared.service';
     MatButtonModule,
     ReactiveFormsModule,
     LoadingFormFieldComponent,
+    NgStyle,
   ],
   templateUrl: './select-form-login.component.html',
   styleUrl: './select-form-login.component.scss',
@@ -52,6 +54,11 @@ export class SelectFormLoginComponent implements OnInit {
   public loadingSchoolData: Observable<any> | null = null;
 
   public selectedForm: UserDataLocalStorage | null = null;
+
+  public professorLabel: { value: string; font: string } = {
+    value: 'Professor',
+    font: 'normal',
+  };
 
   constructor(
     private _escolasService: EscolasService,
@@ -144,6 +151,7 @@ export class SelectFormLoginComponent implements OnInit {
   }
 
   fetchSchoolForms(turmaId: string) {
+    this.professorLabel = { value: 'Carregando...', font: 'italic' };
     this.formProfessoresService
       .getFormulariosBySchool(this.applyForm.value['escola'].id)
       .subscribe({
@@ -170,7 +178,11 @@ export class SelectFormLoginComponent implements OnInit {
         },
         error: (error) => {
           console.error(error);
+          window.alert('Erro ao carregar os professores');
         },
+      })
+      .add(() => {
+        this.professorLabel = { value: 'Professor', font: 'normal' };
       });
   }
 
