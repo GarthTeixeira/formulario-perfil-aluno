@@ -1,7 +1,19 @@
 <h3>Escolha uma disciplina</h3>
-<app-selector-component class="pill-group-selector" destinyRoute="/form" [items]="disciplinas"/>
+@defer(when loadDisciplinas | async){ @if(!errorLoadingItems){
+<app-selector-component
+  class="pill-group-selector"
+  destinyRoute="/form"
+  [items]="disciplinas"
+/>}@else{
+<h3 class="no-form-data">Erro ao carregar as disciplinas</h3>
+} }@placeholder{
+<div style="display: flex; align-items: center">
+  <mat-spinner [diameter]="50"></mat-spinner>
+  <span class="loading-text">Carregando...</span>
+</div>
+}
 <div class="pill-group-selector">
-    <a class="pill back-button" routerLink="/areas">
-        <span>Voltar a seleção de áreas de conhecimento</span>
-    </a>
+  <a class="pill back-button" routerLink="/areas">
+    <span>Voltar a seleção de áreas de conhecimento</span>
+  </a>
 </div>

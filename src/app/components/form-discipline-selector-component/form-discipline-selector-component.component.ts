@@ -9,14 +9,21 @@ import {
   TypeDisciplinaRegister,
 } from '../../types/serviceTypes';
 import { FormProfessoresService } from '../../services/form-professores.service';
-import { forkJoin } from 'rxjs';
+import { catchError, forkJoin, Observable, of } from 'rxjs';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
 import { getTituloFormatoDisciplinaNomeSerie } from '../../utils/professor-form-utils';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-form-discipline-selector-component',
   standalone: true,
-  imports: [SelectorComponent, RouterLink],
+  imports: [
+    CommonModule,
+    SelectorComponent,
+    RouterLink,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './form-discipline-selector-component.component.html',
   styleUrl: './form-discipline-selector-component.component.scss',
 })
@@ -26,6 +33,10 @@ export class FormDisciplineSelectorComponent {
   areaSelecionada: string = '';
 
   color: string = '';
+
+  loadDisciplinas: Observable<any> = new Observable();
+
+  errorLoadingItems: boolean = false;
 
   constructor(
     private disciplinasService: DisciplinasService,
@@ -42,26 +53,35 @@ export class FormDisciplineSelectorComponent {
         this.localStorageService.getItem('userData')['id']
       );
 
-    forkJoin([getDiscipinasArea, getDisciplinaRegister]).subscribe(
-      ([disciplinas, registersByDisciplina]) => {
-        this.disciplinas = disciplinas
-          .filter((disciplina: Disciplina) => disciplina.serie_ano <= 3)
-          .map((disciplina: Disciplina) => {
-            const title = getTituloFormatoDisciplinaNomeSerie(disciplina);
-            const essencial = {
-              title,
-              id: disciplina.id,
-              tag: disciplina.area,
-              color: this.color,
-            };
-            const lastRegister = this.getLastRegister(
-              disciplina.id,
-              registersByDisciplina
-            );
-            return !lastRegister ? essencial : { ...essencial, lastRegister };
-          });
-      }
+    this.loadDisciplinas = forkJoin([
+      getDiscipinasArea,
+      getDisciplinaRegister,
+    ]).pipe(
+      catchError((error) => {
+        this.errorLoadingItems = true;
+        console.error(`Erro ao carregar entidade disciplinas:`, error);
+        return of([]);
+      })
     );
+
+    this.loadDisciplinas.subscribe(([disciplinas, registersByDisciplina]) => {
+      this.disciplinas = disciplinas
+        .filter((disciplina: Disciplina) => disciplina.serie_ano <= 3)
+        .map((disciplina: Disciplina) => {
+          const title = getTituloFormatoDisciplinaNomeSerie(disciplina);
+          const essencial = {
+            title,
+            id: disciplina.id,
+            tag: disciplina.area,
+            color: this.color,
+          };
+          const lastRegister = this.getLastRegister(
+            disciplina.id,
+            registersByDisciplina
+          );
+          return !lastRegister ? essencial : { ...essencial, lastRegister };
+        });
+    });
   }
 
   //NOTE: estava selecionando o registro pelo nome antes, porque?
