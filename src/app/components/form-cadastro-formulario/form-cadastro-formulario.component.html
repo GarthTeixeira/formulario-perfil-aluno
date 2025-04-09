@@ -49,34 +49,25 @@
     >
     </app-loading-form-field>
   </div>
-  <div [ngClass]="'form-row'" formGroupName="turma">
-    <mat-form-field [ngStyle]="{ 'flex-grow': '1' }" appearance="fill">
-      <mat-select formControlName="serie" required="true">
-        @for (serie of serieOptions; track $index) {
-        <mat-option [value]="serie">{{ serie }}</mat-option>
-        }
-      </mat-select>
-      <mat-label>Série</mat-label>
-      <mat-icon matSuffix>123</mat-icon>
-      <mat-hint>Ano da turma que deseja avaliar</mat-hint>
-    </mat-form-field>
+  <div [ngClass]="'form-row'">
     <mat-form-field [ngStyle]="{ 'flex-grow': '1' }" appearance="fill">
       <mat-select
         [disabled]="!enableTurma"
-        required="true"
         (selectionChange)="onChangeTurma($event)"
+        required="true"
+        multiple
       >
         @for (turma of turmasOptions; track $index) {
-        <mat-option [value]="turma">{{ turma.nome }}</mat-option>
+        <mat-option [value]="turma">{{ showTitleOfTurma(turma) }}</mat-option>
         }
       </mat-select>
-      <mat-label>Turma</mat-label>
+      <mat-label>Turmas</mat-label>
       <mat-icon matSuffix>groups</mat-icon>
     </mat-form-field>
   </div>
   <div class="send-div">
     <button
-      [disabled]="!applyForm.valid"
+      [disabled]="!applyForm.valid || selectedTurmas.size == 0"
       type="submit"
       mat-stroked-button
       color="primary"

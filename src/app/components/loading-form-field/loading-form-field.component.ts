@@ -39,6 +39,8 @@ export class LoadingFormFieldComponent {
 
   @Output() selectionChange = new EventEmitter<any>();
 
+  @Output() dataFetched = new EventEmitter<any>();
+
   public errorLoadingItems: boolean = false;
 
   public loadingData: Observable<any> | null | undefined = null;
@@ -62,6 +64,7 @@ export class LoadingFormFieldComponent {
 
     this.loadingData?.subscribe((response) => {
       this.itemsOptions = response;
+      this.dataFetched.emit(this.itemsOptions);
     });
   }
 

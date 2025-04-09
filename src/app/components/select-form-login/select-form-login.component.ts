@@ -19,6 +19,7 @@ import { UserDataLocalStorage } from '../../types/localStorageTypes';
 import { getAnoFromSerieString } from '../../utils/professor-form-utils';
 import { LoadingFormFieldComponent } from '../loading-form-field/loading-form-field.component';
 import { Observable } from 'rxjs';
+import { DataSharedService } from '../../shared/data-shared.service';
 
 @Component({
   selector: 'app-select-form-login',
@@ -56,6 +57,7 @@ export class SelectFormLoginComponent implements OnInit {
     private _escolasService: EscolasService,
     private formProfessoresService: FormProfessoresService,
     private localStorageService: LocalStorageService,
+    private dataSharedService: DataSharedService,
     private _formBuilder: FormBuilder,
     private router: Router
   ) {}
@@ -86,6 +88,17 @@ export class SelectFormLoginComponent implements OnInit {
     this.applyForm
       .get('formulario')
       ?.valueChanges.subscribe(this.onChangeForm.bind(this));
+  }
+
+  loadIncialEscola(event: any) {
+    const escolaInicialId = this.dataSharedService.getData();
+    console.log(event);
+    if (escolaInicialId) {
+      const escolaSelected = event.find(
+        (escola: { id: any }) => escola.id === escolaInicialId
+      );
+      this.applyForm.get('escola')?.setValue(escolaSelected);
+    }
   }
 
   onChangeSchool(value: any) {
@@ -137,9 +150,8 @@ export class SelectFormLoginComponent implements OnInit {
         next: (response) => {
           this.selectedForm = null;
           if (response?.length == 0)
-            window.alert(
-              'Não há formulários cadastrados ainda'
-            ); // trocar por uma dialog de alerta/ fazer componentes de alerta
+            window.alert('Não há formulários cadastrados ainda');
+          // trocar por uma dialog de alerta/ fazer componentes de alerta
           else {
             console.log(turmaId);
             const formsOfTurma = response

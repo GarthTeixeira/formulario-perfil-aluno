@@ -57,6 +57,8 @@ export class FormCadatroFormularioComponent {
 
   public errorLoadingSchools: boolean = false;
 
+  public selectedTurmas: Set<any> = new Set();
+
   public formatarTelefone = formatarTelefone;
 
   public sendData: (data: DadosRespostaProfessorInterface) => Observable<any> =
@@ -80,7 +82,6 @@ export class FormCadatroFormularioComponent {
   get phoneControl(): FormControl {
     return this.applyForm.get('telefone') as FormControl;
   }
-
   get enableTurma(): boolean {
     return this.turmasOptions.length != 0;
   }
@@ -94,50 +95,24 @@ export class FormCadatroFormularioComponent {
       email: ['', Validators.email],
       escola: [{}, Validators.required],
       telefone: [null, phoneValidator()],
-      turma: this._formBuilder.group({
-        _id: [''],
-        serie: [{ value: '', disabled: true }, Validators.required],
-        nome: ['', Validators.required],
-      }),
     });
 
     this.applyForm
       .get('escola')
       ?.valueChanges.subscribe(this.onChangeEscola.bind(this));
-    this.applyForm
-      .get('turma.serie')
-      ?.valueChanges.subscribe(this.onChangeSerie.bind(this));
   }
 
   onChangeEscola(event: MatSelectChange) {
     this.selectedSchool = this.applyForm.get('escola')?.value;
-    this.serieOptions = [
-      ...new Set(
-        this.selectedSchool?.turmas.map((turma: any) => turma?.serie || '') ||
-          []
-      ),
-    ];
-    if (this.serieOptions.length != 0)
-      this.applyForm.get('turma.serie')?.enable();
-  }
-
-  onChangeSerie() {
-    console.log('onChangeSerie');
-    const value = this.applyForm.get('turma.serie')?.value;
-    this.turmasOptions = this.selectedSchool.turmas.filter(
-      (turma: any) => turma.serie == value
-    );
+    this.turmasOptions = this.selectedSchool.turmas;
   }
 
   onChangeTurma(event: MatSelectChange) {
-    console.log('onChangeTurma');
-    console.log(event);
-    const turmaSelecionada = event.value;
-    if (!turmaSelecionada) return;
-    this.applyForm.get('turma')?.patchValue({
-      _id: turmaSelecionada._id,
-      nome: turmaSelecionada.nome,
-    });
+    this.selectedTurmas = new Set(event.value);
+  }
+
+  showTitleOfTurma(turma: any): string {
+    return `${turma.nome} - ${turma.serie}`;
   }
 
   //Improve performance
@@ -148,14 +123,15 @@ export class FormCadatroFormularioComponent {
   protected submitAlunoForm() {
     this.isSending = true;
     const professor: DadosRespostaProfessorInterface = this.applyForm.value;
+    professor.escola.turmas = professor.escola.turmas.filter((turma) =>
+      this.selectedTurmas.has(turma)
+    );
     this._professoresService.insertProfessor(professor).subscribe({
       next: (response: { id: string }) => {
-        const userData: UserDataLocalStorage = { ...response, ...professor };
-        console.log(userData);
-        this.localStorageService.setItem('userData', userData);
-        this.dataService.setData(userData);
-        this.router.navigate(['/areas']);
+        console.log(response);
+        this.dataService.setData(professor.escola.id);
         this.isSending = false;
+        this.router.navigate(['/selecionar-formulario']);
       },
       error: (error) => {
         console.error(error);
