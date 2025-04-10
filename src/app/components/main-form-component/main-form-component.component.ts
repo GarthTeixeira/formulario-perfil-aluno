@@ -91,6 +91,10 @@ export class MainFormComponent {
     return MainFormUtils.skillLevels;
   }
 
+  get tituloDisciplina(): string {
+    return this.itemSelecionado?.title as string;
+  }
+
   public iterableCompetences: any[] = [];
 
   public iterableCognitives: any[] = [];
@@ -99,9 +103,6 @@ export class MainFormComponent {
 
   public errorNote = '';
 
-  public formTitle(competenceDescription: any) {
-    return `${this.itemSelecionado?.title} - ${competenceDescription}`;
-  }
   constructor(
     private formProfessoresService: FormProfessoresService,
     private _formBuilder: FormBuilder,
