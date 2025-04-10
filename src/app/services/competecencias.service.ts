@@ -4,21 +4,27 @@ import { Observable } from 'rxjs';
 import { DataSharedService } from '../shared/data-shared.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CompetecenciasService {
+  apiUrl: string | undefined;
 
-  apiUrl:string | undefined
-
-  constructor(private http: HttpClient,private dataService: DataSharedService) {
-     this.apiUrl = `${this.dataService.getHost()}/competences`
-   }
-
-  getByArea(area: string | undefined) : Observable<any> { 
-    return this.http.get<any>(`${this.apiUrl}/get-area/${area}?withHabilities=true`);
+  constructor(
+    private http: HttpClient,
+    private dataService: DataSharedService
+  ) {
+    this.apiUrl = `${this.dataService.getHost()}/competences`;
   }
 
-  getCognitive() : Observable<any> { 
-    return this.http.get<any>(`${this.apiUrl}/get-area/COGNITIVOS?withHabilities=false`);
+  getByArea(area: string | undefined): Observable<any> {
+    return this.http.get<any>(
+      `${this.apiUrl}/get-area/${area}?withHabilities=true`
+    );
+  }
+
+  getCognitive(): Observable<any> {
+    return this.http.get<any>(
+      `${this.apiUrl}/get-area/COGNITIVOS?withHabilities=false`
+    );
   }
 }
