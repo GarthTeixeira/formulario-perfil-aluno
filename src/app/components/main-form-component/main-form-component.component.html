@@ -16,7 +16,7 @@
         [stepControl]="competences?.get([i])"
       >
         <ng-template matStepLabel>>{{ "Q" }}{{ i + 1 }}</ng-template>
-        <h3>{{ formTitle(competence.descricao) }}</h3>
+        <h3>{{ formTitle(competence.descricao) | decodeUTF8 }}</h3>
         <ng-container formArrayName="habilidades">
           <div
             [ngStyle]="{
@@ -83,7 +83,7 @@
         [stepControl]="competencesCognitive?.get([i])"
       >
         <ng-template>{{ "Q" }}{{ i + 1 }}</ng-template>
-        <h3>{{ formTitle(competence.descricao_pergunta) }}</h3>
+        <h3>{{ formTitle(competence.descricao_pergunta) | decodeUTF8 }}</h3>
         <div [style]="{display:'flex', 'flex-direction': 'column',}">
           <span [ngClass]="'label-mat-slider'"
             >Escolha um valor entre 0 a 10</span

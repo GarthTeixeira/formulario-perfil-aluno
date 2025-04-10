@@ -20,6 +20,7 @@ import { LocalStorageService } from '../../shared/services/local-storage-service
 import { MatSliderModule } from '@angular/material/slider';
 import { catchError, forkJoin, Observable, of } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DecodeUTF8Pipe } from '../../pipes/decode-utf8.pipe';
 
 interface IDictionarySkill<TValue> {
   [id: string]: TValue;
@@ -52,6 +53,7 @@ type SubmitParams = {
     RouterModule,
     CommonModule,
     MatProgressSpinnerModule,
+    DecodeUTF8Pipe,
   ],
   templateUrl: './main-form-component.component.html',
   styleUrl: './main-form-component.component.scss',
