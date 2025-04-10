@@ -1,10 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import "app/app.component.scss";
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 p {
-    margin: 2px;
-    color: var(--gray-700);
-  }
-
+  margin: 2px;
+  color: var(--gray-700);
+}

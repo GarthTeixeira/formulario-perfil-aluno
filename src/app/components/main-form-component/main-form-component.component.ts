@@ -18,7 +18,8 @@ import { CompetecenciasService } from '../../services/competecencias.service';
 import { FormProfessoresService } from '../../services/form-professores.service';
 import { LocalStorageService } from '../../shared/services/local-storage-service.service';
 import { MatSliderModule } from '@angular/material/slider';
-import { forkJoin, Observable } from 'rxjs';
+import { catchError, forkJoin, Observable, of } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 interface IDictionarySkill<TValue> {
   [id: string]: TValue;
@@ -50,6 +51,7 @@ type SubmitParams = {
     MatInputModule,
     RouterModule,
     CommonModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './main-form-component.component.html',
   styleUrl: './main-form-component.component.scss',
@@ -93,6 +95,8 @@ export class MainFormComponent {
 
   public loadingCompetencias: Observable<any> = new Observable();
 
+  public errorNote = '';
+
   public formTitle(competenceDescription: any) {
     return `${this.itemSelecionado?.title} - ${competenceDescription}`;
   }
@@ -118,7 +122,13 @@ export class MainFormComponent {
         this._formBuilder,
         this.competenciasService
       ),
-    ]);
+    ]).pipe(
+      catchError((error) => {
+        console.error(`Erro ao carregar entidade disciplinas:`, error);
+        this.errorNote = `${error.status}: ${error.statusText} `;
+        return of([]);
+      })
+    );
 
     this.loadingCompetencias.subscribe(([compArea, compCognitive]) => {
       this.iterableCompetences = compArea;
