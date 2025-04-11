@@ -32,7 +32,9 @@
     <mat-form-field style="flex-grow: 1" appearance="fill">
       <mat-select formControlName="turma" required="true">
         @for (turma of turmasOptions; track $index) {
-        <mat-option [value]="turma">{{ turma.nome }}</mat-option>
+        <mat-option [value]="turma"
+          >{{ turma.nome }} ({{ turma.ano }})</mat-option
+        >
         }
       </mat-select>
       <mat-label>Turma</mat-label>

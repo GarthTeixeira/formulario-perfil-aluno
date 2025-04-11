@@ -112,7 +112,7 @@ export class FormCadatroFormularioComponent {
   }
 
   showTitleOfTurma(turma: any): string {
-    return `${turma.nome} - ${turma.serie}`;
+    return `${turma.nome} - ${turma.serie} (${turma.ano})`;
   }
 
   //Improve performance
