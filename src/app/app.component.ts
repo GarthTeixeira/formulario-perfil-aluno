@@ -7,6 +7,9 @@ import {
 import { MainFormComponent } from './components/main-form-component/main-form-component.component';
 import { FormAreaSelectorComponent } from './components/form-area-selector-component/form-area-selector-component.component';
 import { slideInAnimation } from './animations';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { InstructionsDialogComponent } from './components/instructions-dialog/instructions-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +19,8 @@ import { slideInAnimation } from './animations';
     RouterOutlet,
     MainFormComponent,
     FormAreaSelectorComponent,
+    MatButtonModule,
+    MatDialogModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -27,13 +32,10 @@ export class AppComponent {
   descitpion =
     'Essa pesquisa consiste em avaliarmos as competências e habilidades do ENEM que seus estudantes conseguiram desenvolver durante o ensino médio.';
 
-  instructions = [
-    'Se cadastre, caso tenha um cadastro escolha este;',
-    'Ao se cadastrar, escolha sua instiuição, a série da sua turma e a turma respectiva à série;',
-    'Escolha uma área de conhecimento que deseja avaliar;',
-    'Escolha uma disciplina;',
-    'As respostas são salvas automaticamente a cada disciplina avaliada.',
-  ];
+  openDialog() {
+    this.dialog.open(InstructionsDialogComponent);
+  }
+
   getRouteAnimationData() {
     return this.contexts.getContext('primary')?.route?.snapshot?.data?.[
       'animation'
@@ -48,5 +50,8 @@ export class AppComponent {
     );
   }
 
-  constructor(private contexts: ChildrenOutletContexts) {}
+  constructor(
+    private contexts: ChildrenOutletContexts,
+    public dialog: MatDialog
+  ) {}
 }

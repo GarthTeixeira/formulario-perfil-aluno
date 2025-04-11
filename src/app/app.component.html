@@ -55,9 +55,9 @@
 
       <h1>{{ title }}</h1>
       <p>{{ descitpion }} ✏️📖🤓📚🚀 <br /></p>
-      @for (instruction of instructions; track $index) {
-      <li>{{ instruction }}</li>
-      }
+      <button mat-flat-button color="primary" (click)="openDialog()">
+        Instruções
+      </button>
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div [@routeAnimations]="prepareRoute(outlet)" class="right-side">

@@ -172,6 +172,12 @@ li {
   color: var(--gray-700) !important;
 }
 
+.mat-typography h3 {
+  font-size: 1.2rem !important; /* Tamanho padrão do Material */
+  margin: 1em 0;
+  font-weight: 500;
+}
+
 @media screen and (max-width: 650px) {
   .content {
     flex-direction: column;
