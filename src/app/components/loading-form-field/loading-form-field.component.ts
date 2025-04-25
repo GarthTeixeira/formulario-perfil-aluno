@@ -28,7 +28,6 @@ import { DecodeUTF8Pipe } from '../../pipes/decode-utf8.pipe';
   ],
   templateUrl: './loading-form-field.component.html',
   styleUrl: './loading-form-field.component.scss',
-  encapsulation: ViewEncapsulation.None,
 })
 export class LoadingFormFieldComponent {
   @Input() public control!: FormControl;
