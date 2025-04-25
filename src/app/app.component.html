@@ -1,6 +1,6 @@
 <main class="main">
   <div class="content">
-    <div class="Header">
+    <div class="header">
       <svg
         width="50"
         height="51"
@@ -53,14 +53,14 @@
         </defs>
       </svg>
 
-      <h1>{{ title }}</h1>
+      <h1 >{{ title() }}</h1>
       <p>{{ descitpion }} ✏️📖🤓📚🚀 <br /></p>
       <button mat-flat-button color="primary" (click)="openDialog()">
         Instruções
       </button>
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
-    <div [@routeAnimations]="prepareRoute(outlet)" class="right-side">
+    <div [@routeAnimations]="prepareRoute(outlet)" [ngClass]="layoutClass()">
       <router-outlet #outlet="outlet" />
     </div>
   </div>

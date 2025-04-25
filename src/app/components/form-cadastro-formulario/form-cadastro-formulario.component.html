@@ -1,8 +1,8 @@
 @if(!isSending){
 <form [formGroup]="applyForm" class="aluno-form" (ngSubmit)="submitAlunoForm()">
   <h3>Preencha seus dados</h3>
-  <div>
-    <mat-form-field [ngStyle]="{ width: '600px' }" appearance="fill">
+  <div [ngClass]="'form-row'">
+    <mat-form-field [ngStyle]="{ 'flex-grow': '2'}" appearance="fill">
       <mat-label>Nome</mat-label>
       <input
         formControlName="nome"
@@ -27,7 +27,7 @@
       <mat-hint>Email para contato</mat-hint>
     </mat-form-field>
   </div>
-  <div [ngClass]="'form-row'">
+  <div [ngClass]="'form-row'" [ngStyle] = "{ 'flex-direction': true? 'row':'column' }">
     <mat-form-field appearance="fill" [ngStyle]="{ 'flex-grow': '1' }">
       <mat-label>Telefone</mat-label>
       <input

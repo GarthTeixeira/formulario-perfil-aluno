@@ -81,6 +81,16 @@ li {
   max-width: 9.2rem;
 }
 
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 2000px;
+  margin-bottom: 1.5rem;
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -178,10 +188,17 @@ li {
   font-weight: 500;
 }
 
+
+.mobile {
+  font-size: 14px;
+  padding: 8px;
+  background: #ffebee;
+}
+
 @media screen and (max-width: 650px) {
   .content {
     flex-direction: column;
-    width: max-content;
+    width: 100%;
   }
 
   .divider {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import {
   ChildrenOutletContexts,
   RouterModule,
@@ -10,6 +10,8 @@ import { slideInAnimation } from './animations';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { InstructionsDialogComponent } from './components/instructions-dialog/instructions-dialog.component';
+import { ResponsiveService } from './services/responsive.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -17,20 +19,37 @@ import { InstructionsDialogComponent } from './components/instructions-dialog/in
   imports: [
     RouterModule,
     RouterOutlet,
-    MainFormComponent,
-    FormAreaSelectorComponent,
     MatButtonModule,
     MatDialogModule,
+    NgClass
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   animations: [slideInAnimation],
 })
 export class AppComponent {
-  title = 'Olá Professor, seja muito bem vindo ao nosso formulário';
+
+  responsiveService = inject(ResponsiveService);
+
+  title = computed(() => {
+    if (this.responsiveService.largeWidth()) {
+      return 'Formulario de compentencias do ENEM';
+    } else {
+      return 'Formulário';
+    }
+  }
+  );
 
   descitpion =
     'Essa pesquisa consiste em avaliarmos as competências e habilidades do ENEM que seus estudantes conseguiram desenvolver durante o ensino médio.';
+
+  layoutClass = computed(() => {
+    if (this.responsiveService.smallWidth()) return 'mobile';
+    if (this.responsiveService.mediumWidth()) return 'tablet';
+    return 'desktop';
+    
+  });
+
 
   openDialog() {
     this.dialog.open(InstructionsDialogComponent);
