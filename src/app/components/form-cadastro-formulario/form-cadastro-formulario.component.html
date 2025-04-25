@@ -27,7 +27,7 @@
       <mat-hint>Email para contato</mat-hint>
     </mat-form-field>
   </div>
-  <div [ngClass]="'form-row'" [ngStyle] = "{ 'flex-direction': true? 'row':'column' }">
+  <div [ngClass]="'form-row'" [ngStyle] = "{ 'flex-direction': isDesktop ? 'row':'column', 'align-items': isDesktop ? 'flex-start': 'stretch' }">
     <mat-form-field appearance="fill" [ngStyle]="{ 'flex-grow': '1' }">
       <mat-label>Telefone</mat-label>
       <input

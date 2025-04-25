@@ -25,6 +25,7 @@ import { LocalStorageService } from '../../shared/services/local-storage-service
 import { UserDataLocalStorage } from '../../types/localStorageTypes';
 import { LoadingFormFieldComponent } from '../loading-form-field/loading-form-field.component';
 import { phoneValidator } from '../../validators/phone.validator';
+import { ResponsiveService } from '../../services/responsive.service';
 @Component({
   selector: 'app-form-cadastro-formulario',
   standalone: true,
@@ -71,7 +72,8 @@ export class FormCadatroFormularioComponent {
     private _formBuilder: FormBuilder,
     public dialog: MatDialog,
     private _professoresService: FormProfessoresService,
-    private _escolasService: EscolasService
+    private _escolasService: EscolasService,
+    private _responsiveService: ResponsiveService
   ) {
     this.loadingSchoolData = this._escolasService.getEscolasOptions();
   }
@@ -85,6 +87,11 @@ export class FormCadatroFormularioComponent {
   get enableTurma(): boolean {
     return this.turmasOptions.length != 0;
   }
+
+  get isDesktop(): boolean  {
+    return this._responsiveService.largeWidth() as boolean;
+  }
+
   ngOnInit() {
     if (this.localStorageService.getItem('userData')) {
       //TODO:realizar método para verificar se o usuário já está logado
