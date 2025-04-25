@@ -33,7 +33,7 @@ export class AppComponent {
 
   title = computed(() => {
     if (this.responsiveService.largeWidth()) {
-      return 'Formulario de compentencias do ENEM';
+      return 'Formulário de compentências do ENEM';
     } else {
       return 'Formulário';
     }
