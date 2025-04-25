@@ -8,3 +8,9 @@ h2 {
 .important {
   color: #4021f0;
 }
+
+@media screen and (max-width: 600px) {
+  p {
+      font-size: small;
+  }
+}
