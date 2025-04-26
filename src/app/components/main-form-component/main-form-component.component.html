@@ -1,9 +1,10 @@
-<div class="mainForm">
+
   @defer(when loadingCompetencias | async){ @if(formMode == 'AREA'){
   <form [formGroup]="questionarioAreasFormGroup">
     @if(competences.length > 0){
     <mat-stepper
       #linearVerticalStepper="matVerticalStepper"
+      [orientation]="stepperOrientation()"
       [linear]="isLinear"
       formArrayName="competences"
       #stepper
@@ -15,7 +16,7 @@
         [formGroupName]="i"
         [stepControl]="competences?.get([i])"
       >
-        <ng-template matStepLabel>>{{ "Q" }}{{ i + 1 }}</ng-template>
+        <ng-template matStepLabel>Questão - {{ i + 1 }}</ng-template>
         <h3>
           {{ tituloDisciplina | decodeUTF8 }} -
           {{ competence.descricao }}
@@ -54,12 +55,14 @@
         </div>
       </mat-step>
       }
-      <mat-step>
+      <mat-step >
         <ng-template matStepLabel>Fim</ng-template>
-        Gostaria de enviar a parte (1/2) do questionário das áreas?
-        <div>
-          <button mat-button matStepperPrevious>Voltar</button>
-          <button mat-button (click)="onSubmit(stepper)">Enviar</button>
+        <div class="send-buttons"> 
+          Gostaria de enviar a parte (1/2) do questionário das áreas?
+          <div>
+            <button mat-button matStepperPrevious>Voltar</button>
+            <button mat-button (click)="onSubmit(stepper)">Enviar</button>
+          </div>
         </div>
       </mat-step>
     </mat-stepper>
@@ -75,6 +78,7 @@
     <mat-stepper
       #linnearVerticalStepper="matVerticalStepper"
       [linear]="isLinear"
+      [orientation]="stepperOrientation()"
       formArrayName="competencesCognitive"
       #stepper
     >
@@ -117,11 +121,13 @@
       </mat-step>
       }<mat-step>
         <ng-template matStepLabel>Fim</ng-template>
-        Gostaria de enviar a parte (2/2) do questionário das competências
-        cognitivas (comum entre áreas)?
-        <div>
-          <button mat-button matStepperPrevious>Voltar</button>
-          <button mat-button (click)="onSubmit(stepper)">Enviar</button>
+        <div class="send-buttons">
+          Gostaria de enviar a parte (2/2) do questionário das competências
+          cognitivas (comum entre áreas)?
+          <div>
+            <button mat-button matStepperPrevious>Voltar</button>
+            <button mat-button (click)="onSubmit(stepper)">Enviar</button>
+          </div>
         </div>
       </mat-step>
     </mat-stepper>
@@ -137,13 +143,13 @@
   </div>
   }
 
-  <div class="pill-group">
+  
     <a
       class="pill back-button"
       routerLink="/disciplinas"
+      [ngStyle]="{'align-self': stepperOrientation() == 'vertical'?'center':'auto'}"
       [state]="{ itemData: itemSelecionado }"
     >
-      <span>Voltar ao menu *</span>
+      <span>Voltar à seleção de disciplinas</span>
     </a>
-  </div>
-</div>
+  

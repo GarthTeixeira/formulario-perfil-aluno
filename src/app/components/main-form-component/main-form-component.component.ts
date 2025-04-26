@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, Signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepperModule, StepperOrientation } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -21,6 +21,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { catchError, forkJoin, Observable, of } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DecodeUTF8Pipe } from '../../pipes/decode-utf8.pipe';
+import { ResponsiveService } from '../../services/responsive.service';
 
 interface IDictionarySkill<TValue> {
   [id: string]: TValue;
@@ -103,12 +104,20 @@ export class MainFormComponent {
 
   public errorNote = '';
 
+  public stepperOrientation: Signal<StepperOrientation> = computed(() => {
+    if (this.responiveService.largeWidth()) {
+      return 'horizontal';
+    } return 'vertical';
+  }
+  );
+
   constructor(
     private formProfessoresService: FormProfessoresService,
     private _formBuilder: FormBuilder,
     private competenciasService: CompetecenciasService,
     private localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private responiveService:ResponsiveService
   ) {}
 
   ngOnInit(): void {
