@@ -1,4 +1,4 @@
-.flex-select-cadastro {
+:host {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,5 +8,5 @@
 .example-button-container {
     display: flex;
     justify-content: center;
-    width: 2100px;
+    max-width: 2100px;
   }
