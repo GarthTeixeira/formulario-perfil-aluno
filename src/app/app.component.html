@@ -59,7 +59,7 @@
         Instruções
       </button>
     </div>
-    <div class="divider" role="separator" aria-label="Divider"></div>
+    <div role="separator" aria-label="Divider" class="divider" [class.mobile]="layoutClass()=='mobile'"></div>
     <div [@routeAnimations]="prepareRoute(outlet)" [ngClass]="layoutClass()">
       <router-outlet #outlet="outlet" />
     </div>

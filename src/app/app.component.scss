@@ -83,6 +83,9 @@ li {
   height: 1px;
   background: var(--red-to-pink-to-purple-vertical-gradient);
   margin-block: 0.5rem;
+  &.mobile {
+    display: none;
+  }
 }
 
 .right-side {
@@ -110,7 +113,29 @@ li {
 .mobile {
   font-size: 14px;
   padding: 8px;
-  background: #ffebee;
+  border-radius: 8px;
+  position: relative;
+  background: white; /* Cor de fundo do elemento */
+  // background: #ffebee;
+  
+}
+
+.mobile::before{ 
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  margin: -1px; /* Largura da "borda" */
+  border-radius: 9px; /* 1px a mais que o elemento principal */
+  background: linear-gradient(
+    90deg,
+    var(--orange-red) 0%,
+    var(--vivid-pink) 50%,
+    var(--electric-violet) 100%
+  );
 }
 
 @media screen and (max-width: 650px) {
