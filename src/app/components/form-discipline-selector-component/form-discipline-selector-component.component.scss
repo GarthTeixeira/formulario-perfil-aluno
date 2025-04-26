@@ -1,24 +1,12 @@
 :host h3 {
   font-size: 1.5rem;
-  color: var(--gray-900);
+  color: var(--gray-700);
   font-weight: 500;
   line-height: 100%;
   letter-spacing: -0.0625rem;
   margin-bottom: 3rem;
   margin-top: 0;
-  display: flex;
-  font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol";
-}
-
-:host .pill-group-selector {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  flex-wrap: wrap;
-  margin-top: 1.5rem;
-  gap: 1.25rem;
+  font-family: inherit;
 }
 
 .no-form-data {
@@ -37,4 +25,26 @@
   font-style: italic;
   font-size: 1.25rem !important;
   color: var(--gray-700) !important;
+}
+
+@media screen and (max-width: 600px) {
+  :host {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+  :host h3{
+      text-align: center;
+      margin-bottom: 2rem;
+  }
+
+  .back-button{
+    max-width: 200px;
+    margin-top: 1.5rem;
+    span{
+      text-align: center;
+    }
+  }
+  
 }

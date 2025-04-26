@@ -1,7 +1,7 @@
 <h3>Escolha uma disciplina</h3>
 @defer(when loadDisciplinas | async){ @if(!errorLoadingItems){
 <app-selector-component
-  class="pill-group-selector"
+  class="pill-group"
   destinyRoute="/form"
   [items]="disciplinas"
 />}@else{
@@ -12,8 +12,6 @@
   <span class="loading-text">Carregando...</span>
 </div>
 }
-<div class="pill-group-selector">
-  <a class="pill back-button" routerLink="/areas">
-    <span>Voltar a seleção de áreas de conhecimento</span>
-  </a>
-</div>
+<a class="pill back-button" routerLink="/areas">
+  <span>Voltar à seleção de áreas de conhecimento</span>
+</a>
