@@ -7,7 +7,7 @@
   (mouseenter)="showTooltip($event, item)"
   (mouseleave)="hideTooltip()"
 >
-  <span class="link-text">{{ item.title | decodeUTF8 }}</span>
+  <span>{{ item.title | decodeUTF8 }}</span>
   @if(isAnswered(item)){
   <mat-icon class="link-icon" matSuffix>check</mat-icon>
   }

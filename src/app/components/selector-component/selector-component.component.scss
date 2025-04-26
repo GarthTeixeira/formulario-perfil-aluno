@@ -15,15 +15,7 @@
 }
 
 .link-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
   padding: 0.5rem;
-}
-
-.link-text {
-  flex: 1;
 }
 
 .link-icon {
@@ -61,4 +53,20 @@
     border-style: solid;
     border-color: transparent transparent #333 transparent;
   }
+}
+
+@media screen and (max-width: 600px) {
+  :host {
+    align-items: center;
+  }
+
+  :host h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  :host .link-container{
+    text-align: center;
+  }
+  
 }
