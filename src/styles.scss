@@ -56,8 +56,6 @@ p {
 }
 
  .pill {
-  display: flex;
-  align-items: center;
   --pill-accent: var(--bright-blue);
   background: color-mix(in srgb, var(--pill-accent) 5%, transparent);
   color: var(--pill-accent);
@@ -94,4 +92,8 @@ p {
 
 .back-button {
   --pill-accent: rgba(133, 14, 117, 0.753);
+  display: flex;
+  margin-top: 1.25rem;
+  width: fit-content;
+  padding: 0.5rem;
 }
