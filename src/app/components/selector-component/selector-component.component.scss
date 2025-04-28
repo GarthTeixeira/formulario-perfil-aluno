@@ -14,8 +14,11 @@
   --pill-accent: var(--hot-red);
 }
 
-.link-container {
-  padding: 0.5rem;
+.link-container-answerd {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
 }
 
 .link-icon {
