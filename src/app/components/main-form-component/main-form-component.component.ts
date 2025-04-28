@@ -82,6 +82,14 @@ export class MainFormComponent {
     return this.questionarioAreasFormGroup?.get('competences') || [];
   }
 
+  habilitieValue(competenceIndex: number, habilitieIndex: number): number {
+    return this.questionarioAreasFormGroup?.get('competences')?.value[competenceIndex]?.habilidades[habilitieIndex] || 0;
+  }
+
+  competenceGognitiveValue(competenceIndex:number):number{
+    return this.questionarioCognitivoFormGroup?.get('competencesCognitive')?.value[competenceIndex]?.resposta || 0;
+  }
+
   get competencesCognitive(): AbstractControl<any, any> | any {
     return (
       this.questionarioCognitivoFormGroup?.get('competencesCognitive') || []
