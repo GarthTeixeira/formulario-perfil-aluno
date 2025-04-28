@@ -58,6 +58,17 @@ npx ng serve
 
 Execute `ng serve` ou `npm start` para iniciar um servidor de desenvolvimento. Acesse [http://localhost:4200/](http://localhost:4200/) no navegador.
 
+## Teste Mobile
+
+Para executra o teste mobile utilize
+
+```
+ng serve --host 0.0.0.0 --configuration=mobile
+```
+
+Edite o arquivo `environment.mobile.template.ts` atribuindo o IP do seu backend no inidicado.
+
+
 ## Compilação
 
 Execute `ng build` para compilar o projeto. Os artefatos de compilação serão armazenados no diretório `dist/`.
