@@ -112,6 +112,8 @@ export class MainFormComponent {
 
   public errorNote = '';
 
+  public isSending: boolean = false;
+
   public stepperOrientation: Signal<StepperOrientation> = computed(() => {
     if (this.responiveService.largeWidth()) {
       return 'horizontal';
@@ -211,13 +213,16 @@ export class MainFormComponent {
       const resposta = MainFormUtils.makeRespostaForm(
         submitParams?.requestParams
       );
+      this.isSending = true;
       this.formProfessoresService.insertResposta(resposta).subscribe({
         next: () => {
           submitParams?.callback(stepper);
+          this.isSending = false;
         },
         error: (error) => {
           console.error(error);
           stepper.reset();
+          this.isSending = false;
         },
       });
     }

@@ -60,13 +60,20 @@
       }
       <mat-step >
         <ng-template matStepLabel>Fim</ng-template>
-        <div class="send-buttons"> 
-          Gostaria de enviar a parte (1/2) do questionário das áreas?
-          <div>
-            <button mat-button matStepperPrevious>Voltar</button>
-            <button mat-button (click)="onSubmit(stepper)">Enviar</button>
+        @if(!isSending){
+          <div class="send-buttons"> 
+            Gostaria de enviar a parte (1/2) do questionário das áreas?
+            <div>
+              <button mat-button matStepperPrevious>Voltar</button>
+              <button mat-button (click)="onSubmit(stepper)">Enviar</button>
+            </div>
           </div>
-        </div>
+        }@else{
+          <div style="display: flex; justify-content: center; align-items: center">
+            <mat-spinner [diameter]="50"></mat-spinner>
+            <span class="loading-text">Enviando Resposta...</span>
+          </div>
+        }
       </mat-step>
     </mat-stepper>
     } @else {
@@ -127,14 +134,21 @@
       </mat-step>
       }<mat-step>
         <ng-template matStepLabel>Fim</ng-template>
-        <div class="send-buttons">
-          Gostaria de enviar a parte (2/2) do questionário das competências
-          cognitivas (comum entre áreas)?
-          <div>
-            <button mat-button matStepperPrevious>Voltar</button>
-            <button mat-button (click)="onSubmit(stepper)">Enviar</button>
+        @if(!isSending){
+          <div class="send-buttons">
+            Gostaria de enviar a parte (2/2) do questionário das competências
+            cognitivas (comum entre áreas)?
+            <div>
+              <button mat-button matStepperPrevious>Voltar</button>
+              <button mat-button (click)="onSubmit(stepper)">Enviar</button>
+            </div>
           </div>
-        </div>
+        }@else{
+          <div style="display: flex; justify-content: center; align-items: center">
+            <mat-spinner [diameter]="50"></mat-spinner>
+            <span class="loading-text">Enviando Resposta...</span>
+          </div>
+        }
       </mat-step>
     </mat-stepper>
     }@else {
@@ -148,8 +162,6 @@
     <span class="loading-text">Carregando...</span>
   </div>
   }
-
-  
     <a
       class="pill back-button"
       routerLink="/disciplinas"
