@@ -127,7 +127,7 @@ export class FormCadatroFormularioComponent {
     return item.id;
   }
 
-  protected submitAlunoForm() {
+  protected submitForm() {
     this.isSending = true;
     const professor: DadosRespostaProfessorInterface = this.applyForm.value;
     professor.escola.turmas = professor.escola.turmas.filter((turma) =>
