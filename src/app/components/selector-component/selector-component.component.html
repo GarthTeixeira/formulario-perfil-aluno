@@ -3,7 +3,7 @@
   [ngClass]="'pill ' + item.color"
   [routerLink]="[destinyRoute]"
   [state]="{ itemData: item }"
-  [class.link-container-answerd]="isAnswered(item)"
+  [class.link-container-answered]="isAnswered(item)"
   (mouseenter)="showTooltip($event, item)"
   (mouseleave)="hideTooltip()"
 >
