@@ -1,6 +1,8 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal, Signal } from '@angular/core';
 import {
   ChildrenOutletContexts,
+  NavigationEnd,
+  Router,
   RouterModule,
   RouterOutlet,
 } from '@angular/router';
@@ -12,6 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { InstructionsDialogComponent } from './components/instructions-dialog/instructions-dialog.component';
 import { ResponsiveService } from './services/responsive.service';
 import { NgClass } from '@angular/common';
+import { LocalStorageService } from './shared/services/local-storage-service.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -27,18 +31,39 @@ import { NgClass } from '@angular/common';
   styleUrl: './app.component.scss',
   animations: [slideInAnimation],
 })
-export class AppComponent {
+export class AppComponent{
+  
+  private contexts = inject(ChildrenOutletContexts);
+
+  public dialog = inject(MatDialog);
 
   responsiveService = inject(ResponsiveService);
 
-  title = computed(() => {
+  localStorageService = inject(LocalStorageService);
+
+  router = inject(Router);
+
+  get turmaSelected(){
+    return this.localStorageService.getItem('userData')['turma']['nome'];
+  }
+
+  currentRoute = signal(this.router.url);
+
+  title:Signal<string> = computed(() => {
     if (this.responsiveService.largeWidth()) {
       return 'Formulário de compentências do ENEM';
     } else {
       return 'Formulário';
     }
-  }
-  );
+  });
+
+  isInAvailableRoute:Signal<boolean> = computed(() => {
+    const value = ['selecionar-formulario', 'home', 'cadastro'].some((route: string) => 
+      this.currentRoute().includes(route)
+    );
+    console.log(value)
+    return value;
+  });
 
   descitpion =
     'Essa pesquisa consiste em avaliarmos as competências e habilidades do ENEM que seus estudantes conseguiram desenvolver durante o ensino médio.';
@@ -69,8 +94,15 @@ export class AppComponent {
     );
   }
 
-  constructor(
-    private contexts: ChildrenOutletContexts,
-    public dialog: MatDialog
-  ) {}
+  ngOnInit() {
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+      )
+      .subscribe((event) => {
+        this.currentRoute.set(event.url);
+        console.log('Rota alterada:', this.currentRoute());
+      });
+  }
+  
 }

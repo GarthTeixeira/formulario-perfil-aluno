@@ -58,6 +58,9 @@
       <button mat-flat-button color="primary" (click)="openDialog()">
         Instruções
       </button>
+      @if(!isInAvailableRoute()){
+        <h2>Turma: {{turmaSelected}}</h2>
+      }
     </div>
     <div role="separator" aria-label="Divider" class="divider" [class.mobile]="layoutClass()=='mobile'"></div>
     <div [@routeAnimations]="prepareRoute(outlet)" [ngClass]="layoutClass()">
