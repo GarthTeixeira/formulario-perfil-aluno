@@ -13,15 +13,19 @@ import { AreasSelectItem } from '../../types/componentsTypes';
 })
 export class FormAreaSelectorComponent {
   areas:Array<AreasSelectItem> = [];
+  answeredForm:boolean = false;
   cores:Array<string> = ['primary', 'secondary', 'tertiary', 'quaternary'];
 
- constructor() {}
+ constructor(
+  private dataSharedService: DataSharedService
+ ) {}
 
  ngOnInit() {
 
   for (let i = 0; i < areas.length; i++) {
     this.areas[i] =  {...areas[i], color: this.cores[i]};
   }
+  this.answeredForm = this.dataSharedService.getData() === 'formulario-preenchido'
   
 }
 }
